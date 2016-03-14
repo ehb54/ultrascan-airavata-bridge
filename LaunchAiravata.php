@@ -20,6 +20,7 @@ class LaunchAiravata implements AiravataWrapper
      * @param integer $nodes - Number of Nodes to be requested.
      * @param integer $mGroupCount - Parellel groups.
      * @param integer $wallTime - Maximum wall time of the job.
+     * @param string $clusterUserName - Jureca submissions will use this value to construct the userDN. Other clusters ignore it.
      * @param string $inputFile - Path of the Input Tar File
      * @param string $outputDataDirectory - Directory path where Airavata should stage back the output tar file.
      *
@@ -27,7 +28,7 @@ class LaunchAiravata implements AiravataWrapper
      *
      */
     function launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-                                        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime,
+                                        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
                                         $inputFile, $outputDataDirectory)
     {
         // TODO: Implement launch_airavata_experiment() method.
