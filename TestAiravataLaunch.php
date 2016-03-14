@@ -1,4 +1,7 @@
 <?php
+ini_set('memory_limit', '-1');
+
+include "TestAiravataLaunch.php";
 
 $launchAiravata = new \SCIGAP\LaunchAiravata();
 
