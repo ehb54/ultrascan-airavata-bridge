@@ -1,6 +1,6 @@
 <?php
 
-require_once("AiravataWrapper.php");
+require_once "AiravataWrapper.php";
 
 use SCIGAP\AiravataWrapper;
 

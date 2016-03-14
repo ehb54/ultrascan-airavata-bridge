@@ -2,11 +2,72 @@
 
 namespace SCIGAP;
 
-require_once("AiravataWrapperInterface.php");
+$GLOBALS['THRIFT_ROOT'] = 'lib/Thrift/';
+$GLOBALS['AIRAVATA_ROOT'] = 'lib/Airavata/';
+
+require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TTransport.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TSocket.php';
+use Thrift\Transport\TSocket;
+require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TProtocol.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TBinaryProtocol.php';
+use Thrift\Protocol\TBinaryProtocol;
+require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TException.php';
+use Thrift\Exception\TException;
+require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TApplicationException.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TProtocolException.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TTransportException.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Base/TBase.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Type/TType.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Type/TMessageType.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Factory/TStringFuncFactory.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'StringFunc/TStringFunc.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'StringFunc/Core.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Type/TConstant.php';
+
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Airavata.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Types.php';
+use Airavata\API\AiravataClient;
+
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Error/Types.php';
+use Airavata\API\Error\InvalidRequestException;
+use Airavata\API\Error\AiravataClientException;
+use Airavata\API\Error\AiravataSystemException;
+use Airavata\API\Error\ExperimentNotFoundException;
+
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Security/Types.php';
+use Airavata\Model\Security\AuthzToken;
+
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Workspace/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Experiment/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/AppInterface/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/AppDeployment/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/ComputeResource/Types.php';
+
+require_once "AiravataWrapperInterface.php";
+require_once "AiravataUtils.php";
 
 
 class AiravataWrapper implements AiravataWrapperInterface
 {
+    private $airavataclient = AiravataClient;
+    private $authToken = AuthzToken;
+    private $airavataconfig;
+
+    function __construct() {
+        print "In BaseClass constructor\n";
+        $this->airavataconfig = parse_ini_file("airavata-client-properties.ini");
+
+        $transport = new TSocket($this->airavataconfig['AIRAVATA_SERVER'], $this->airavataconfig['AIRAVATA_PORT']);
+        $transport->setRecvTimeout($this->airavataconfig['AIRAVATA_TIMEOUT']);
+        $transport->setSendTimeout($this->airavataconfig['AIRAVATA_TIMEOUT']);
+
+        $protocol = new TBinaryProtocol($transport);
+        $transport->open();
+        $this->airavataclient = new AiravataClient($protocol);
+
+        $this->authToken = new AuthzToken();
+        $this->authToken->accessToken = "";
+    }
 
     /**
      * This function calls Airavata Launch Experiments. Inside the implementation, all the required steps such as
@@ -33,10 +94,14 @@ class AiravataWrapper implements AiravataWrapperInterface
                                         $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
                                         $inputFile, $outputDataDirectory)
     {
-        // TODO: Implement launch_airavata_experiment() method.
-        echo $limsHost, $limsUser, $experimentName, $requestId,
-        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime,
-        $inputFile, $outputDataDirectory;
+
+        $version = $this->airavataclient->getAPIVersion($this->authToken);
+        echo $version .PHP_EOL;
+
+
+        $projectId = fetch_projectid($this->airavataclient, $this->authToken, $gatewayid = $this->airavataconfig['GATEWAY_ID'], $limsUser);
+
+        echo "project id is ", $projectId, PHP_EOL;
 
         $returnArray = [
             "launchStatus" => true,
