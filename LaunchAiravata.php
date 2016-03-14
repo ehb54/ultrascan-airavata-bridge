@@ -23,7 +23,7 @@ class LaunchAiravata implements AiravataWrapper
      * @param string $inputFile - Path of the Input Tar File
      * @param string $outputDataDirectory - Directory path where Airavata should stage back the output tar file.
      *
-     * @return array
+     * @return array - The array will have three values: $launchStatus, $experimentId, $message
      *
      */
     function launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
@@ -31,5 +31,16 @@ class LaunchAiravata implements AiravataWrapper
                                         $inputFile, $outputDataDirectory)
     {
         // TODO: Implement launch_airavata_experiment() method.
+        echo $limsHost, $limsUser, $experimentName, $requestId,
+        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime,
+        $inputFile, $outputDataDirectory;
+
+        $returnArray = [
+            "launchStatus" => true,
+            "experimentId" => "testExpID",
+            "message" => "Experiment Created and Launched as Expected. No errors"
+        ];
+
+        return $returnArray;
     }
 }

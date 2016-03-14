@@ -22,7 +22,7 @@ interface AiravataWrapper
      * @param string $inputFile - Path of the Input Tar File
      * @param string $outputDataDirectory - Directory path where Airavata should stage back the output tar file.
      *
-     * @return array
+     * @return array - The array will have three values: $launchStatus, $experimentId, $message
      *
      */
     function launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
