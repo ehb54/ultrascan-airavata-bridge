@@ -1,6 +1,7 @@
 <?php
 
 use Airavata\Model\Workspace\Project;
+use Airavata\Model\Experiment;
 
 function fetch_projectid($airavataclient, $authToken, $gatewayid, $user)
 {
@@ -34,5 +35,23 @@ function create_project($airavataclient, $authToken, $gatewayid, $user)
         echo 'Project cannot be created, please report to Support';
     }
 }
+
+function create_experiment_object($projectId,$limsHost, $limsUser, $experimentName, $requestId)
+{
+
+    $experiment = new Experiment();
+    $experiment->projectID = $projectId;
+    $experiment->userName = $limsUser;
+    $experiment->gatewayInstanceId = $limsHost;
+    $experiment->gatewayExecutionId = $requestId;
+
+    $experiment->name = $experimentName;
+    $experiment->applicationId = "";
+    $experiment->userConfigurationData = "";
+    $experiment->experimentInputs = "";
+
+    return $experiment;
+}
+
 
 ?>

@@ -50,6 +50,7 @@ require_once "AiravataUtils.php";
 class AiravataWrapper implements AiravataWrapperInterface
 {
     private $airavataclient = AiravataClient;
+    private $transport = TSocket;
     private $authToken = AuthzToken;
     private $airavataconfig;
 
@@ -57,16 +58,21 @@ class AiravataWrapper implements AiravataWrapperInterface
         print "In BaseClass constructor\n";
         $this->airavataconfig = parse_ini_file("airavata-client-properties.ini");
 
-        $transport = new TSocket($this->airavataconfig['AIRAVATA_SERVER'], $this->airavataconfig['AIRAVATA_PORT']);
-        $transport->setRecvTimeout($this->airavataconfig['AIRAVATA_TIMEOUT']);
-        $transport->setSendTimeout($this->airavataconfig['AIRAVATA_TIMEOUT']);
+        $this->transport = new TSocket($this->airavataconfig['AIRAVATA_SERVER'], $this->airavataconfig['AIRAVATA_PORT']);
+        $this->transport->setRecvTimeout($this->airavataconfig['AIRAVATA_TIMEOUT']);
+        $this->transport->setSendTimeout($this->airavataconfig['AIRAVATA_TIMEOUT']);
 
-        $protocol = new TBinaryProtocol($transport);
-        $transport->open();
+        $protocol = new TBinaryProtocol($this->transport);
+        $this->transport->open();
         $this->airavataclient = new AiravataClient($protocol);
 
         $this->authToken = new AuthzToken();
         $this->authToken->accessToken = "";
+    }
+
+    function __destruct() {
+        /** Closes Connection to Airavata Server */
+        $this->transport->close();
     }
 
     /**
@@ -98,10 +104,13 @@ class AiravataWrapper implements AiravataWrapperInterface
         $version = $this->airavataclient->getAPIVersion($this->authToken);
         echo $version .PHP_EOL;
 
-
         $projectId = fetch_projectid($this->airavataclient, $this->authToken, $gatewayid = $this->airavataconfig['GATEWAY_ID'], $limsUser);
 
         echo "project id is ", $projectId, PHP_EOL;
+
+        $experiment = create_experiment_object($projectId,$limsHost, $limsUser, $experimentName, $requestId);
+
+        var_dump($experiment);
 
         $returnArray = [
             "launchStatus" => true,
