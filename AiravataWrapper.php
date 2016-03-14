@@ -2,15 +2,18 @@
 
 namespace SCIGAP;
 
+require_once("AiravataWrapperInterface.php");
 
-interface AiravataWrapper
+
+class AiravataWrapper implements AiravataWrapperInterface
 {
+
     /**
      * This function calls Airavata Launch Experiments. Inside the implementation, all the required steps such as
      *  creating an experiment and then launching is taken care of.
      *
      * @param string $limsHost - Host where LIMS is deployed.
-     * @param string $limsUser - Unique user name of LIMS User.
+     * @param string $limsUser - Unique user name of LIMS User
      * @param string $experimentName - Name of the Experiment - US3-AIRA, US3-ADEV ..
      * @param string $requestId - LIMS Instance concatenated with incremented request ID. Ex: uslims3_CU_Boulder_1974
      * @param string $computeCluster - Host Name of the Compute Cluster. Ex: comet.sdsc.edu
@@ -27,8 +30,20 @@ interface AiravataWrapper
      *
      */
     function launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-                                         $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
-                                         $inputFile, $outputDataDirectory);
+                                        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
+                                        $inputFile, $outputDataDirectory)
+    {
+        // TODO: Implement launch_airavata_experiment() method.
+        echo $limsHost, $limsUser, $experimentName, $requestId,
+        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime,
+        $inputFile, $outputDataDirectory;
 
+        $returnArray = [
+            "launchStatus" => true,
+            "experimentId" => "testExpID",
+            "message" => "Experiment Created and Launched as Expected. No errors"
+        ];
 
+        return $returnArray;
+    }
 }
