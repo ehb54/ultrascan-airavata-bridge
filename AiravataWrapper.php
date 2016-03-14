@@ -53,6 +53,7 @@ class AiravataWrapper implements AiravataWrapperInterface
     private $transport = TSocket;
     private $authToken = AuthzToken;
     private $airavataconfig;
+    private $gatewayId;
 
     function __construct() {
         print "In BaseClass constructor\n";
@@ -68,6 +69,8 @@ class AiravataWrapper implements AiravataWrapperInterface
 
         $this->authToken = new AuthzToken();
         $this->authToken->accessToken = "";
+
+        $this->gatewayId = $this->airavataconfig['GATEWAY_ID'];
     }
 
     function __destruct() {
@@ -104,17 +107,21 @@ class AiravataWrapper implements AiravataWrapperInterface
         $version = $this->airavataclient->getAPIVersion($this->authToken);
         echo $version .PHP_EOL;
 
-        $projectId = fetch_projectid($this->airavataclient, $this->authToken, $gatewayid = $this->airavataconfig['GATEWAY_ID'], $limsUser);
+        $projectId = fetch_projectid($this->airavataclient, $this->authToken, $this->gatewayId, $limsUser);
 
         echo "project id is ", $projectId, PHP_EOL;
 
         $experiment = create_experiment_object($projectId,$limsHost, $limsUser, $experimentName, $requestId);
-
         var_dump($experiment);
+
+        $experimentId = $this->airavataclient->createExperiment($this->authToken,$this->gatewayId,$experiment);
+        echo "experimentId is ", $experimentId;
+
+        $this->airavataclient->launchExperiment($this->authToken,$experimentId,$this->gatewayId);
 
         $returnArray = [
             "launchStatus" => true,
-            "experimentId" => "testExpID",
+            "experimentId" => $experimentId,
             "message" => "Experiment Created and Launched as Expected. No errors"
         ];
 

@@ -39,7 +39,7 @@ function create_project($airavataclient, $authToken, $gatewayid, $user)
 function create_experiment_object($projectId,$limsHost, $limsUser, $experimentName, $requestId)
 {
 
-    $experiment = new Experiment();
+    $experiment = new Experiment\ExperimentModel();
     $experiment->projectID = $projectId;
     $experiment->userName = $limsUser;
     $experiment->gatewayInstanceId = $limsHost;
