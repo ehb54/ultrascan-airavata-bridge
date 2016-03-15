@@ -14,11 +14,11 @@ $computeCluster = "ls5.tacc.utexas.edu";
 //$computeCluster = "jureca.fz-juelich.de";
 $queue = "normal";
 $cores = 24;
-$nodes = 8;
-$mGroupCount = 8;
-$wallTime = 2160;
+$nodes = 1;
+$mGroupCount = 1;
+$wallTime = 120;
 $clusterUserName = null;
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/test_airavata_wrapper/hpcinput-localhost-uslims3_CU_Boulder-01987.tar";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/test_airavata_wrapper/hpcinput-localhost-uslims3_CAUMA-19310.tar";
 $outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test_airavata_wrapper";
 
 $launchResult = $launchAiravata->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,

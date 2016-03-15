@@ -120,6 +120,7 @@ function create_experiment_model($airavataclient, $authToken,
     $experimentModel->gatewayInstanceId = $limsHost;
     $experimentModel->userConfigurationData = $userConfigs;
     $experimentModel->experimentInputs = $applicationInputs;
+    $experimentModel->experimentOutputs = $airavataclient->getApplicationOutputs($authToken, $applicationInterfaceId);
 
     return $experimentModel;
 }
