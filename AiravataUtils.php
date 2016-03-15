@@ -47,7 +47,6 @@ function create_experiment_model($airavataclient, $authToken,
     } else {
         $applicationInterfaceId = $airavataconfig['US3_APP_JURECA'];
     }
-    echo "app id is ", $applicationInterfaceId, PHP_EOL;
 
     $applicationInputs = $airavataclient->getApplicationInputs($authToken, $applicationInterfaceId);
     foreach ($applicationInputs as $applicationInput) {
@@ -67,32 +66,42 @@ function create_experiment_model($airavataclient, $authToken,
     }
 
     $computeResourceId = null;
-    if (($computeCluster == "alamo") || ($computeCluster == "alamo.uthscsa.edu")) {
-        $computeResourceId = $airavataconfig['ALAMO_COMPUTE_ID'];
-    } elseif (($computeCluster == "comet") || ($computeCluster == "comet.sdsc.edu") || ($computeCluster == "comet.sdsc.xsede.org")) {
-        $computeResourceId = $airavataconfig['COMET_COMPUTE_ID'];
-    } elseif (($computeCluster == "gordon") || ($computeCluster == "gordon.sdsc.edu") || ($computeCluster == "gordon.sdsc.xsede.org")) {
-        $computeResourceId = $airavataconfig['GORDON_COMPUTE_ID'];
-    } elseif (($computeCluster == "lonestar5") || ($computeCluster == "ls5.tacc.utexas.edu")) {
-        $computeResourceId = $airavataconfig['LONESTAR5_COMPUTE_ID'];
-    } elseif (($computeCluster == "stampede") || ($computeCluster == "stampede.tacc.utexas.edu") || ($computeCluster == "stampede.tacc.xsede.org")) {
-        $computeResourceId = $airavataconfig['STAMPEDE_COMPUTE_ID'];
-    } elseif (($computeCluster == "jureca") || ($computeCluster == "jureca.fz-juelich.de")) {
-        $computeResourceId = $airavataconfig['JURECA_COMPUTE_ID'];
+    switch ($computeCluster) {
+        case "alamo.uthscsa.edu":
+            $computeResourceId = $airavataconfig['ALAMO_COMPUTE_ID'];
+            break;
+        case "comet.sdsc.xsede.org":
+            $computeResourceId = $airavataconfig['COMET_COMPUTE_ID'];
+            break;
+        case "gordon.sdsc.xsede.org":
+            $computeResourceId = $airavataconfig['GORDON_COMPUTE_ID'];
+            break;
+        case "ls5.tacc.utexas.edu":
+            $computeResourceId = $airavataconfig['LONESTAR5_COMPUTE_ID'];
+            break;
+        case "stampede.tacc.xsede.org":
+            $computeResourceId = $airavataconfig['STAMPEDE_COMPUTE_ID'];
+            break;
+        case "jureca.fz-juelich.de":
+            $computeResourceId = $airavataconfig['JURECA_COMPUTE_ID'];
+            break;
     }
-    echo "compute host id is ", $computeResourceId, PHP_EOL;
 
     $storageResourceId = null;
-    if ($limsHost == "uslims3.uthscsa.edu") {
-        $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
-    } elseif ($limsHost == "uslims3.mbu.iisc.ernet.in") {
-        $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
-    } elseif ($limsHost == "uslims3.latrobe.edu.au") {
-        $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
-    } elseif ($limsHost == "uslims3.fz-juelich.de") {
-        $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
+    switch ($limsHost) {
+        case "uslims3.uthscsa.edu":
+            $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
+            break;
+        case "uslims3.mbu.iisc.ernet.in":
+            $storageResourceId = $airavataconfig['USLIMS3_IISC_STORAGE_ID'];
+            break;
+        case "uslims3.latrobe.edu.au":
+            $storageResourceId = $airavataconfig['USLIMS3_LATROBE_STORAGE_ID'];
+            break;
+        case "uslims3.fz-juelich.de":
+            $storageResourceId = $airavataconfig['USLIMS3_JUELICH_STORAGE_ID'];
+            break;
     }
-    echo "storage host id is ", $storageResourceId, PHP_EOL;
 
     $scheduling = new ComputationalResourceSchedulingModel();
     $scheduling->resourceHostId = $computeResourceId;

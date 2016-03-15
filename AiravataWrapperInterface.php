@@ -30,5 +30,34 @@ interface AiravataWrapperInterface
                                          $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
                                          $inputFile, $outputDataDirectory);
 
+    /**
+     * This function calls fetches Airavata Experiment Status.
+     *
+     * @param string $experimentId - Id of the Experiment.
+     *
+     * @return string - Status of the experiment.
+     *
+     */
+    function get_experiment_status($experimentId);
+
+    /**
+     * This function calls fetches errors from an Airavata Experiment.
+     *
+     * @param string $experimentId - Id of the Experiment.
+     *
+     * @return array - The array will have any errors if recorded.
+     *
+     */
+    function get_experiment_errors($experimentId);
+
+    /**
+     * This function calls terminates previously launched Airavata Experiment.
+     *
+     * @param string $experimentId - Id of the Experiment to be terminated.
+     *
+     * @return array - The array will have two values: $cancelStatus, $message
+     *
+     */
+    function terminate_airavata_experiment($experimentId);
 
 }

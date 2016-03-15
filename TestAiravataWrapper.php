@@ -10,28 +10,48 @@ $limsHost = "uslims3.uthscsa.edu";
 $limsUser = "smarru";
 $experimentName = "US3-Test";
 $requestId = "uslims3_cauma3d_989";
-$computeCluster = "ls5.tacc.utexas.edu";
-//$computeCluster = "jureca.fz-juelich.de";
+
+//$computeCluster = "ls5.tacc.utexas.edu";
+//$queue = "normal";
+
+//$computeCluster = "alamo.uthscsa.edu";
+//$queue = "batch";
+
+//$computeCluster = "comet.sdsc.xsede.org";
+//$queue = "compute";
+//
+//$computeCluster = "gordon.sdsc.xsede.org";
+//$queue = "normal";
+//
+$computeCluster = "stampede.tacc.xsede.org";
 $queue = "normal";
-$cores = 24;
+
+$cores = 16;
 $nodes = 1;
 $mGroupCount = 1;
 $wallTime = 120;
 $clusterUserName = null;
 $inputFile = "/srv/www/htdocs/uslims3/uslims3_data/test_airavata_wrapper/hpcinput-localhost-uslims3_CAUMA-19310.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test_airavata_wrapper";
+$outputDataDirectory = "test_airavata_wrapper";
 
-$launchResult = $launchAiravata->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-                                                            $computeCluster, $queue, $cores, $nodes, $mGroupCount,
-                                                            $wallTime, $clusterUserName,
-                                                            $inputFile, $outputDataDirectory);
-
-var_dump($launchResult);
-
-//if ($launchResult->$launchStatus) {
-//    $experimentId = $launchResult->experimentId;
+//$launchResult = $launchAiravata->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
+//                                                            $computeCluster, $queue, $cores, $nodes, $mGroupCount,
+//                                                            $wallTime, $clusterUserName,
+//                                                            $inputFile, $outputDataDirectory);
+//
+//var_dump($launchResult);
+//
+//if ( $launchResult[ 'launchStatus' ] ) {
+//    $expID = $launchResult[ 'experimentId' ];
+//    echo "Experiment created" . $expID . PHP_EOL;
 //} else {
-//    $launchResult->message;
+//    echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
 //}
 
+//$launchAiravata->terminate_airavata_experiment("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
 
+//$experimentError = $launchAiravata->get_experiment_errors("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
+//var_dump($experimentError);
+
+$experimentState = $launchAiravata->get_experiment_status("US3-Test_d637a9b3-e526-4390-bd06-936685f3f593");
+var_dump($experimentState);

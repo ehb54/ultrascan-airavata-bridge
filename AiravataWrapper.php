@@ -2,18 +2,21 @@
 
 namespace SCIGAP;
 
-$filepath = realpath (dirname(__FILE__));
-$GLOBALS['THRIFT_ROOT'] = $filepath. '/lib/Thrift/';
-$GLOBALS['AIRAVATA_ROOT'] = $filepath. '/lib/Airavata/';
+$filepath = realpath(dirname(__FILE__));
+$GLOBALS['THRIFT_ROOT'] = $filepath . '/lib/Thrift/';
+$GLOBALS['AIRAVATA_ROOT'] = $filepath . '/lib/Airavata/';
 
 require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TSocket.php';
 use Thrift\Transport\TSocket;
+
 require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TProtocol.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TBinaryProtocol.php';
 use Thrift\Protocol\TBinaryProtocol;
+
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TException.php';
 use Thrift\Exception\TException;
+
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TApplicationException.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TProtocolException.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TTransportException.php';
@@ -41,6 +44,10 @@ use Airavata\Model\Security\AuthzToken;
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Workspace/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Experiment/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Scheduling/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Status/Types.php';
+use Airavata\Model\Status\ExperimentState;
+use Airavata\Model\Status\JobState;
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Commons/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/AppInterface/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Application/Io/Types.php';
 
@@ -56,7 +63,8 @@ class AiravataWrapper implements AiravataWrapperInterface
     private $airavataconfig;
     private $gatewayId;
 
-    function __construct() {
+    function __construct()
+    {
         print "In AiravataWrapper Constructor\n";
         $this->airavataconfig = parse_ini_file("airavata-client-properties.ini");
 
@@ -74,7 +82,8 @@ class AiravataWrapper implements AiravataWrapperInterface
         $this->gatewayId = $this->airavataconfig['GATEWAY_ID'];
     }
 
-    function __destruct() {
+    function __destruct()
+    {
         /** Closes Connection to Airavata Server */
         $this->transport->close();
     }
@@ -104,23 +113,19 @@ class AiravataWrapper implements AiravataWrapperInterface
                                         $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
                                         $inputFile, $outputDataDirectory)
     {
-
-        $version = $this->airavataclient->getAPIVersion($this->authToken);
-        echo $version .PHP_EOL;
+        /** Test Airavata API Connection */
+//        $version = $this->airavataclient->getAPIVersion($this->authToken);
+//        echo $version .PHP_EOL;
 
         $projectId = fetch_projectid($this->airavataclient, $this->authToken, $this->gatewayId, $limsUser);
 
-        echo "project id is ", $projectId, PHP_EOL;
-
         $experimentModel = create_experiment_model($this->airavataclient, $this->authToken, $this->airavataconfig, $this->gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
-                                                    $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
-                                                    $inputFile, $outputDataDirectory);
-        var_dump($experimentModel);
+            $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
+            $inputFile, $outputDataDirectory);
 
-        $experimentId = $this->airavataclient->createExperiment($this->authToken,$this->gatewayId,$experimentModel);
-        echo "experimentId is ", $experimentId;
+        $experimentId = $this->airavataclient->createExperiment($this->authToken, $this->gatewayId, $experimentModel);
 
-        $this->airavataclient->launchExperiment($this->authToken,$experimentId,$this->gatewayId);
+        $this->airavataclient->launchExperiment($this->authToken, $experimentId, $this->gatewayId);
 
         $returnArray = [
             "launchStatus" => true,
@@ -130,4 +135,77 @@ class AiravataWrapper implements AiravataWrapperInterface
 
         return $returnArray;
     }
+
+    /**
+     * This function calls fetches Airavata Experiment Status.
+     *
+     * @param string $experimentId - Id of the Experiment.
+     *
+     * @return string - Status of the experiment.
+     *
+     */
+    function get_experiment_status($experimentId)
+    {
+
+        $experimentStatus = $this->airavataclient->getExperimentStatus($this->authToken, $experimentId);
+        $experimentState = ExperimentState::$__names[$experimentStatus->experimentState];
+
+        switch ($experimentState)
+        {
+            case 'EXECUTING':
+                $jobStatus = $this->airavataclient->getJobStatuses($experimentId);
+                $jobName = array_keys($jobStatus);
+                $jobState = JobState::$__names[$jobStatus[$jobName[0]]->jobState];
+                if ( $jobState == 'QUEUED'  ||  $jobState == 'ACTIVE' )
+                    $experimentState  = $jobState;
+                break;
+            case 'COMPLETED':
+                $jobStatus = $this->airavataclient->getJobStatuses($experimentId);
+                $jobName = array_keys($jobStatus);
+                $jobState = JobState::$__names[$jobStatus[$jobName[0]]->jobState];
+                if ( $jobState == 'COMPLETED'  ||  $jobState == 'FAILED' )
+                    $experimentState    = $jobState;
+                break;
+            case '':
+            case 'UNKNOWN':
+                break;
+            default:
+                break;
+        }
+        return $experimentState;
+    }
+
+    /**
+     * This function calls fetches errors from an Airavata Experiment.
+     *
+     * @param string $experimentId - Id of the Experiment.
+     *
+     * @return array - The array will have any errors if recorded.
+     *
+     */
+    function get_experiment_errors($experimentId)
+    {
+        $experimentModel = $this->airavataclient->getExperiment($this->authToken, $experimentId);
+        $experimentErrors = $experimentModel->errors;
+        if ($experimentErrors != null) {
+            foreach ($experimentErrors as $experimentError) {
+                $actualError = $experimentError->actualErrorMessage;
+                return $actualError;
+            }
+        }
+    }
+
+    /**
+     * This function calls terminates previously launched Airavata Experiment.
+     *
+     * @param string $experimentId - Id of the Experiment to be terminated.
+     *
+     * @return array - The array will have two values: $cancelStatus, $message
+     *
+     */
+    function terminate_airavata_experiment($experimentId)
+    {
+        $this->airavataclient->terminateExperiment($this->authToken, $experimentId, $this->gatewayId);
+    }
+
 }
