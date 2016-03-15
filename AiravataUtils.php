@@ -101,7 +101,7 @@ function create_experiment_model($airavataclient, $authToken,
         case "uslims3.fz-juelich.de":
             $storageResourceId = $airavataconfig['USLIMS3_JUELICH_STORAGE_ID'];
             break;
-        case "":
+        case "gw143.iu.xsede.org":
             $storageResourceId = $airavataconfig['USLIMS3_GW143_STORAGE_ID'];
             break;
     }
