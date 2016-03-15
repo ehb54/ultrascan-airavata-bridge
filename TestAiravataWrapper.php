@@ -11,8 +11,8 @@ $limsUser = "smarru";
 $experimentName = "US3-Test";
 $requestId = "uslims3_cauma3d_989";
 
-//$computeCluster = "ls5.tacc.utexas.edu";
-//$queue = "normal";
+$computeCluster = "ls5.tacc.utexas.edu";
+$queue = "normal";
 
 //$computeCluster = "alamo.uthscsa.edu";
 //$queue = "batch";
@@ -34,19 +34,19 @@ $clusterUserName = null;
 $inputFile = "/srv/www/htdocs/uslims3/uslims3_data/test_airavata_wrapper/hpcinput-localhost-uslims3_CAUMA-19310.tar";
 $outputDataDirectory = "test_airavata_wrapper";
 
-//$launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-//                                                            $computeCluster, $queue, $cores, $nodes, $mGroupCount,
-//                                                            $wallTime, $clusterUserName,
-//                                                            $inputFile, $outputDataDirectory);
-//
-//var_dump($launchResult);
-//
-//if ( $launchResult[ 'launchStatus' ] ) {
-//    $expID = $launchResult[ 'experimentId' ];
-//    echo "Experiment created" . $expID . PHP_EOL;
-//} else {
-//    echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
-//}
+$launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
+                                                            $computeCluster, $queue, $cores, $nodes, $mGroupCount,
+                                                            $wallTime, $clusterUserName,
+                                                            $inputFile, $outputDataDirectory);
+
+var_dump($launchResult);
+
+if ( $launchResult[ 'launchStatus' ] ) {
+    $expID = $launchResult[ 'experimentId' ];
+    echo "Experiment created" . $expID . PHP_EOL;
+} else {
+    echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
+}
 
 //$cancelResult = $airavataWrapper->terminate_airavata_experiment("US3-Test_7f7b4e10-a32e-4fb8-a1b2-2cfa6632c194");
 //
