@@ -2,8 +2,9 @@
 
 namespace SCIGAP;
 
-$GLOBALS['THRIFT_ROOT'] = 'lib/Thrift/';
-$GLOBALS['AIRAVATA_ROOT'] = 'lib/Airavata/';
+$filepath = realpath (dirname(__FILE__));
+$GLOBALS['THRIFT_ROOT'] = $filepath. '/lib/Thrift/';
+$GLOBALS['AIRAVATA_ROOT'] = $filepath. '/lib/Airavata/';
 
 require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TSocket.php';
@@ -39,9 +40,9 @@ use Airavata\Model\Security\AuthzToken;
 
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Workspace/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Experiment/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Scheduling/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/AppInterface/Types.php';
-require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/AppDeployment/Types.php';
-require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/ComputeResource/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Application/Io/Types.php';
 
 require_once "AiravataWrapperInterface.php";
 require_once "AiravataUtils.php";
@@ -56,7 +57,7 @@ class AiravataWrapper implements AiravataWrapperInterface
     private $gatewayId;
 
     function __construct() {
-        print "In BaseClass constructor\n";
+        print "In AiravataWrapper Constructor\n";
         $this->airavataconfig = parse_ini_file("airavata-client-properties.ini");
 
         $this->transport = new TSocket($this->airavataconfig['AIRAVATA_SERVER'], $this->airavataconfig['AIRAVATA_PORT']);
@@ -111,10 +112,12 @@ class AiravataWrapper implements AiravataWrapperInterface
 
         echo "project id is ", $projectId, PHP_EOL;
 
-        $experiment = create_experiment_object($projectId,$limsHost, $limsUser, $experimentName, $requestId);
-        var_dump($experiment);
+        $experimentModel = create_experiment_model($this->airavataclient, $this->authToken, $this->airavataconfig, $this->gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
+                                                    $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
+                                                    $inputFile, $outputDataDirectory);
+        var_dump($experimentModel);
 
-        $experimentId = $this->airavataclient->createExperiment($this->authToken,$this->gatewayId,$experiment);
+        $experimentId = $this->airavataclient->createExperiment($this->authToken,$this->gatewayId,$experimentModel);
         echo "experimentId is ", $experimentId;
 
         $this->airavataclient->launchExperiment($this->authToken,$experimentId,$this->gatewayId);
