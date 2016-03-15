@@ -4,7 +4,7 @@ require_once "AiravataWrapper.php";
 
 use SCIGAP\AiravataWrapper;
 
-$launchAiravata = new AiravataWrapper();
+$airavataWrapper = new AiravataWrapper();
 
 $limsHost = "uslims3.uthscsa.edu";
 $limsUser = "smarru";
@@ -34,7 +34,7 @@ $clusterUserName = null;
 $inputFile = "/srv/www/htdocs/uslims3/uslims3_data/test_airavata_wrapper/hpcinput-localhost-uslims3_CAUMA-19310.tar";
 $outputDataDirectory = "test_airavata_wrapper";
 
-//$launchResult = $launchAiravata->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
+//$launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
 //                                                            $computeCluster, $queue, $cores, $nodes, $mGroupCount,
 //                                                            $wallTime, $clusterUserName,
 //                                                            $inputFile, $outputDataDirectory);
@@ -48,10 +48,18 @@ $outputDataDirectory = "test_airavata_wrapper";
 //    echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
 //}
 
-//$launchAiravata->terminate_airavata_experiment("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
+//$cancelResult = $airavataWrapper->terminate_airavata_experiment("US3-Test_7f7b4e10-a32e-4fb8-a1b2-2cfa6632c194");
+//
+//if ($cancelResult['terminateStatus']) {
+//    echo "Experiment successfully cancelled";
+//    return true;
+//} else {
+//    echo "Experiment Termination Failed: " . $cancelResult['message'] . PHP_EOL;
+//    return false;
+//}
 
-//$experimentError = $launchAiravata->get_experiment_errors("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
+//$airavataWrapper = $airavataWrapper->get_experiment_errors("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
 //var_dump($experimentError);
 
-$experimentState = $launchAiravata->get_experiment_status("US3-Test_d637a9b3-e526-4390-bd06-936685f3f593");
+$experimentState = $airavataWrapper->get_experiment_status("US3-Test_d637a9b3-e526-4390-bd06-936685f3f593");
 var_dump($experimentState);

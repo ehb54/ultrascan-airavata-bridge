@@ -8,15 +8,9 @@ $GLOBALS['AIRAVATA_ROOT'] = $filepath . '/lib/Airavata/';
 
 require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TSocket.php';
-use Thrift\Transport\TSocket;
-
 require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TProtocol.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TBinaryProtocol.php';
-use Thrift\Protocol\TBinaryProtocol;
-
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TException.php';
-use Thrift\Exception\TException;
-
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TApplicationException.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TProtocolException.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TTransportException.php';
@@ -30,23 +24,12 @@ require_once $GLOBALS['THRIFT_ROOT'] . 'Type/TConstant.php';
 
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Airavata.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Types.php';
-use Airavata\API\AiravataClient;
-
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Error/Types.php';
-use Airavata\API\Error\InvalidRequestException;
-use Airavata\API\Error\AiravataClientException;
-use Airavata\API\Error\AiravataSystemException;
-use Airavata\API\Error\ExperimentNotFoundException;
-
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Security/Types.php';
-use Airavata\Model\Security\AuthzToken;
-
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Workspace/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Experiment/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Scheduling/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Status/Types.php';
-use Airavata\Model\Status\ExperimentState;
-use Airavata\Model\Status\JobState;
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Commons/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/AppInterface/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Application/Io/Types.php';
@@ -54,18 +37,28 @@ require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Application/Io/Types.php';
 require_once "AiravataWrapperInterface.php";
 require_once "AiravataUtils.php";
 
+use Thrift\Transport\TSocket;
+use Thrift\Protocol\TBinaryProtocol;
+use Thrift\Exception\TException;
+use Airavata\API\AiravataClient;
+use Airavata\Model\Security\AuthzToken;
+use Airavata\Model\Status\ExperimentState;
+use Airavata\Model\Status\JobState;
+use Airavata\API\Error\InvalidRequestException;
+use Airavata\API\Error\AiravataClientException;
+use Airavata\API\Error\AiravataSystemException;
+use Airavata\API\Error\ExperimentNotFoundException;
 
 class AiravataWrapper implements AiravataWrapperInterface
 {
-    private $airavataclient = AiravataClient;
-    private $transport = TSocket;
-    private $authToken = AuthzToken;
+    private $airavataclient;
+    private $transport;
+    private $authToken;
     private $airavataconfig;
     private $gatewayId;
 
     function __construct()
     {
-        print "In AiravataWrapper Constructor\n";
         $this->airavataconfig = parse_ini_file("airavata-client-properties.ini");
 
         $this->transport = new TSocket($this->airavataconfig['AIRAVATA_SERVER'], $this->airavataconfig['AIRAVATA_PORT']);
@@ -148,21 +141,21 @@ class AiravataWrapper implements AiravataWrapperInterface
     {
 
         $experimentStatus = $this->airavataclient->getExperimentStatus($this->authToken, $experimentId);
-        $experimentState = ExperimentState::$__names[$experimentStatus->experimentState];
+        $experimentState = ExperimentState::$__names[$experimentStatus->state];
 
         switch ($experimentState)
         {
             case 'EXECUTING':
-                $jobStatus = $this->airavataclient->getJobStatuses($experimentId);
-                $jobName = array_keys($jobStatus);
-                $jobState = JobState::$__names[$jobStatus[$jobName[0]]->jobState];
+                $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
+                $jobNames = array_keys($jobStatuses);
+                $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
                 if ( $jobState == 'QUEUED'  ||  $jobState == 'ACTIVE' )
                     $experimentState  = $jobState;
                 break;
             case 'COMPLETED':
-                $jobStatus = $this->airavataclient->getJobStatuses($experimentId);
-                $jobName = array_keys($jobStatus);
-                $jobState = JobState::$__names[$jobStatus[$jobName[0]]->jobState];
+                $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
+                $jobNames = array_keys($jobStatuses);
+                $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
                 if ( $jobState == 'COMPLETED'  ||  $jobState == 'FAILED' )
                     $experimentState    = $jobState;
                 break;
@@ -206,6 +199,13 @@ class AiravataWrapper implements AiravataWrapperInterface
     function terminate_airavata_experiment($experimentId)
     {
         $this->airavataclient->terminateExperiment($this->authToken, $experimentId, $this->gatewayId);
+
+        $returnArray = [
+            "terminateStatus" => true,
+            "message" => "Experiment Created and Launched as Expected. No errors"
+        ];
+
+        return $returnArray;
     }
 
 }
