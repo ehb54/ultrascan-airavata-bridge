@@ -200,10 +200,10 @@ class AiravataWrapper implements AiravataWrapperInterface
     {
         $this->airavataclient->terminateExperiment($this->authToken, $experimentId, $this->gatewayId);
 
-        $returnArray = [
+        $returnArray = array(
             "terminateStatus" => true,
             "message" => "Experiment Created and Launched as Expected. No errors"
-        ];
+        );
 
         return $returnArray;
     }
