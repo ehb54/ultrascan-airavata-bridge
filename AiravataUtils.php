@@ -54,7 +54,8 @@ function create_experiment_model($airavataclient, $authToken,
         $applicationInputName = $applicationInput->name;
         switch ($applicationInputName) {
             case "Input_Tar_File":
-                $applicationInput->value = $inputFile;
+                $inputFilePath = "file://scigap@$limsHost:" . $inputFile;
+                $applicationInput->value = $inputFilePath;
                 break;
             case "Wall_Time":
                 $applicationInput->value = "-walltime=" . $wallTime;
@@ -84,11 +85,11 @@ function create_experiment_model($airavataclient, $authToken,
     $storageResourceId = null;
     if ($limsHost == "uslims3.uthscsa.edu") {
         $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
-    } elseif ($limsHost == "uslims3.uthscsa.edu") {
+    } elseif ($limsHost == "uslims3.mbu.iisc.ernet.in") {
         $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
-    } elseif ($limsHost == "uslims3.uthscsa.edu") {
+    } elseif ($limsHost == "uslims3.latrobe.edu.au") {
         $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
-    } elseif ($limsHost == "uslims3.uthscsa.edu") {
+    } elseif ($limsHost == "uslims3.fz-juelich.de") {
         $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
     }
     echo "storage host id is ", $storageResourceId, PHP_EOL;
