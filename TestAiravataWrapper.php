@@ -58,8 +58,10 @@ $outputDataDirectory = "test_airavata_wrapper";
 //    return false;
 //}
 
-//$airavataWrapper = $airavataWrapper->get_experiment_errors("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
+//$experimentError = $airavataWrapper->get_experiment_errors("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
 //var_dump($experimentError);
 
-$experimentState = $airavataWrapper->get_experiment_status("US3-Test_d637a9b3-e526-4390-bd06-936685f3f593");
-var_dump($experimentState);
+//$experimentState = $airavataWrapper->get_experiment_status("US3-Test_d637a9b3-e526-4390-bd06-936685f3f593");
+//var_dump($experimentState);
+
+echo gethostname();

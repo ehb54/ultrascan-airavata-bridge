@@ -120,11 +120,11 @@ class AiravataWrapper implements AiravataWrapperInterface
 
         $this->airavataclient->launchExperiment($this->authToken, $experimentId, $this->gatewayId);
 
-        $returnArray = [
+        $returnArray = array(
             "launchStatus" => true,
             "experimentId" => $experimentId,
             "message" => "Experiment Created and Launched as Expected. No errors"
-        ];
+        );
 
         return $returnArray;
     }
