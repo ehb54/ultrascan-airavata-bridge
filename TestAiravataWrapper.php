@@ -23,23 +23,23 @@ $queue = "normal";
 //$computeCluster = "gordon.sdsc.xsede.org";
 //$queue = "normal";
 //
-$computeCluster = "stampede.tacc.xsede.org";
-$queue = "normal";
+//$computeCluster = "stampede.tacc.xsede.org";
+//$queue = "normal";
 
 $cores = 16;
 $nodes = 1;
 $mGroupCount = 1;
 $wallTime = 120;
 $clusterUserName = null;
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/test_airavata_wrapper/hpcinput-localhost-uslims3_CAUMA-19310.tar";
-$outputDataDirectory = "test_airavata_wrapper";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/1ff7ba30-9f4a-8284-2de5-eca31483d8b8/hpcinput-localhost-uslims3_cauma3-04626.tar";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/1ff7ba30-9f4a-8284-2de5-eca31483d8b8";
 
 $launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
                                                             $computeCluster, $queue, $cores, $nodes, $mGroupCount,
                                                             $wallTime, $clusterUserName,
                                                             $inputFile, $outputDataDirectory);
 
-var_dump($launchResult);
+//var_dump($launchResult);
 
 if ( $launchResult[ 'launchStatus' ] ) {
     $expID = $launchResult[ 'experimentId' ];
