@@ -34,7 +34,9 @@ $clusterUserName = null;
 $inputFile = "/srv/www/htdocs/uslims3/uslims3_data/1ff7ba30-9f4a-8284-2de5-eca31483d8b8/hpcinput-localhost-uslims3_cauma3-04626.tar";
 $outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/1ff7ba30-9f4a-8284-2de5-eca31483d8b8";
 
-$launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
+for ($x = 0; $x <= 0; $x++) {
+
+    $launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
                                                             $computeCluster, $queue, $cores, $nodes, $mGroupCount,
                                                             $wallTime, $clusterUserName,
                                                             $inputFile, $outputDataDirectory);
@@ -46,6 +48,8 @@ if ( $launchResult[ 'launchStatus' ] ) {
     echo "Experiment created" . $expID . PHP_EOL;
 } else {
     echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
+}
+
 }
 
 //$cancelResult = $airavataWrapper->terminate_airavata_experiment("US3-Test_7f7b4e10-a32e-4fb8-a1b2-2cfa6632c194");
