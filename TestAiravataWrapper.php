@@ -11,14 +11,14 @@ $limsUser = "smarru";
 $experimentName = "US3-Test";
 $requestId = "uslims3_cauma3d_989";
 
-//$computeCluster = "ls5.tacc.utexas.edu";
-//$queue = "normal";
+$computeCluster = "ls5.tacc.utexas.edu";
+$queue = "normal";
 
 //$computeCluster = "alamo.uthscsa.edu";
 //$queue = "batch";
 
-$computeCluster = "comet.sdsc.xsede.org";
-$queue = "compute";
+//$computeCluster = "comet.sdsc.xsede.org";
+//$queue = "compute";
 //
 //$computeCluster = "gordon.sdsc.xsede.org";
 //$queue = "normal";
@@ -66,9 +66,9 @@ if ( $launchResult[ 'launchStatus' ] ) {
 //$experimentError = $airavataWrapper->get_experiment_errors("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
 //var_dump($experimentError);
 
-while (true) {
-    $experimentState = $airavataWrapper->get_experiment_status($expID);
-    var_dump($experimentState);
-}
+//while (true) {
+//    $experimentState = $airavataWrapper->get_experiment_status($expID);
+//    var_dump($experimentState);
+//}
 
 echo gethostname();
