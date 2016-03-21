@@ -6,19 +6,19 @@ use SCIGAP\AiravataWrapper;
 
 $airavataWrapper = new AiravataWrapper();
 
-$limsHost = "uslims3.uthscsa.edu";
+$limsHost = "gw54.iu.xsede.org";
 $limsUser = "smarru";
 $experimentName = "US3-Test";
 $requestId = "uslims3_cauma3d_989";
 
-$computeCluster = "ls5.tacc.utexas.edu";
-$queue = "normal";
+//$computeCluster = "ls5.tacc.utexas.edu";
+//$queue = "normal";
 
 //$computeCluster = "alamo.uthscsa.edu";
 //$queue = "batch";
 
-//$computeCluster = "comet.sdsc.xsede.org";
-//$queue = "compute";
+$computeCluster = "comet.sdsc.xsede.org";
+$queue = "compute";
 //
 //$computeCluster = "gordon.sdsc.xsede.org";
 //$queue = "normal";
@@ -31,10 +31,10 @@ $nodes = 1;
 $mGroupCount = 1;
 $wallTime = 120;
 $clusterUserName = null;
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/1ff7ba30-9f4a-8284-2de5-eca31483d8b8/hpcinput-localhost-uslims3_cauma3-04626.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/1ff7ba30-9f4a-8284-2de5-eca31483d8b8";
+$inputFile = "/home/pga/portals/gateway-user-data/ultrascan-testing/smarru/691e9a10a99350f7ca2379ad3733955a/hpcinput-localhost-uslims3_CU_Boulder-01828.tar";
+$outputDataDirectory = "/home/pga/portals/gateway-user-data/ultrascan-testing/smarru/691e9a10a99350f7ca2379ad3733955a";
 
-for ($x = 0; $x <= 0; $x++) {
+//for ($x = 0; $x <= 0; $x++) {
 
     $launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
                                                             $computeCluster, $queue, $cores, $nodes, $mGroupCount,
@@ -43,6 +43,7 @@ for ($x = 0; $x <= 0; $x++) {
 
 //var_dump($launchResult);
 
+$expID = 0;
 if ( $launchResult[ 'launchStatus' ] ) {
     $expID = $launchResult[ 'experimentId' ];
     echo "Experiment created" . $expID . PHP_EOL;
@@ -50,7 +51,7 @@ if ( $launchResult[ 'launchStatus' ] ) {
     echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
 }
 
-}
+//}
 
 //$cancelResult = $airavataWrapper->terminate_airavata_experiment("US3-Test_7f7b4e10-a32e-4fb8-a1b2-2cfa6632c194");
 //
@@ -65,7 +66,9 @@ if ( $launchResult[ 'launchStatus' ] ) {
 //$experimentError = $airavataWrapper->get_experiment_errors("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
 //var_dump($experimentError);
 
-//$experimentState = $airavataWrapper->get_experiment_status("US3-Test_d637a9b3-e526-4390-bd06-936685f3f593");
-//var_dump($experimentState);
+while (true) {
+    $experimentState = $airavataWrapper->get_experiment_status($expID);
+    var_dump($experimentState);
+}
 
 echo gethostname();

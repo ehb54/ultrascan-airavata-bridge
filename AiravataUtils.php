@@ -104,6 +104,9 @@ function create_experiment_model($airavataclient, $authToken,
         case "gw143.iu.xsede.org":
             $storageResourceId = $airavataconfig['USLIMS3_GW143_STORAGE_ID'];
             break;
+        case "gw54.iu.xsede.org":
+            $storageResourceId = $airavataconfig['USLIMS3_GW54_STORAGE_ID'];
+            break;
     }
 
     $scheduling = new ComputationalResourceSchedulingModel();
