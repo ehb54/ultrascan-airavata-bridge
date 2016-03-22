@@ -147,7 +147,7 @@ class AiravataWrapper implements AiravataWrapperInterface
         {
             case 'EXECUTING':
                 $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
-                if (is_object($jobStatuses)) {
+                if (isset($jobStatuses) && count($jobStatuses)>0) {
                     $jobNames = array_keys($jobStatuses);
                     $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
                     if ( $jobState == 'QUEUED'  ||  $jobState == 'ACTIVE' )
@@ -156,10 +156,10 @@ class AiravataWrapper implements AiravataWrapperInterface
                 break;
             case 'COMPLETED':
                 $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
-                if (is_object($jobStatuses)) {
+                if (isset($jobStatuses) && count($jobStatuses)>0) {
                     $jobNames = array_keys($jobStatuses);
                     $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
-                    if ( $jobState == 'COMPLETED'  ||  $jobState == 'FAILED' )
+                    if ( $jobState == 'COMPLETE'  ||  $jobState == 'FAILED' )
                         $experimentState    = $jobState;
                 }
                 break;

@@ -11,14 +11,14 @@ $limsUser = "smarru";
 $experimentName = "US3-Test";
 $requestId = "uslims3_cauma3d_989";
 
-$computeCluster = "ls5.tacc.utexas.edu";
-$queue = "normal";
+//$computeCluster = "ls5.tacc.utexas.edu";
+//$queue = "normal";
 
 //$computeCluster = "alamo.uthscsa.edu";
 //$queue = "batch";
 
-//$computeCluster = "comet.sdsc.xsede.org";
-//$queue = "compute";
+$computeCluster = "comet.sdsc.xsede.org";
+$queue = "compute";
 //
 //$computeCluster = "gordon.sdsc.xsede.org";
 //$queue = "normal";
