@@ -159,7 +159,7 @@ class AiravataWrapper implements AiravataWrapperInterface
                 if (isset($jobStatuses) && count($jobStatuses)>0) {
                     $jobNames = array_keys($jobStatuses);
                     $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
-                    if ( $jobState == 'COMPLETE'  ||  $jobState == 'FAILED' )
+                    if ( $jobState == 'FAILED' )
                         $experimentState    = $jobState;
                 }
                 break;
