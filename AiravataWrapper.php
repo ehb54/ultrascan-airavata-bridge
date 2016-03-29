@@ -33,6 +33,7 @@ require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Status/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Commons/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/AppInterface/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Application/Io/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Data/Replica/Types.php';
 
 require_once "AiravataWrapperInterface.php";
 require_once "AiravataUtils.php";

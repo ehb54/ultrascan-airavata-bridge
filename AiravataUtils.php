@@ -5,6 +5,11 @@ use Airavata\Model\Experiment\ExperimentModel;
 use Airavata\Model\Experiment\UserConfigurationDataModel;
 use Airavata\Model\Scheduling\ComputationalResourceSchedulingModel;
 use Airavata\Model\Application\Io\InputDataObjectType;
+use Airavata\Model\Data\Replica\DataProductModel;
+use Airavata\Model\Data\Replica\DataProductType;
+use Airavata\Model\Data\Replica\DataReplicaLocationModel;
+use Airavata\Model\Data\Replica\ReplicaLocationCategory;
+use Airavata\Model\Data\Replica\ReplicaPersistentType;
 
 function fetch_projectid($airavataclient, $authToken, $gatewayid, $user)
 {
@@ -41,6 +46,28 @@ function create_experiment_model($airavataclient, $authToken,
                                  $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
                                  $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $inputFile, $outputDataDirectory)
 {
+    $storageResourceId = null;
+    switch ($limsHost) {
+        case "uslims3.uthscsa.edu":
+            $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
+            break;
+        case "uslims3.mbu.iisc.ernet.in":
+            $storageResourceId = $airavataconfig['USLIMS3_IISC_STORAGE_ID'];
+            break;
+        case "uslims3.latrobe.edu.au":
+            $storageResourceId = $airavataconfig['USLIMS3_LATROBE_STORAGE_ID'];
+            break;
+        case "uslims3.fz-juelich.de":
+            $storageResourceId = $airavataconfig['USLIMS3_JUELICH_STORAGE_ID'];
+            break;
+        case "gw143.iu.xsede.org":
+            $storageResourceId = $airavataconfig['USLIMS3_GW143_STORAGE_ID'];
+            break;
+        case "gw54.iu.xsede.org":
+            $storageResourceId = $airavataconfig['USLIMS3_GW54_STORAGE_ID'];
+            break;
+    }
+
     $applicationInterfaceId = null;
     if ($computeCluster != "jureca.fz-juelich.de") {
         $applicationInterfaceId = $airavataconfig['US3_APP'];
@@ -53,8 +80,23 @@ function create_experiment_model($airavataclient, $authToken,
         $applicationInputName = $applicationInput->name;
         switch ($applicationInputName) {
             case "Input_Tar_File":
-                $inputFilePath = "file://scigap@$limsHost:" . $inputFile;
-                $applicationInput->value = $inputFilePath;
+                $dataProductModel = new DataProductModel();
+                $dataProductModel->gatewayId = $gatewayId;
+                $dataProductModel->ownerName = $limsUser;
+                $dataProductModel->productName = basename($inputFile);
+                $dataProductModel->dataProductType = DataProductType::FILE;
+
+                $dataReplicationModel = new DataReplicaLocationModel();
+                $dataReplicationModel->storageResourceId = $storageResourceId;
+                $dataReplicationModel->replicaName = basename($inputFile) . " gateway data store copy";
+                $dataReplicationModel->replicaLocationCategory = ReplicaLocationCategory::GATEWAY_DATA_STORE;
+                $dataReplicationModel->replicaPersistentType = ReplicaPersistentType::TRANSIENT;
+                $dataReplicationModel->filePath = "file://" . $limsHost . ":" . $inputFile;
+
+                $dataProductModel->replicaLocations[] = $dataReplicationModel;
+                $replicaURI = $airavataclient->registerDataProduct($authToken, $dataProductModel);
+
+                $applicationInput->value = $replicaURI;
                 break;
             case "Wall_Time":
                 $applicationInput->value = "-walltime=" . $wallTime;
@@ -84,28 +126,6 @@ function create_experiment_model($airavataclient, $authToken,
             break;
         case "jureca.fz-juelich.de":
             $computeResourceId = $airavataconfig['JURECA_COMPUTE_ID'];
-            break;
-    }
-
-    $storageResourceId = null;
-    switch ($limsHost) {
-        case "uslims3.uthscsa.edu":
-            $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
-            break;
-        case "uslims3.mbu.iisc.ernet.in":
-            $storageResourceId = $airavataconfig['USLIMS3_IISC_STORAGE_ID'];
-            break;
-        case "uslims3.latrobe.edu.au":
-            $storageResourceId = $airavataconfig['USLIMS3_LATROBE_STORAGE_ID'];
-            break;
-        case "uslims3.fz-juelich.de":
-            $storageResourceId = $airavataconfig['USLIMS3_JUELICH_STORAGE_ID'];
-            break;
-        case "gw143.iu.xsede.org":
-            $storageResourceId = $airavataconfig['USLIMS3_GW143_STORAGE_ID'];
-            break;
-        case "gw54.iu.xsede.org":
-            $storageResourceId = $airavataconfig['USLIMS3_GW54_STORAGE_ID'];
             break;
     }
 

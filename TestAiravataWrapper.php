@@ -11,8 +11,11 @@ $limsUser = "smarru";
 $experimentName = "US3-Test";
 $requestId = "uslims3_cauma3d_989";
 
-$computeCluster = "ls5.tacc.utexas.edu";
-$queue = "normal";
+//$computeCluster = "ls5.tacc.utexas.edu";
+//$queue = "normal";
+
+$computeCluster = "jureca.fz-juelich.de";
+$queue = "batch";
 
 //$computeCluster = "alamo.uthscsa.edu";
 //$queue = "batch";
