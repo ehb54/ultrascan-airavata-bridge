@@ -142,7 +142,10 @@ function create_experiment_model($airavataclient, $authToken,
     $userConfigs->experimentDataDir = $outputDataDirectory;
 
     if (($computeCluster == "jureca") || ($computeCluster == "jureca.fz-juelich.de")) {
-        $userConfigs->userDN = $clusterUserName;
+
+        $userDN = "CN=_USER_, O=Ultrascan Gateway, C=DE";
+        $userDN      = str_replace( '_USER_', $clusterUserName, $userDN );
+        $userConfigs->userDN = $userDN;
     }
 
     $experimentModel = new ExperimentModel();

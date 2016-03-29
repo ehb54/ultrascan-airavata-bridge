@@ -6,7 +6,8 @@ use SCIGAP\AiravataWrapper;
 
 $airavataWrapper = new AiravataWrapper();
 
-$limsHost = "gw54.iu.xsede.org";
+$limsHost = "uslims3.uthscsa.edu";
+#$limsHost = "gw54.iu.xsede.org";
 $limsUser = "smarru";
 $experimentName = "US3-Test";
 $requestId = "uslims3_cauma3d_989";
@@ -33,9 +34,10 @@ $cores = 16;
 $nodes = 1;
 $mGroupCount = 1;
 $wallTime = 120;
-$clusterUserName = null;
-$inputFile = "/home/pga/portals/gateway-user-data/ultrascan-testing/smarru/691e9a10a99350f7ca2379ad3733955a/hpcinput-localhost-uslims3_CU_Boulder-01828.tar";
-$outputDataDirectory = "/home/pga/portals/gateway-user-data/ultrascan-testing/smarru/691e9a10a99350f7ca2379ad3733955a";
+$clusterUserName = "CN=swus1, O=Ultrascan Gateway, C=DE";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/223c092a-b633-6b14-198e-43f6acb02c53/hpcinput-localhost-uslims3_cauma3-04718.tar";
+#$inputFile = "/home/pga/portals/gateway-user-data/ultrascan-testing/smarru/691e9a10a99350f7ca2379ad3733955a/hpcinput-localhost-uslims3_CU_Boulder-01828.tar";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/223c092a-b633-6b14-198e-43f6acb02c53";
 
 //for ($x = 0; $x <= 0; $x++) {
 
