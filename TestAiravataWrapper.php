@@ -6,17 +6,15 @@ use SCIGAP\AiravataWrapper;
 
 $airavataWrapper = new AiravataWrapper();
 
-$limsHost = "uslims3.uthscsa.edu";
-#$limsHost = "gw54.iu.xsede.org";
 $limsUser = "smarru";
 $experimentName = "US3-Test";
 $requestId = "uslims3_cauma3d_989";
 
-//$computeCluster = "ls5.tacc.utexas.edu";
-//$queue = "normal";
+$computeCluster = "ls5.tacc.utexas.edu";
+$queue = "normal";
 
-$computeCluster = "jureca.fz-juelich.de";
-$queue = "batch";
+//$computeCluster = "jureca.fz-juelich.de";
+//$queue = "batch";
 
 //$computeCluster = "alamo.uthscsa.edu";
 //$queue = "batch";
@@ -35,9 +33,21 @@ $nodes = 1;
 $mGroupCount = 1;
 $wallTime = 120;
 $clusterUserName = "CN=swus1, O=Ultrascan Gateway, C=DE";
+
+//uslims3
+$limsHost = "uslims3.uthscsa.edu";
 $inputFile = "/srv/www/htdocs/uslims3/uslims3_data/223c092a-b633-6b14-198e-43f6acb02c53/hpcinput-localhost-uslims3_cauma3-04718.tar";
-#$inputFile = "/home/pga/portals/gateway-user-data/ultrascan-testing/smarru/691e9a10a99350f7ca2379ad3733955a/hpcinput-localhost-uslims3_CU_Boulder-01828.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/223c092a-b633-6b14-198e-43f6acb02c53";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-299b-6f7cf245b7a5";
+
+//gw143 - iu lims
+//$limsHost = "gw143.iu.xsede.org";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/223c092a-b633-6b14-198e-43f6acb02c53/hpcinput-localhost-uslims3_cauma3d-00973.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-299b-6f7cf245b7a5";
+
+//PGA test
+//$limsHost = "gw54.iu.xsede.org";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/223c092a-b633-6b14-198e-43f6acb02c53/hpcinput-localhost-uslims3_cauma3d-00973.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-299b-6f7cf245b7a5";
 
 //for ($x = 0; $x <= 0; $x++) {
 
