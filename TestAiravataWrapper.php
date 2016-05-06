@@ -10,11 +10,11 @@ $limsUser = "smarru";
 $experimentName = "US3-Test";
 $requestId = "uslims3_cauma3d_989";
 
-$computeCluster = "ls5.tacc.utexas.edu";
-$queue = "normal";
+//$computeCluster = "ls5.tacc.utexas.edu";
+//$queue = "normal";
 
-//$computeCluster = "jureca.fz-juelich.de";
-//$queue = "batch";
+$computeCluster = "jureca.fz-juelich.de";
+$queue = "batch";
 
 //$computeCluster = "alamo.uthscsa.edu";
 //$queue = "batch";
@@ -32,7 +32,10 @@ $cores = 16;
 $nodes = 1;
 $mGroupCount = 1;
 $wallTime = 120;
-$clusterUserName = "CN=swus1, O=Ultrascan Gateway, C=DE";
+//$clusterUserName = "CN=swus1, O=Ultrascan Gateway, C=DE";
+$clusterUserName = "swus2";
+//$clusterScratch = "";
+$clusterScratch = "/work/ultrascn/swus2/airavata-workdirs";
 
 //uslims3
 $limsHost = "uslims3.uthscsa.edu";
@@ -53,18 +56,18 @@ $outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-
 
     $launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
                                                             $computeCluster, $queue, $cores, $nodes, $mGroupCount,
-                                                            $wallTime, $clusterUserName,
+                                                            $wallTime, $clusterUserName, $clusterScratch,
                                                             $inputFile, $outputDataDirectory);
-
-//var_dump($launchResult);
-
-$expID = 0;
-if ( $launchResult[ 'launchStatus' ] ) {
-    $expID = $launchResult[ 'experimentId' ];
-    echo "Experiment created" . $expID . PHP_EOL;
-} else {
-    echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
-}
+//
+////var_dump($launchResult);
+//
+//$expID = 0;
+//if ( $launchResult[ 'launchStatus' ] ) {
+//    $expID = $launchResult[ 'experimentId' ];
+//    echo "Experiment created" . $expID . PHP_EOL;
+//} else {
+//    echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
+//}
 
 //}
 
@@ -81,9 +84,9 @@ if ( $launchResult[ 'launchStatus' ] ) {
 //$experimentError = $airavataWrapper->get_experiment_errors("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
 //var_dump($experimentError);
 
-//while (true) {
+//$expID = "US3-AIRA_1ecf4df0-9ca2-441b-88f9-d7eb07e0dadf";
+//
+////while (true) {
 //    $experimentState = $airavataWrapper->get_experiment_status($expID);
 //    var_dump($experimentState);
 //}
-
-echo gethostname();

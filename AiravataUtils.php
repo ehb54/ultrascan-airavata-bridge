@@ -44,7 +44,7 @@ function create_project($airavataclient, $authToken, $gatewayid, $user)
 
 function create_experiment_model($airavataclient, $authToken,
                                  $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
-                                 $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $inputFile, $outputDataDirectory)
+                                 $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch, $inputFile, $outputDataDirectory)
 {
     $storageResourceId = null;
     switch ($limsHost) {
@@ -143,9 +143,12 @@ function create_experiment_model($airavataclient, $authToken,
 
     if (($computeCluster == "jureca") || ($computeCluster == "jureca.fz-juelich.de")) {
 
-        $userDN = "CN=_USER_, O=Ultrascan Gateway, C=DE";
-        $userDN      = str_replace( '_USER_', $clusterUserName, $userDN );
-        $userConfigs->userDN = $userDN;
+//        $userDN = "CN=_USER_, O=Ultrascan Gateway, C=DE";
+//        $userDN      = str_replace( '_USER_', $clusterUserName, $userDN );
+//        $userConfigs->userDN = $userDN;
+        $scheduling->overrideLoginUserName = $clusterUserName;
+        $scheduling->overrideScratchLocation = $clusterScratch;
+
     }
 
     $experimentModel = new ExperimentModel();

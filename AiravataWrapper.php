@@ -115,7 +115,7 @@ class AiravataWrapper implements AiravataWrapperInterface
         $projectId = fetch_projectid($this->airavataclient, $this->authToken, $this->gatewayId, $limsUser);
 
         $experimentModel = create_experiment_model($this->airavataclient, $this->authToken, $this->airavataconfig, $this->gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
-            $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
+            $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch,
             $inputFile, $outputDataDirectory);
 
         $experimentId = $this->airavataclient->createExperiment($this->authToken, $this->gatewayId, $experimentModel);
