@@ -68,12 +68,12 @@ function create_experiment_model($airavataclient, $authToken,
             break;
     }
 
-    $applicationInterfaceId = null;
-    if ($computeCluster != "jureca.fz-juelich.de") {
-        $applicationInterfaceId = $airavataconfig['US3_APP'];
-    } else {
-        $applicationInterfaceId = $airavataconfig['US3_APP_JURECA'];
-    }
+    $applicationInterfaceId = $airavataconfig['US3_APP'];
+//    if ($computeCluster != "jureca.fz-juelich.de") {
+//        $applicationInterfaceId = $airavataconfig['US3_APP'];
+//    } else {
+//        $applicationInterfaceId = $airavataconfig['US3_APP_JURECA'];
+//    }
 
     $applicationInputs = $airavataclient->getApplicationInputs($authToken, $applicationInterfaceId);
     foreach ($applicationInputs as $applicationInput) {
