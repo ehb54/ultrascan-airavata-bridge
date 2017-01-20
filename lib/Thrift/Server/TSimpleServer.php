@@ -2,6 +2,7 @@
 
 namespace Thrift\Server;
 
+use Thrift\Server\TServer;
 use Thrift\Exception\TTransportException;
 
 /**
@@ -9,8 +10,7 @@ use Thrift\Exception\TTransportException;
  *
  * @package thrift.server
  */
-class TSimpleServer extends TServer
-{
+class TSimpleServer extends TServer {
   /**
    * Flag for the main serving loop
    *
@@ -25,8 +25,7 @@ class TSimpleServer extends TServer
    *
    * @return void
    */
-  public function serve()
-  {
+  public function serve() {
     $this->transport_->listen();
 
     while (!$this->stop_) {
@@ -40,7 +39,8 @@ class TSimpleServer extends TServer
           $outputProtocol = $this->outputProtocolFactory_->getProtocol($outputTransport);
           while ($this->processor_->process($inputProtocol, $outputProtocol)) { }
         }
-      } catch (TTransportException $e) { }
+      }
+      catch (TTransportException $e) { }
     }
   }
 
@@ -50,8 +50,7 @@ class TSimpleServer extends TServer
    *
    * @return void
    */
-  public function stop()
-  {
+  public function stop() {
     $this->transport_->close();
     $this->stop_ = true;
   }

@@ -22,6 +22,7 @@
 
 namespace Thrift\Transport;
 
+use Thrift\Transport\TTransport;
 use Thrift\Exception\TTransportException;
 
 /**
@@ -30,10 +31,9 @@ use Thrift\Exception\TTransportException;
  *
  * @package thrift.transport
  */
-class TNullTransport extends TTransport
-{
-  public function isOpen()
-  {
+class TNullTransport extends TTransport {
+
+  public function isOpen() {
     return true;
   }
 
@@ -41,8 +41,7 @@ class TNullTransport extends TTransport
 
   public function close() {}
 
-  public function read($len)
-  {
+  public function read($len) {
     throw new TTransportException("Can't read from TNullTransport.");
   }
 

@@ -22,6 +22,7 @@
 
 namespace Thrift\Transport;
 
+use Thrift\Transport\TTransport;
 use Thrift\Exception\TTransportException;
 use Thrift\Factory\TStringFuncFactory;
 
@@ -30,8 +31,8 @@ use Thrift\Factory\TStringFuncFactory;
  *
  * @package thrift.transport
  */
-class THttpClient extends TTransport
-{
+class THttpClient extends TTransport {
+
   /**
    * The host to connect to
    *
@@ -95,8 +96,7 @@ class THttpClient extends TTransport
    * @param int    $port
    * @param string $uri
    */
-  public function __construct($host, $port=80, $uri='', $scheme = 'http')
-  {
+  public function __construct($host, $port=80, $uri='', $scheme = 'http') {
     if ((TStringFuncFactory::create()->strlen($uri) > 0) && ($uri{0} != '/')) {
       $uri = '/'.$uri;
     }
@@ -115,8 +115,7 @@ class THttpClient extends TTransport
    *
    * @param float $timeout
    */
-  public function setTimeoutSecs($timeout)
-  {
+  public function setTimeoutSecs($timeout) {
     $this->timeout_ = $timeout;
   }
 
@@ -125,8 +124,7 @@ class THttpClient extends TTransport
    *
    * @return boolean true if open
    */
-  public function isOpen()
-  {
+  public function isOpen() {
     return true;
   }
 
@@ -140,8 +138,7 @@ class THttpClient extends TTransport
   /**
    * Close the transport.
    */
-  public function close()
-  {
+  public function close() {
     if ($this->handle_) {
       @fclose($this->handle_);
       $this->handle_ = null;
@@ -155,8 +152,7 @@ class THttpClient extends TTransport
    * @return string The data that has been read
    * @throws TTransportException if cannot read any more data
    */
-  public function read($len)
-  {
+  public function read($len) {
     $data = @fread($this->handle_, $len);
     if ($data === FALSE || $data === '') {
       $md = stream_get_meta_data($this->handle_);
@@ -166,7 +162,6 @@ class THttpClient extends TTransport
         throw new TTransportException('THttpClient: Could not read '.$len.' bytes from '.$this->host_.':'.$this->port_.$this->uri_, TTransportException::UNKNOWN);
       }
     }
-
     return $data;
   }
 
@@ -176,8 +171,7 @@ class THttpClient extends TTransport
    * @param string $buf  The data to write
    * @throws TTransportException if writing fails
    */
-  public function write($buf)
-  {
+  public function write($buf) {
     $this->buf_ .= $buf;
   }
 
@@ -186,8 +180,7 @@ class THttpClient extends TTransport
    *
    * @throws TTransportException if a writing error occurs
    */
-  public function flush()
-  {
+  public function flush() {
     // God, PHP really has some esoteric ways of doing simple things.
     $host = $this->host_.($this->port_ != 80 ? ':'.$this->port_ : '');
 
@@ -221,8 +214,7 @@ class THttpClient extends TTransport
     }
   }
 
-  public function addHeaders($headers)
-  {
+  public function addHeaders($headers) {
     $this->headers_ = array_merge($this->headers_, $headers);
   }
 

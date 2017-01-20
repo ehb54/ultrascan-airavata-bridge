@@ -9,8 +9,7 @@ use Thrift\Exception\TTransportException;
  *
  * @package thrift.transport
  */
-abstract class TServerTransport
-{
+abstract class TServerTransport {
   /**
    * List for new clients
    *
@@ -34,7 +33,7 @@ abstract class TServerTransport
    * @abstract
    * @return TTransport
    */
-  abstract protected function acceptImpl();
+  protected abstract function acceptImpl();
 
   /**
    * Uses the accept implemtation. If null is returned, an
@@ -43,8 +42,7 @@ abstract class TServerTransport
    * @throws TTransportException
    * @return TTransport
    */
-  public function accept()
-  {
+  public function accept() {
     $transport = $this->acceptImpl();
 
     if ($transport == null) {
