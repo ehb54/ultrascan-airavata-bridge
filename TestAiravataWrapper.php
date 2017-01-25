@@ -16,11 +16,11 @@ $requestId = "uslims3_cauma3d_989";
 //$computeCluster = "jureca.fz-juelich.de";
 //$queue = "batch";
 
-//$computeCluster = "alamo.uthscsa.edu";
-//$queue = "batch";
+$computeCluster = "alamo.uthscsa.edu";
+$queue = "batch";
 
-$computeCluster = "comet.sdsc.xsede.org";
-$queue = "compute";
+//$computeCluster = "comet.sdsc.xsede.org";
+//$queue = "compute";
 //
 //$computeCluster = "gordon.sdsc.xsede.org";
 //$queue = "normal";
@@ -33,9 +33,9 @@ $nodes = 1;
 $mGroupCount = 1;
 $wallTime = 120;
 //$clusterUserName = "CN=swus1, O=Ultrascan Gateway, C=DE";
-$clusterUserName = "swus2";
+$clusterUserName = "swus1";
 //$clusterScratch = "";
-$clusterScratch = "/work/ultrascn/swus2/airavata-workdirs";
+$clusterScratch = "/work/ultrascn/swus1";
 
 ////uslims3
 //$limsHost = "uslims3.uthscsa.edu";
@@ -54,20 +54,20 @@ $outputDataDirectory = "/var/www/portals/gateway-user-data/ultrascan-development
 
 //for ($x = 0; $x <= 0; $x++) {
 
-//    $launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-//                                                            $computeCluster, $queue, $cores, $nodes, $mGroupCount,
-//                                                            $wallTime, $clusterUserName, $clusterScratch,
-//                                                            $inputFile, $outputDataDirectory);
-//
-////var_dump($launchResult);
-//
-//$expID = 0;
-//if ( $launchResult[ 'launchStatus' ] ) {
-//    $expID = $launchResult[ 'experimentId' ];
-//    echo "Experiment created " . $expID . PHP_EOL;
-//} else {
-//    echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
-//}
+    $launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
+                                                            $computeCluster, $queue, $cores, $nodes, $mGroupCount,
+                                                            $wallTime, $clusterUserName, $clusterScratch,
+                                                            $inputFile, $outputDataDirectory);
+
+//var_dump($launchResult);
+
+$expID = 0;
+if ( $launchResult[ 'launchStatus' ] ) {
+    $expID = $launchResult[ 'experimentId' ];
+    echo "Experiment created " . $expID . PHP_EOL;
+} else {
+    echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
+}
 
 //}
 
@@ -84,9 +84,9 @@ $outputDataDirectory = "/var/www/portals/gateway-user-data/ultrascan-development
 //$experimentError = $airavataWrapper->get_experiment_errors("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
 //var_dump($experimentError);
 
-$expID = "US3-Test_c66b2b06-81b0-4c91-83fc-aca0a5cab732";
-
-while (true) {
-    $experimentState = $airavataWrapper->get_experiment_status($expID);
-    var_dump($experimentState);
-}
+//$expID = "US3-Test_c66b2b06-81b0-4c91-83fc-aca0a5cab732";
+//
+//while (true) {
+//    $experimentState = $airavataWrapper->get_experiment_status($expID);
+//    var_dump($experimentState);
+//}

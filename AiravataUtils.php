@@ -31,6 +31,7 @@ function create_project($airavataclient, $authToken, $gatewayid, $user)
 {
     $project = new Project();
     $project->owner = $user;
+    $project->gatewayId=$gatewayid;
     $project->name = "Default_Project";
     $project->description = "Default project";
 
