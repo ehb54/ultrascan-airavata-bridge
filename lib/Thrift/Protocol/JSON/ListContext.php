@@ -22,6 +22,7 @@
 
 namespace Thrift\Protocol\JSON;
 
+use Thrift\Protocol\JSON\BaseContext;
 use Thrift\Protocol\TJSONProtocol;
 
 class ListContext extends BaseContext
@@ -29,13 +30,11 @@ class ListContext extends BaseContext
     private $first_ = true;
     private $p_;
 
-    public function __construct($p)
-    {
+    public function __construct($p) {
         $this->p_ = $p;
     }
 
-    public function write()
-    {
+    public function write() {
         if ($this->first_) {
             $this->first_ = false;
         } else {
@@ -43,8 +42,7 @@ class ListContext extends BaseContext
         }
     }
 
-    public function read()
-    {
+    public function read() {
         if ($this->first_) {
             $this->first_ = false;
         } else {

@@ -22,6 +22,7 @@
 
 namespace Thrift\Transport;
 
+use Thrift\Transport\TTransport;
 use Thrift\Exception\TException;
 use Thrift\Factory\TStringFuncFactory;
 
@@ -31,8 +32,8 @@ use Thrift\Factory\TStringFuncFactory;
  *
  * @package thrift.transport
  */
-class TPhpStream extends TTransport
-{
+class TPhpStream extends TTransport {
+
   const MODE_R = 1;
   const MODE_W = 2;
 
@@ -44,14 +45,12 @@ class TPhpStream extends TTransport
 
   private $write_ = false;
 
-  public function __construct($mode)
-  {
+  public function __construct($mode) {
     $this->read_ = $mode & self::MODE_R;
     $this->write_ = $mode & self::MODE_W;
   }
 
-  public function open()
-  {
+  public function open() {
     if ($this->read_) {
       $this->inStream_ = @fopen(self::inStreamName(), 'r');
       if (!is_resource($this->inStream_)) {
@@ -66,8 +65,7 @@ class TPhpStream extends TTransport
     }
   }
 
-  public function close()
-  {
+  public function close() {
     if ($this->read_) {
       @fclose($this->inStream_);
       $this->inStream_ = null;
@@ -78,25 +76,21 @@ class TPhpStream extends TTransport
     }
   }
 
-  public function isOpen()
-  {
+  public function isOpen() {
     return
       (!$this->read_ || is_resource($this->inStream_)) &&
       (!$this->write_ || is_resource($this->outStream_));
   }
 
-  public function read($len)
-  {
+  public function read($len) {
     $data = @fread($this->inStream_, $len);
     if ($data === FALSE || $data === '') {
       throw new TException('TPhpStream: Could not read '.$len.' bytes');
     }
-
     return $data;
   }
 
-  public function write($buf)
-  {
+  public function write($buf) {
     while (TStringFuncFactory::create()->strlen($buf) > 0) {
       $got = @fwrite($this->outStream_, $buf);
       if ($got === 0 || $got === FALSE) {
@@ -106,17 +100,14 @@ class TPhpStream extends TTransport
     }
   }
 
-  public function flush()
-  {
+  public function flush() {
     @fflush($this->outStream_);
   }
 
-  private static function inStreamName()
-  {
+  private static function inStreamName() {
     if (php_sapi_name() == 'cli') {
       return 'php://stdin';
     }
-
     return 'php://input';
   }
 

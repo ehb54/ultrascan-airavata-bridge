@@ -31,6 +31,7 @@ function create_project($airavataclient, $authToken, $gatewayid, $user)
 {
     $project = new Project();
     $project->owner = $user;
+    $project->gatewayId=$gatewayid;
     $project->name = "Default_Project";
     $project->description = "Default project";
 
@@ -44,7 +45,7 @@ function create_project($airavataclient, $authToken, $gatewayid, $user)
 
 function create_experiment_model($airavataclient, $authToken,
                                  $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
-                                 $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $inputFile, $outputDataDirectory)
+                                 $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch, $inputFile, $outputDataDirectory)
 {
     $storageResourceId = null;
     switch ($limsHost) {
@@ -68,12 +69,12 @@ function create_experiment_model($airavataclient, $authToken,
             break;
     }
 
-    $applicationInterfaceId = null;
-    if ($computeCluster != "jureca.fz-juelich.de") {
-        $applicationInterfaceId = $airavataconfig['US3_APP'];
-    } else {
-        $applicationInterfaceId = $airavataconfig['US3_APP_JURECA'];
-    }
+    $applicationInterfaceId = $airavataconfig['US3_APP'];
+//    if ($computeCluster != "jureca.fz-juelich.de") {
+//        $applicationInterfaceId = $airavataconfig['US3_APP'];
+//    } else {
+//        $applicationInterfaceId = $airavataconfig['US3_APP_JURECA'];
+//    }
 
     $applicationInputs = $airavataclient->getApplicationInputs($authToken, $applicationInterfaceId);
     foreach ($applicationInputs as $applicationInput) {
@@ -143,9 +144,12 @@ function create_experiment_model($airavataclient, $authToken,
 
     if (($computeCluster == "jureca") || ($computeCluster == "jureca.fz-juelich.de")) {
 
-        $userDN = "CN=_USER_, O=Ultrascan Gateway, C=DE";
-        $userDN      = str_replace( '_USER_', $clusterUserName, $userDN );
-        $userConfigs->userDN = $userDN;
+//        $userDN = "CN=_USER_, O=Ultrascan Gateway, C=DE";
+//        $userDN      = str_replace( '_USER_', $clusterUserName, $userDN );
+//        $userConfigs->userDN = $userDN;
+        $scheduling->overrideLoginUserName = $clusterUserName;
+        $scheduling->overrideScratchLocation = $clusterScratch;
+
     }
 
     $experimentModel = new ExperimentModel();

@@ -22,21 +22,19 @@
 
 namespace Thrift\Protocol\JSON;
 
+use Thrift\Protocol\JSON\BaseContext;
 use Thrift\Protocol\TJSONProtocol;
 
-class PairContext extends BaseContext
-{
+class PairContext extends BaseContext {
     private $first_ = true;
     private $colon_ = true;
     private $p_ = null;
 
-    public function __construct($p)
-    {
+    public function __construct($p) {
         $this->p_ = $p;
     }
 
-    public function write()
-    {
+    public function write() {
         if ($this->first_) {
             $this->first_ = false;
             $this->colon_ = true;
@@ -46,8 +44,7 @@ class PairContext extends BaseContext
         }
     }
 
-    public function read()
-    {
+    public function read() {
         if ($this->first_) {
             $this->first_ = false;
             $this->colon_ = true;
@@ -57,8 +54,7 @@ class PairContext extends BaseContext
         }
     }
 
-    public function escapeNum()
-    {
+    public function escapeNum() {
         return $this->colon_;
     }
 }

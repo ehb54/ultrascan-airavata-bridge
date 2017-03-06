@@ -18,7 +18,7 @@
  * under the License.
  *
  * ClassLoader to load Thrift library and definitions
- * Inspired from UniversalClassLoader from Symfony 2
+ * Inspired from UniversalClassLoader from Symfony 2 
  *
  * @package thrift.classloader
  */
@@ -54,7 +54,7 @@ class ThriftClassLoader
     /**
      * Set autoloader to use APC cache
      * @param boolean $apc
-     * @param string  $apc_prefix
+     * @param string $apc_prefix
      */
     public function __construct($apc = false, $apc_prefix = null)
     {
@@ -112,7 +112,7 @@ class ThriftClassLoader
 
     /**
      * Loads the given class or interface in APC.
-     * @param  string $class The name of the class
+     * @param string $class The name of the class
      * @return string
      */
     protected function findFileInApc($class)
@@ -126,28 +126,33 @@ class ThriftClassLoader
 
     /**
      * Find class in namespaces or definitions directories
-     * @param  string $class
+     * @param string $class
      * @return string
      */
     public function findFile($class)
     {
         // Remove first backslash
-        if ('\\' == $class[0]) {
+        if ('\\' == $class[0])
+        {
             $class = substr($class, 1);
         }
 
-        if (false !== $pos = strrpos($class, '\\')) {
+        if (false !== $pos = strrpos($class, '\\'))
+        {
             // Namespaced class name
             $namespace = substr($class, 0, $pos);
 
             // Iterate in normal namespaces
-            foreach ($this->namespaces as $ns => $dirs) {
+            foreach ($this->namespaces as $ns => $dirs)
+            {
                 //Don't interfere with other autoloaders
-                if (0 !== strpos($namespace, $ns)) {
+                if (0 !== strpos($namespace, $ns))
+                {
                     continue;
                 }
 
-                foreach ($dirs as $dir) {
+                foreach ($dirs as $dir)
+                {
                     $className = substr($class, $pos + 1);
 
                     $file = $dir.DIRECTORY_SEPARATOR.
@@ -155,7 +160,8 @@ class ThriftClassLoader
                                  DIRECTORY_SEPARATOR.
                                  $className.'.php';
 
-                    if (file_exists($file)) {
+                    if (file_exists($file))
+                    {
                         return $file;
                     }
                 }
@@ -167,20 +173,24 @@ class ThriftClassLoader
             $m = explode('\\', $class);
 
             // Ignore wrong call
-            if (count($m) <= 1) {
+            if(count($m) <= 1)
+            {
                 return;
             }
 
             $class = array_pop($m);
             $namespace = implode('\\', $m);
 
-            foreach ($this->definitions as $ns => $dirs) {
+            foreach ($this->definitions as $ns => $dirs)
+            {
                 //Don't interfere with other autoloaders
-                if (0 !== strpos($namespace, $ns)) {
+                if (0 !== strpos($namespace, $ns))
+                {
                     continue;
                 }
 
-                foreach ($dirs as $dir) {
+                foreach ($dirs as $dir)
+                {
                     /**
                      * Available in service: Interface, Client, Processor, Rest
                      * And every service methods (_.+)
@@ -191,7 +201,9 @@ class ThriftClassLoader
                     )
                     {
                         $className = 'Types';
-                    } else {
+                    }
+                    else
+                    {
                         $className = $n[1];
                     }
 
@@ -200,7 +212,8 @@ class ThriftClassLoader
                                  DIRECTORY_SEPARATOR .
                                  $className . '.php';
 
-                    if (file_exists($file)) {
+                    if (file_exists($file))
+                    {
                         return $file;
                     }
                 }

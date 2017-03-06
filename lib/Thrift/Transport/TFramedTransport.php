@@ -22,6 +22,7 @@
 
 namespace Thrift\Transport;
 
+use Thrift\Transport\TTransport;
 use Thrift\Factory\TStringFuncFactory;
 
 /**
@@ -30,8 +31,8 @@ use Thrift\Factory\TStringFuncFactory;
  *
  * @package thrift.transport
  */
-class TFramedTransport extends TTransport
-{
+class TFramedTransport extends TTransport {
+
   /**
    * Underlying transport object.
    *
@@ -72,25 +73,21 @@ class TFramedTransport extends TTransport
    *
    * @param TTransport $transport Underlying transport
    */
-  public function __construct($transport=null, $read=true, $write=true)
-  {
+  public function __construct($transport=null, $read=true, $write=true) {
     $this->transport_ = $transport;
     $this->read_ = $read;
     $this->write_ = $write;
   }
 
-  public function isOpen()
-  {
+  public function isOpen() {
     return $this->transport_->isOpen();
   }
 
-  public function open()
-  {
+  public function open() {
     $this->transport_->open();
   }
 
-  public function close()
-  {
+  public function close() {
     $this->transport_->close();
   }
 
@@ -100,8 +97,7 @@ class TFramedTransport extends TTransport
    *
    * @param int $len How much data
    */
-  public function read($len)
-  {
+  public function read($len) {
     if (!$this->read_) {
       return $this->transport_->read($len);
     }
@@ -114,14 +110,12 @@ class TFramedTransport extends TTransport
     if ($len >= TStringFuncFactory::create()->strlen($this->rBuf_)) {
       $out = $this->rBuf_;
       $this->rBuf_ = null;
-
       return $out;
     }
 
     // Return TStringFuncFactory::create()->substr
     $out = TStringFuncFactory::create()->substr($this->rBuf_, 0, $len);
     $this->rBuf_ = TStringFuncFactory::create()->substr($this->rBuf_, $len);
-
     return $out;
   }
 
@@ -130,8 +124,7 @@ class TFramedTransport extends TTransport
    *
    * @param string $data data to return
    */
-  public function putBack($data)
-  {
+  public function putBack($data) {
     if (TStringFuncFactory::create()->strlen($this->rBuf_) === 0) {
       $this->rBuf_ = $data;
     } else {
@@ -142,8 +135,7 @@ class TFramedTransport extends TTransport
   /**
    * Reads a chunk of data into the internal read buffer.
    */
-  private function readFrame()
-  {
+  private function readFrame() {
     $buf = $this->transport_->readAll(4);
     $val = unpack('N', $buf);
     $sz = $val[1];
@@ -157,8 +149,7 @@ class TFramedTransport extends TTransport
    * @param string $buf The data
    * @param int    $len Limit of bytes to write
    */
-  public function write($buf, $len=null)
-  {
+  public function write($buf, $len=null) {
     if (!$this->write_) {
       return $this->transport_->write($buf, $len);
     }
@@ -173,8 +164,7 @@ class TFramedTransport extends TTransport
    * Writes the output buffer to the stream in the format of a 4-byte length
    * followed by the actual data.
    */
-  public function flush()
-  {
+  public function flush() {
     if (!$this->write_ || TStringFuncFactory::create()->strlen($this->wBuf_) == 0) {
       return $this->transport_->flush();
     }
