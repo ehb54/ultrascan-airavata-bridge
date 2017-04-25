@@ -52,6 +52,9 @@ function create_experiment_model($airavataclient, $authToken,
         case "uslims3.uthscsa.edu":
             $storageResourceId = $airavataconfig['USLIMS3_UTHSCSA_STORAGE_ID'];
             break;
+        case "uslims3.iisc.ernet.in":
+            $storageResourceId = $airavataconfig['USLIMS3_IISC_STORAGE_ID'];
+            break;
         case "uslims3.mbu.iisc.ernet.in":
             $storageResourceId = $airavataconfig['USLIMS3_IISC_STORAGE_ID'];
             break;
