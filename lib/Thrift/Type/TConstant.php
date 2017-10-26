@@ -34,12 +34,13 @@ abstract class TConstant
 
     /**
      * Get a constant value
-     * @param  string $constant
+     * @param string $constant
      * @return mixed
      */
     public static function get($constant)
     {
-        if (is_null(static::$$constant)) {
+        if(is_null(static::$$constant))
+        {
             static::$$constant = call_user_func(
                     sprintf('static::init_%s', $constant)
                 );

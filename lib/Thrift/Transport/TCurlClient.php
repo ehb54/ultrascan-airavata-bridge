@@ -22,6 +22,7 @@
 
 namespace Thrift\Transport;
 
+use Thrift\Transport\TTransport;
 use Thrift\Exception\TTransportException;
 use Thrift\Factory\TStringFuncFactory;
 
@@ -30,8 +31,8 @@ use Thrift\Factory\TStringFuncFactory;
  *
  * @package thrift.transport
  */
-class TCurlClient extends TTransport
-{
+class TCurlClient extends TTransport {
+
   private static $curlHandle;
 
   /**
@@ -90,8 +91,7 @@ class TCurlClient extends TTransport
    * @param int    $port
    * @param string $uri
    */
-  public function __construct($host, $port=80, $uri='', $scheme = 'http')
-  {
+  public function __construct($host, $port=80, $uri='', $scheme = 'http') {
     if ((TStringFuncFactory::create()->strlen($uri) > 0) && ($uri{0} != '/')) {
       $uri = '/'.$uri;
     }
@@ -109,8 +109,7 @@ class TCurlClient extends TTransport
    *
    * @param float $timeout
    */
-  public function setTimeoutSecs($timeout)
-  {
+  public function setTimeoutSecs($timeout) {
     $this->timeout_ = $timeout;
   }
 
@@ -119,8 +118,7 @@ class TCurlClient extends TTransport
    *
    * @return boolean true if open
    */
-  public function isOpen()
-  {
+  public function isOpen() {
     return true;
   }
 
@@ -129,15 +127,13 @@ class TCurlClient extends TTransport
    *
    * @throws TTransportException if cannot open
    */
-  public function open()
-  {
+  public function open() {
   }
 
   /**
    * Close the transport.
    */
-  public function close()
-  {
+  public function close() {
     $this->request_ = '';
     $this->response_ = null;
   }
@@ -149,14 +145,12 @@ class TCurlClient extends TTransport
    * @return string The data that has been read
    * @throws TTransportException if cannot read any more data
    */
-  public function read($len)
-  {
+  public function read($len) {
     if ($len >= strlen($this->response_)) {
       return $this->response_;
     } else {
       $ret = substr($this->response_, 0, $len);
       $this->response_ = substr($this->response_, $len);
-
       return $ret;
     }
   }
@@ -167,8 +161,7 @@ class TCurlClient extends TTransport
    * @param string $buf  The data to write
    * @throws TTransportException if writing fails
    */
-  public function write($buf)
-  {
+  public function write($buf) {
     $this->request_ .= $buf;
   }
 
@@ -177,8 +170,7 @@ class TCurlClient extends TTransport
    *
    * @throws TTransportException if a writing error occurs
    */
-  public function flush()
-  {
+  public function flush() {
     if (!self::$curlHandle) {
       register_shutdown_function(array('Thrift\\Transport\\TCurlClient', 'closeCurlHandle'));
       self::$curlHandle = curl_init();
@@ -216,8 +208,7 @@ class TCurlClient extends TTransport
     }
   }
 
-  public static function closeCurlHandle()
-  {
+  static function closeCurlHandle() {
     try {
       if (self::$curlHandle) {
         curl_close(self::$curlHandle);
