@@ -6,6 +6,8 @@ use SCIGAP\AiravataWrapper;
 
 $airavataWrapper = new AiravataWrapper();
 
+echo 'test';
+
 $limsUser = "smarru";
 $experimentName = "US3-Test";
 $requestId = "uslims3_cauma3d_989";
@@ -38,9 +40,9 @@ $clusterUserName = "swus1";
 $clusterScratch = "/work/ultrascn/swus1";
 
 //uslims3
-$limsHost = "uslims3.uthscsa.edu";
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/223c092a-b633-6b14-198e-43f6acb02c53/hpcinput-localhost-uslims3_cauma3-04718.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-299b-6f7cf245b7a5";
+//$limsHost = "uslims3.uthscsa.edu";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/223c092a-b633-6b14-198e-43f6acb02c53/hpcinput-localhost-uslims3_cauma3-04718.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-299b-6f7cf245b7a5";
 
 //gw143 - iu lims
 //$limsHost = "gw143.iu.xsede.org";
@@ -48,9 +50,9 @@ $outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-
 //$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-299b-6f7cf245b7a5";
 
 //PGA test
-//$limsHost = "gw54.iu.xsede.org";
-//$inputFile = "/var/www/portals/gateway-user-data/ultrascan-development/smarru/DefaultProject/Comet_Test_51484855774/hpcinput-localhost-uslims3_cauma3d-00962.tar";
-//$outputDataDirectory = "/var/www/portals/gateway-user-data/ultrascan-development/smarru/DefaultProject/test";
+$limsHost = "gf4.ucs.indiana.edug";
+$inputFile = "/var/www/portals/gateway-user-data/ultrascan/test/hpcinput-localhost-uslims3_cauma3d-00950.tar";
+$outputDataDirectory = "/var/www/portals/gateway-user-data/ultrascan/test";
 
 //for ($x = 0; $x <= 0; $x++) {
 

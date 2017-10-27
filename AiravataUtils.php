@@ -64,20 +64,12 @@ function create_experiment_model($airavataclient, $authToken,
         case "uslims3.fz-juelich.de":
             $storageResourceId = $airavataconfig['USLIMS3_JUELICH_STORAGE_ID'];
             break;
-        case "gw143.iu.xsede.org":
-            $storageResourceId = $airavataconfig['USLIMS3_GW143_STORAGE_ID'];
-            break;
-        case "gw54.iu.xsede.org":
-            $storageResourceId = $airavataconfig['USLIMS3_GW54_STORAGE_ID'];
+        case "gf4.ucs.indiana.edu":
+            $storageResourceId = $airavataconfig['USLIMS3_GF4_STORAGE_ID'];
             break;
     }
 
     $applicationInterfaceId = $airavataconfig['US3_APP'];
-//    if ($computeCluster != "jureca.fz-juelich.de") {
-//        $applicationInterfaceId = $airavataconfig['US3_APP'];
-//    } else {
-//        $applicationInterfaceId = $airavataconfig['US3_APP_JURECA'];
-//    }
 
     $applicationInputs = $airavataclient->getApplicationInputs($authToken, $applicationInterfaceId);
     foreach ($applicationInputs as $applicationInput) {
@@ -119,14 +111,14 @@ function create_experiment_model($airavataclient, $authToken,
         case "comet.sdsc.xsede.org":
             $computeResourceId = $airavataconfig['COMET_COMPUTE_ID'];
             break;
-        case "gordon.sdsc.xsede.org":
-            $computeResourceId = $airavataconfig['GORDON_COMPUTE_ID'];
-            break;
         case "ls5.tacc.utexas.edu":
             $computeResourceId = $airavataconfig['LONESTAR5_COMPUTE_ID'];
             break;
         case "stampede.tacc.xsede.org":
             $computeResourceId = $airavataconfig['STAMPEDE_COMPUTE_ID'];
+            break;
+        case "stampede2.tacc.xsede.org":
+            $computeResourceId = $airavataconfig['STAMPEDE2_COMPUTE_ID'];
             break;
         case "jureca.fz-juelich.de":
             $computeResourceId = $airavataconfig['JURECA_COMPUTE_ID'];
@@ -147,9 +139,6 @@ function create_experiment_model($airavataclient, $authToken,
 
     if (($computeCluster == "jureca") || ($computeCluster == "jureca.fz-juelich.de")) {
 
-//        $userDN = "CN=_USER_, O=Ultrascan Gateway, C=DE";
-//        $userDN      = str_replace( '_USER_', $clusterUserName, $userDN );
-//        $userConfigs->userDN = $userDN;
         $scheduling->overrideLoginUserName = $clusterUserName;
         $scheduling->overrideScratchLocation = $clusterScratch;
 
