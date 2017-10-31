@@ -123,6 +123,9 @@ function create_experiment_model($airavataclient, $authToken,
         case "jureca.fz-juelich.de":
             $computeResourceId = $airavataconfig['JURECA_COMPUTE_ID'];
             break;
+        case "static-cluster.jetstream-cloud.org":
+            $computeResourceId = $airavataconfig['JETSTREAM_COMPUTE_ID'];
+            break;
     }
 
     $scheduling = new ComputationalResourceSchedulingModel();

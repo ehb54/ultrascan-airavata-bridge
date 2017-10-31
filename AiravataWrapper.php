@@ -8,6 +8,7 @@ $GLOBALS['AIRAVATA_ROOT'] = $filepath . '/lib/Airavata/';
 
 require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TSocket.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TSSLSocket.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TProtocol.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TBinaryProtocol.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TException.php';
@@ -49,6 +50,7 @@ use Airavata\API\Error\InvalidRequestException;
 use Airavata\API\Error\AiravataClientException;
 use Airavata\API\Error\AiravataSystemException;
 use Airavata\API\Error\ExperimentNotFoundException;
+use Thrift\Transport\TSSLSocket;
 
 class AiravataWrapper implements AiravataWrapperInterface
 {
@@ -71,7 +73,7 @@ class AiravataWrapper implements AiravataWrapperInterface
         $this->airavataclient = new AiravataClient($protocol);
 
         $this->authToken = new AuthzToken();
-        $this->authToken->accessToken = "test";
+        $this->authToken->accessToken = "";
         $this->authToken->claimsMap['gatewayID'] = $this->airavataconfig['GATEWAY_ID'];
         $this->authToken->claimsMap['userName'] = 'smarru';
         $this->gatewayId = $this->airavataconfig['GATEWAY_ID'];

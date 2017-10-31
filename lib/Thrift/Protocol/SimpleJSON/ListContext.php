@@ -17,24 +17,29 @@
  * specific language governing permissions and limitations
  * under the License.
  *
- * @package thrift.transport
+ * @package thrift.protocol
  */
 
-namespace Thrift\Exception;
+namespace Thrift\Protocol\SimpleJSON;
 
-/**
- * Transport exceptions
- */
-class TTransportException extends TException
+use Thrift\Protocol\TSimpleJSONProtocol;
+
+class ListContext extends Context
 {
-  const UNKNOWN = 0;
-  const NOT_OPEN = 1;
-  const ALREADY_OPEN = 2;
-  const TIMED_OUT = 3;
-  const END_OF_FILE = 4;
+    protected $first_ = true;
+    private $p_;
 
-  public function __construct($message=null, $code=0)
-  {
-    parent::__construct($message, $code);
-  }
+    public function __construct($p)
+    {
+        $this->p_ = $p;
+    }
+
+    public function write()
+    {
+        if ($this->first_) {
+            $this->first_ = false;
+        } else {
+            $this->p_->getTransport()->write(TSimpleJSONProtocol::COMMA);
+        }
+    }
 }

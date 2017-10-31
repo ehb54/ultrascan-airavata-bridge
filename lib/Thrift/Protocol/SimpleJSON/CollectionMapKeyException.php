@@ -17,24 +17,17 @@
  * specific language governing permissions and limitations
  * under the License.
  *
- * @package thrift.transport
+ * @package thrift.protocol
  */
 
-namespace Thrift\Exception;
+namespace Thrift\Protocol\SimpleJSON;
 
-/**
- * Transport exceptions
- */
-class TTransportException extends TException
+use Thrift\Exception\TException;
+
+class CollectionMapKeyException extends TException
 {
-  const UNKNOWN = 0;
-  const NOT_OPEN = 1;
-  const ALREADY_OPEN = 2;
-  const TIMED_OUT = 3;
-  const END_OF_FILE = 4;
-
-  public function __construct($message=null, $code=0)
-  {
-    parent::__construct($message, $code);
-  }
+    public function __construct($message)
+    {
+        parent::__construct($message);
+    }
 }
