@@ -16,8 +16,8 @@ $requestId = "uslims3_cauma3d_989";
 //$computeCluster = "jureca.fz-juelich.de";
 //$queue = "batch";
 
-//$computeCluster = "alamo.uthscsa.edu";
-//$queue = "batch";
+$computeCluster = "alamo.uthscsa.edu";
+$queue = "batch";
 
 //$computeCluster = "comet.sdsc.xsede.org";
 //$queue = "compute";
@@ -27,8 +27,8 @@ $requestId = "uslims3_cauma3d_989";
 //$computeCluster = "stampede.tacc.xsede.org";
 //$queue = "normal";
 
-$computeCluster = "static-cluster.jetstream-cloud.org";
-$queue = "batch";
+//$computeCluster = "static-cluster.jetstream-cloud.org";
+//$queue = "batch";
 
 
 $cores = 16;
@@ -40,10 +40,20 @@ $clusterUserName = "swus1";
 //$clusterScratch = "";
 $clusterScratch = "/work/ultrascn/swus1";
 
-//uslims3
-$limsHost = "uslims3.uthscsa.edu";
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/164b976a-1ce5-c714-417a-d599f8f759fc/hpcinput-localhost-uslims3_NVAX-05268.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-299b-6f7cf245b7a5";
+//AU
+$limsHost = "uslims3.latrobe.edu.au";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/a1f91936-5bc6-76b4-b96c-89961a5944e8/hpcinput-uslims3.latrobe.edu.au-uslims3_latrobe-00810.tar";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
+
+//iisc
+//$limsHost = "uslims3.mbu.iisc.ernet.in";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/72e8b914-759a-c934-cd50-b13031365bce/hpcinput-localhost-uslims3_ICTMumbai-00057.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
+
+////uslims3
+//$limsHost = "uslims3.uthscsa.edu";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/164b976a-1ce5-c714-417a-d599f8f759fc/hpcinput-localhost-uslims3_NVAX-05268.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-299b-6f7cf245b7a5";
 
 //gw143 - iu lims
 //$limsHost = "gw143.iu.xsede.org";
