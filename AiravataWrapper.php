@@ -42,6 +42,7 @@ require_once "AiravataUtils.php";
 use Thrift\Transport\TSocket;
 use Thrift\Protocol\TBinaryProtocol;
 use Thrift\Exception\TException;
+use Thrift\Exception\TTransportException;
 use Airavata\API\AiravataClient;
 use Airavata\Model\Security\AuthzToken;
 use Airavata\Model\Status\ExperimentState;
@@ -145,35 +146,51 @@ class AiravataWrapper implements AiravataWrapperInterface
     function get_experiment_status($experimentId)
     {
 
-        $experimentStatus = $this->airavataclient->getExperimentStatus($this->authToken, $experimentId);
-        $experimentState = ExperimentState::$__names[$experimentStatus->state];
+        $experimentState = 'UNKNOWN';
+        try {
+            $experimentStatus = $this->airavataclient->getExperimentStatus($this->authToken, $experimentId);
+            $experimentState = ExperimentState::$__names[$experimentStatus->state];
 
-        switch ($experimentState)
-        {
-            case 'EXECUTING':
-                $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
-                if (isset($jobStatuses) && count($jobStatuses)>0) {
-                    $jobNames = array_keys($jobStatuses);
-                    $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
-                    if ( $jobState == 'QUEUED'  ||  $jobState == 'ACTIVE' )
-                        $experimentState  = $jobState;
-                }
-                break;
-            case 'COMPLETED':
-                $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
-                if (isset($jobStatuses) && count($jobStatuses)>0) {
-                    $jobNames = array_keys($jobStatuses);
-                    $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
-                    if ( $jobState == 'FAILED' )
-                        $experimentState    = $jobState;
-                }
-                break;
-            case '':
-            case 'UNKNOWN':
-                break;
-            default:
-                break;
+            switch ($experimentState)
+            {
+                case 'EXECUTING':
+                    $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
+                    if (isset($jobStatuses) && count($jobStatuses)>0) {
+                        $jobNames = array_keys($jobStatuses);
+                        $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
+                        if ( $jobState == 'QUEUED'  ||  $jobState == 'ACTIVE' )
+                            $experimentState  = $jobState;
+                    }
+                    break;
+                case 'COMPLETED':
+                    $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
+                    if (isset($jobStatuses) && count($jobStatuses)>0) {
+                        $jobNames = array_keys($jobStatuses);
+                        $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
+                        if ( $jobState == 'FAILED' )
+                            $experimentState    = $jobState;
+                    }
+                    break;
+                case '':
+                case 'UNKNOWN':
+                    break;
+                default:
+                    break;
+            }
+        } catch (InvalidRequestException $ire) {
+            echo $ire->getMessage();
+        } catch (ExperimentNotFoundException $enf) {
+            echo $enf->getMessage();
+        } catch (AiravataClientException $ace) {
+            echo $ace->getMessage();
+        } catch (AiravataSystemException $ase) {
+            $ase->getMessage();
+        } catch (TTransportException $tte) {
+            echo $tte->getMessage();
+        } catch (Exception $e) {
+            $e->getMessage();
         }
+
         return $experimentState;
     }
 
