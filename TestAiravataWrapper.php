@@ -7,17 +7,17 @@ use SCIGAP\AiravataWrapper;
 $airavataWrapper = new AiravataWrapper();
 
 $limsUser = "smarru";
-$experimentName = "US3-Test";
+$experimentName = "US3-Staging-Test";
 $requestId = "uslims3_cauma3d_989";
 
 //$computeCluster = "ls5.tacc.utexas.edu";
 //$queue = "normal";
 
-//$computeCluster = "jureca.fz-juelich.de";
-//$queue = "batch";
-
-$computeCluster = "alamo.uthscsa.edu";
+$computeCluster = "jureca.fz-juelich.de";
 $queue = "batch";
+
+//$computeCluster = "alamo.uthscsa.edu";
+//$queue = "batch";
 
 //$computeCluster = "comet.sdsc.xsede.org";
 //$queue = "compute";
@@ -25,6 +25,10 @@ $queue = "batch";
 
 //
 //$computeCluster = "stampede.tacc.xsede.org";
+//$queue = "normal";
+
+//
+//$computeCluster = "stampede2.tacc.xsede.org";
 //$queue = "normal";
 
 //$computeCluster = "static-cluster.jetstream-cloud.org";
@@ -41,9 +45,9 @@ $clusterUserName = "swus1";
 $clusterScratch = "/work/ultrascn/swus1";
 
 //AU
-$limsHost = "uslims3.latrobe.edu.au";
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/a1f91936-5bc6-76b4-b96c-89961a5944e8/hpcinput-uslims3.latrobe.edu.au-uslims3_latrobe-00810.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
+//$limsHost = "uslims3.latrobe.edu.au";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/a1f91936-5bc6-76b4-b96c-89961a5944e8/hpcinput-uslims3.latrobe.edu.au-uslims3_latrobe-00810.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
 
 //iisc
 //$limsHost = "uslims3.mbu.iisc.ernet.in";
@@ -51,9 +55,9 @@ $outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
 //$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
 
 ////uslims3
-//$limsHost = "uslims3.uthscsa.edu";
-//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/164b976a-1ce5-c714-417a-d599f8f759fc/hpcinput-localhost-uslims3_NVAX-05268.tar";
-//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-299b-6f7cf245b7a5";
+$limsHost = "uslims3.uthscsa.edu";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/92da88a7-4e28-5b94-1d45-e8c40d9105a6/hpcinput-localhost-uslims3_cauma3d-01004.tar";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test/";
 
 //gw143 - iu lims
 //$limsHost = "gw143.iu.xsede.org";
@@ -66,13 +70,11 @@ $outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
 //$outputDataDirectory = "/var/www/portals/gateway-user-data/ultrascan/test";
 
 //for ($x = 0; $x <= 0; $x++) {
-
+//
     $launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
                                                             $computeCluster, $queue, $cores, $nodes, $mGroupCount,
                                                             $wallTime, $clusterUserName, $clusterScratch,
                                                             $inputFile, $outputDataDirectory);
-
-////var_dump($launchResult);
 
 $expID = 0;
 if ( $launchResult[ 'launchStatus' ] ) {
@@ -81,6 +83,8 @@ if ( $launchResult[ 'launchStatus' ] ) {
 } else {
     echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
 }
+
+//var_dump($launchResult);
 
 //}
 
@@ -96,8 +100,8 @@ if ( $launchResult[ 'launchStatus' ] ) {
 
 //$experimentError = $airavataWrapper->get_experiment_errors("US3-Test_8a392389-c3d7-46aa-a08d-ae2a982ebd82");
 //var_dump($experimentError);
-
-//$expID = "US3-Test_99544916-6357-4810-ba2d-cd1885e5d5fa";
+//
+//$expID = "US3-Test_1c1a0eb8-e333-45e4-b4d8-6e9fe07c6274";
 //
 //while (true) {
 //    $experimentState = $airavataWrapper->get_experiment_status($expID);
