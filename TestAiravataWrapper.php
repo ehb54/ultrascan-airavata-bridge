@@ -40,10 +40,15 @@ $clusterUserName = "swus1";
 //$clusterScratch = "";
 $clusterScratch = "/work/ultrascn/swus1";
 
+
+$limsHost = "alamo.uthscsa.edu";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/4fe7ecae-4ed6-4054-658f-ce54780c3a0d/hpcinput-localhost-uslims3_SD-00289.tar";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/4fe7ecae-4ed6-4054-658f-ce54780c3a0d";
+
 //AU
-$limsHost = "uslims3.latrobe.edu.au";
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/a1f91936-5bc6-76b4-b96c-89961a5944e8/hpcinput-uslims3.latrobe.edu.au-uslims3_latrobe-00810.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
+//$limsHost = "uslims3.latrobe.edu.au";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/a1f91936-5bc6-76b4-b96c-89961a5944e8/hpcinput-uslims3.latrobe.edu.au-uslims3_latrobe-00810.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
 
 //iisc
 //$limsHost = "uslims3.mbu.iisc.ernet.in";

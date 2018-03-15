@@ -61,4 +61,14 @@ interface AiravataWrapperInterface
      */
     function terminate_airavata_experiment($experimentId);
 
+    /**
+     * This function executes post processing file stages.
+     *
+     * @param string $experimentId - Id of the Experiment to be terminated.
+     *
+     * @return array - The array will have two values: $cancelStatus, $message
+     *
+     */
+    function execute_post_processing($experimentId);
+
 }

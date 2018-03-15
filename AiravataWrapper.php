@@ -234,4 +234,17 @@ class AiravataWrapper implements AiravataWrapperInterface
         return $returnArray;
     }
 
+    /**
+     * This function executes post processing file stages.
+     *
+     * @param string $experimentId - Id of the Experiment to be terminated.
+     *
+     * @return array - The array will have two values: $cancelStatus, $message
+     *
+     */
+    function execute_post_processing($experimentId)
+    {
+        $this->airavataclient->executePostProcessing($this->authToken, $experimentId, $this->gatewayId);
+        // TODO: Implement execute_post_processing() method.
+    }
 }
