@@ -10,11 +10,11 @@ $limsUser = "smarru";
 $experimentName = "US3-Staging-Test";
 $requestId = "uslims3_cauma3d_989";
 
-//$computeCluster = "ls5.tacc.utexas.edu";
-//$queue = "normal";
+$computeCluster = "ls5.tacc.utexas.edu";
+$queue = "normal";
 
-$computeCluster = "jureca.fz-juelich.de";
-$queue = "batch";
+//$computeCluster = "jureca.fz-juelich.de";
+//$queue = "batch";
 
 //$computeCluster = "alamo.uthscsa.edu";
 //$queue = "batch";
@@ -54,10 +54,10 @@ $clusterScratch = "/work/ultrascn/swus1";
 //$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/72e8b914-759a-c934-cd50-b13031365bce/hpcinput-localhost-uslims3_ICTMumbai-00057.tar";
 //$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
 
-////uslims3
-$limsHost = "uslims3.uthscsa.edu";
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/92da88a7-4e28-5b94-1d45-e8c40d9105a6/hpcinput-localhost-uslims3_cauma3d-01004.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test/";
+////Alamo
+$limsHost = "alamo.uthscsa.edu";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/f3c40bdc-324f-b0f4-0d62-20da04862293/hpcinput-localhost-uslims3_Workshop-00619.tar";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/f3c40bdc-324f-b0f4-0d62-20da04862293";
 
 //gw143 - iu lims
 //$limsHost = "gw143.iu.xsede.org";
