@@ -39,19 +39,17 @@ require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Data/Replica/Types.php';
 require_once "AiravataWrapperInterface.php";
 require_once "AiravataUtils.php";
 
-use Thrift\Transport\TSocket;
-use Thrift\Protocol\TBinaryProtocol;
-use Thrift\Exception\TException;
-use Thrift\Exception\TTransportException;
 use Airavata\API\AiravataClient;
-use Airavata\Model\Security\AuthzToken;
-use Airavata\Model\Status\ExperimentState;
-use Airavata\Model\Status\JobState;
-use Airavata\API\Error\InvalidRequestException;
 use Airavata\API\Error\AiravataClientException;
 use Airavata\API\Error\AiravataSystemException;
 use Airavata\API\Error\ExperimentNotFoundException;
-use Thrift\Transport\TSSLSocket;
+use Airavata\API\Error\InvalidRequestException;
+use Airavata\Model\Security\AuthzToken;
+use Airavata\Model\Status\ExperimentState;
+use Airavata\Model\Status\JobState;
+use Thrift\Exception\TTransportException;
+use Thrift\Protocol\TBinaryProtocol;
+use Thrift\Transport\TSocket;
 
 class AiravataWrapper implements AiravataWrapperInterface
 {
@@ -151,24 +149,23 @@ class AiravataWrapper implements AiravataWrapperInterface
             $experimentStatus = $this->airavataclient->getExperimentStatus($this->authToken, $experimentId);
             $experimentState = ExperimentState::$__names[$experimentStatus->state];
 
-            switch ($experimentState)
-            {
+            switch ($experimentState) {
                 case 'EXECUTING':
                     $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
-                    if (isset($jobStatuses) && count($jobStatuses)>0) {
+                    if (isset($jobStatuses) && count($jobStatuses) > 0) {
                         $jobNames = array_keys($jobStatuses);
                         $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
-                        if ( $jobState == 'QUEUED'  ||  $jobState == 'ACTIVE' )
-                            $experimentState  = $jobState;
+                        if ($jobState == 'QUEUED' || $jobState == 'ACTIVE')
+                            $experimentState = $jobState;
                     }
                     break;
                 case 'COMPLETED':
                     $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
-                    if (isset($jobStatuses) && count($jobStatuses)>0) {
+                    if (isset($jobStatuses) && count($jobStatuses) > 0) {
                         $jobNames = array_keys($jobStatuses);
                         $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
-                        if ( $jobState == 'FAILED' )
-                            $experimentState    = $jobState;
+                        if ($jobState == 'FAILED')
+                            $experimentState = $jobState;
                     }
                     break;
                 case '':
@@ -204,14 +201,23 @@ class AiravataWrapper implements AiravataWrapperInterface
      */
     function get_experiment_errors($experimentId)
     {
-        $experimentModel = $this->airavataclient->getExperiment($this->authToken, $experimentId);
-        $experimentErrors = $experimentModel->errors;
-        if ($experimentErrors != null) {
-            foreach ($experimentErrors as $experimentError) {
-                $actualError = $experimentError->actualErrorMessage;
-                return $actualError;
+        $actualError = '';
+        try {
+            $experimentModel = $this->airavataclient->getExperiment($this->authToken, $experimentId);
+            $experimentErrors = $experimentModel->errors;
+            if ($experimentErrors != null) {
+                foreach ($experimentErrors as $experimentError) {
+                    $actualError = $experimentError->actualErrorMessage;
+                }
             }
+        } catch (AiravataSystemException $ase) {
+            echo $ase->getMessage();
+            $actualError = 'No Experiment Errors';
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            $actualError = 'No Experiment Errors';
         }
+        return $actualError;
     }
 
     /**
