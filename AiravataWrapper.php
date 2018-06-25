@@ -212,13 +212,15 @@ class AiravataWrapper implements AiravataWrapperInterface
                 foreach ($experimentErrors as $experimentError) {
                     $actualError = $experimentError->actualErrorMessage;
                 }
+            } else {
+                $actualError = 'No Experiment Errors';
             }
         } catch (AiravataSystemException $ase) {
             echo $ase->getMessage();
-            $actualError = 'No Experiment Errors';
+            $actualError = ' No Experiment Errors';
         } catch (Exception $e) {
             echo $e->getMessage();
-            $actualError = 'No Experiment Errors';
+            $actualError = ' No Experiment Errors';
         }
         return $actualError;
     }
