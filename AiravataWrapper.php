@@ -204,14 +204,23 @@ class AiravataWrapper implements AiravataWrapperInterface
      */
     function get_experiment_errors($experimentId)
     {
-        $experimentModel = $this->airavataclient->getExperiment($this->authToken, $experimentId);
-        $experimentErrors = $experimentModel->errors;
-        if ($experimentErrors != null) {
-            foreach ($experimentErrors as $experimentError) {
-                $actualError = $experimentError->actualErrorMessage;
-                return $actualError;
+        $actualError = '';
+        try {
+            $experimentModel = $this->airavataclient->getExperiment($this->authToken, $experimentId);
+            $experimentErrors = $experimentModel->errors;
+            if ($experimentErrors != null) {
+                foreach ($experimentErrors as $experimentError) {
+                    $actualError = $experimentError->actualErrorMessage;
+                }
             }
+        } catch (AiravataSystemException $ase) {
+            echo $ase->getMessage();
+            $actualError = 'No Experiment Errors';
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            $actualError = 'No Experiment Errors';
         }
+        return $actualError;
     }
 
     /**
