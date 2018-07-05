@@ -49,6 +49,9 @@ function create_experiment_model($airavataclient, $authToken,
 {
     $storageResourceId = null;
     switch ($limsHost) {
+        case "uslims3.aucsolutions.com":
+            $storageResourceId = $airavataconfig['USLIMS3_JS_STORAGE_ID'];
+            break;
         case "alamo.uthscsa.edu":
             $storageResourceId = $airavataconfig['USLIMS3_ALAMO_STORAGE_ID'];
             break;
