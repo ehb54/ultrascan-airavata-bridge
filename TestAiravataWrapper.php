@@ -59,6 +59,11 @@ $limsHost = "alamo.uthscsa.edu";
 $inputFile = "/srv/www/htdocs/uslims3/uslims3_data/f3c40bdc-324f-b0f4-0d62-20da04862293/hpcinput-localhost-uslims3_Workshop-00619.tar";
 $outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/f3c40bdc-324f-b0f4-0d62-20da04862293";
 
+////JS Host
+$limsHost = "uslims3.aucsolutions.com";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/f5a6ed64-2f1e-a2c4-c526-a4356317bf58/hpcinput-localhost-uslims3_AUCSOL-02614.tar";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/f5a6ed64-2f1e-a2c4-c526-a4356317bf58";
+
 //gw143 - iu lims
 //$limsHost = "gw143.iu.xsede.org";
 //$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/223c092a-b633-6b14-198e-43f6acb02c53/hpcinput-localhost-uslims3_cauma3d-00973.tar";
