@@ -1,15 +1,14 @@
 <?php
 
-use Airavata\Model\Workspace\Project;
-use Airavata\Model\Experiment\ExperimentModel;
-use Airavata\Model\Experiment\UserConfigurationDataModel;
-use Airavata\Model\Scheduling\ComputationalResourceSchedulingModel;
-use Airavata\Model\Application\Io\InputDataObjectType;
 use Airavata\Model\Data\Replica\DataProductModel;
 use Airavata\Model\Data\Replica\DataProductType;
 use Airavata\Model\Data\Replica\DataReplicaLocationModel;
 use Airavata\Model\Data\Replica\ReplicaLocationCategory;
 use Airavata\Model\Data\Replica\ReplicaPersistentType;
+use Airavata\Model\Experiment\ExperimentModel;
+use Airavata\Model\Experiment\UserConfigurationDataModel;
+use Airavata\Model\Scheduling\ComputationalResourceSchedulingModel;
+use Airavata\Model\Workspace\Project;
 
 function fetch_projectid($airavataclient, $authToken, $gatewayid, $user)
 {
@@ -31,7 +30,7 @@ function create_project($airavataclient, $authToken, $gatewayid, $user)
 {
     $project = new Project();
     $project->owner = $user;
-    $project->gatewayId=$gatewayid;
+    $project->gatewayId = $gatewayid;
     $project->name = "Default_Project";
     $project->description = "Default project";
 
@@ -129,6 +128,9 @@ function create_experiment_model($airavataclient, $authToken,
         case "jureca.fz-juelich.de":
             $computeResourceId = $airavataconfig['JURECA_COMPUTE_ID'];
             break;
+        case "juwels.fz-juelich.de":
+            $computeResourceId = $airavataconfig['JUWELS_COMPUTE_ID'];
+            break;
         case "static-cluster.jetstream-cloud.org":
             $computeResourceId = $airavataconfig['JETSTREAM_COMPUTE_ID'];
             break;
@@ -146,7 +148,7 @@ function create_experiment_model($airavataclient, $authToken,
     $userConfigs->storageId = $storageResourceId;
     $userConfigs->experimentDataDir = $outputDataDirectory;
 
-    if (($computeCluster == "jureca") || ($computeCluster == "jureca.fz-juelich.de")) {
+    if (($computeCluster == "jureca") || ($computeCluster == "jureca.fz-juelich.de") || ($computeCluster == "juwels") || ($computeCluster == "juwels.fz-juelich.de")) {
 
         $scheduling->overrideLoginUserName = $clusterUserName;
         $scheduling->overrideScratchLocation = $clusterScratch;
