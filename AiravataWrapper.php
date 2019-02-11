@@ -100,8 +100,9 @@ class AiravataWrapper implements AiravataWrapperInterface
      * @param integer $nodes - Number of Nodes to be requested.
      * @param integer $mGroupCount - Parallel groups.
      * @param integer $wallTime - Maximum wall time of the job.
-     * @param string $clusterUserName - Jureca submissions will use this value to construct the userDN. Other clusters ignore it.
-     * @param string $clusterScratch - Jureca submissions will require this, Other clusters ignore it.
+     * @param string $clusterUserName - Juelich’s clusters will use this to submit job as the specified user. Other clusters ignore it.
+     * @param string $clusterScratch - Cluster scratch for Juelich clusters, Others ignore it.
+     * @param string $clusterAllocationAccount - override cluster allocation project account number
      * @param string $inputFile - Path of the Input Tar File
      * @param string $outputDataDirectory - Directory path where Airavata should stage back the output tar file.
      *
@@ -109,8 +110,8 @@ class AiravataWrapper implements AiravataWrapperInterface
      *
      */
     function launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-                                        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch,
-                                        $inputFile, $outputDataDirectory)
+                                        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
+                                        $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory)
     {
         /** Test Airavata API Connection */
 //        $version = $this->airavataclient->getAPIVersion($this->authToken);
@@ -119,7 +120,7 @@ class AiravataWrapper implements AiravataWrapperInterface
         $projectId = fetch_projectid($this->airavataclient, $this->authToken, $this->gatewayId, $limsUser);
 
         $experimentModel = create_experiment_model($this->airavataclient, $this->authToken, $this->airavataconfig, $this->gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
-            $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch,
+            $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch, $clusterAllocationAccount,
             $inputFile, $outputDataDirectory);
 
         $experimentId = $this->airavataclient->createExperiment($this->authToken, $this->gatewayId, $experimentModel);

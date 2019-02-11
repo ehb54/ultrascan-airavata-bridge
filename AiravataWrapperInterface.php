@@ -19,8 +19,9 @@ interface AiravataWrapperInterface
      * @param integer $nodes - Number of Nodes to be requested.
      * @param integer $mGroupCount - Parallel groups.
      * @param integer $wallTime - Maximum wall time of the job.
-     * @param string $clusterUserName - Jureca submissions will use this to submit job as the specified user. Other clusters ignore it.
-     * @param string $clusterScratch - Cluster scratch for Jureca submissions, Other clusters ignore it.
+     * @param string $clusterUserName - Juelich’s clusters will use this to submit job as the specified user. Other clusters ignore it.
+     * @param string $clusterScratch - Cluster scratch for Juelich clusters, Others ignore it.
+     * @param string $clusterAllocationAccount - override cluster allocation project account number
      * @param string $inputFile - Path of the Input Tar File
      * @param string $outputDataDirectory - Directory path where Airavata should stage back the output tar file.
      *
@@ -28,8 +29,8 @@ interface AiravataWrapperInterface
      *
      */
     function launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-                                        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch,
-                                        $inputFile, $outputDataDirectory);
+                                        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
+                                        $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory);
 
     /**
      * This function calls fetches Airavata Experiment Status.

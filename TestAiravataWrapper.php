@@ -44,6 +44,9 @@ $wallTime = 120;
 //$clusterUserName = "CN=swus1, O=Ultrascan Gateway, C=DE";
 $clusterUserName = "sureshmarru1";
 $clusterScratch = "/p/scratch/cpaj1846/sureshmarru1";
+//$clusterUserName = "schneider3";
+//$clusterScratch = "/p/scratch/cpaj1846/schneider3";
+$clusterAllocationAccount = "test";
 
 //AU
 //$limsHost = "uslims3.latrobe.edu.au";
@@ -79,7 +82,7 @@ for ($x = 1; $x <=1; $x++) {
 
     $launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
                                                             $computeCluster, $queue, $cores, $nodes, $mGroupCount,
-                                                            $wallTime, $clusterUserName, $clusterScratch,
+                                                            $wallTime, $clusterUserName, $clusterScratch, $clusterAllocationAccount,
                                                             $inputFile, $outputDataDirectory);
 
 $expID = 0;
