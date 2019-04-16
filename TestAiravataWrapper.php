@@ -19,8 +19,8 @@ $requestId = "uslims3_cauma3d_989";
 //$computeCluster = "alamo.uthscsa.edu";
 //$queue = "batch";
 
-//$computeCluster = "comet.sdsc.xsede.org";
-//$queue = "compute";
+$computeCluster = "comet.sdsc.xsede.org";
+$queue = "compute";
 //
 
 //
@@ -34,19 +34,19 @@ $requestId = "uslims3_cauma3d_989";
 //$computeCluster = "static-cluster.jetstream-cloud.org";
 //$queue = "batch";
 
-$computeCluster = "juwels.fz-juelich.de";
-$queue = "batch";
+//$computeCluster = "juwels.fz-juelich.de";
+//$queue = "batch";
 
 $cores = 24;
 $nodes = 1;
 $mGroupCount = 1;
 $wallTime = 120;
 //$clusterUserName = "CN=swus1, O=Ultrascan Gateway, C=DE";
-$clusterUserName = "sureshmarru1";
-$clusterScratch = "/p/scratch/cpaj1846/sureshmarru1";
-//$clusterUserName = "schneider3";
-//$clusterScratch = "/p/scratch/cpaj1846/schneider3";
-$clusterAllocationAccount = "test";
+//$clusterUserName = "sureshmarru1";
+//$clusterScratch = "/p/scratch/cpaj1846/sureshmarru1";
+$clusterUserName = "schneider3";
+$clusterScratch = "/p/scratch/cpaj1846/schneider3";
+$clusterAllocationAccount = "hkn00";
 
 //AU
 //$limsHost = "uslims3.latrobe.edu.au";
@@ -64,9 +64,13 @@ $clusterAllocationAccount = "test";
 //$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/f3c40bdc-324f-b0f4-0d62-20da04862293";
 
 ////JS Host
-$limsHost = "uslims3.aucsolutions.com";
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/dbecb29c-a668-3914-e1d4-25865dcb9718/hpcinput-localhost-uslims3_cauma3d-01583.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/dbecb29c-a668-3914-e1d4-25865dcb9718";
+//$limsHost = "uslims3.aucsolutions.com";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/dbecb29c-a668-3914-e1d4-25865dcb9718/hpcinput-localhost-uslims3_cauma3d-01583.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/dbecb29c-a668-3914-e1d4-25865dcb9718";
+
+$limsHost = "demeler6.uleth.ca";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/bbaa4f2c-83dc-df74-19ad-9bfbe9dac01e/hpcinput-localhost-uslims3_test1-00027.tar";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
 
 //gw143 - iu lims
 //$limsHost = "gw143.iu.xsede.org";
