@@ -39,17 +39,19 @@ require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Data/Replica/Types.php';
 require_once "AiravataWrapperInterface.php";
 require_once "AiravataUtils.php";
 
+use Thrift\Transport\TSocket;
+use Thrift\Protocol\TBinaryProtocol;
+use Thrift\Exception\TException;
+use Thrift\Exception\TTransportException;
 use Airavata\API\AiravataClient;
-use Airavata\API\Error\AiravataClientException;
-use Airavata\API\Error\AiravataSystemException;
-use Airavata\API\Error\ExperimentNotFoundException;
-use Airavata\API\Error\InvalidRequestException;
 use Airavata\Model\Security\AuthzToken;
 use Airavata\Model\Status\ExperimentState;
 use Airavata\Model\Status\JobState;
-use Thrift\Exception\TTransportException;
-use Thrift\Protocol\TBinaryProtocol;
-use Thrift\Transport\TSocket;
+use Airavata\API\Error\InvalidRequestException;
+use Airavata\API\Error\AiravataClientException;
+use Airavata\API\Error\AiravataSystemException;
+use Airavata\API\Error\ExperimentNotFoundException;
+use Thrift\Transport\TSSLSocket;
 
 class AiravataWrapper implements AiravataWrapperInterface
 {
@@ -98,8 +100,9 @@ class AiravataWrapper implements AiravataWrapperInterface
      * @param integer $nodes - Number of Nodes to be requested.
      * @param integer $mGroupCount - Parallel groups.
      * @param integer $wallTime - Maximum wall time of the job.
-     * @param string $clusterUserName - Jureca submissions will use this value to construct the userDN. Other clusters ignore it.
-     * @param string $clusterScratch - Jureca submissions will require this, Other clusters ignore it.
+     * @param string $clusterUserName - Juelich’s clusters will use this to submit job as the specified user. Other clusters ignore it.
+     * @param string $clusterScratch - Cluster scratch for Juelich clusters, Others ignore it.
+     * @param string $clusterAllocationAccount - override cluster allocation project account number
      * @param string $inputFile - Path of the Input Tar File
      * @param string $outputDataDirectory - Directory path where Airavata should stage back the output tar file.
      *
@@ -107,8 +110,8 @@ class AiravataWrapper implements AiravataWrapperInterface
      *
      */
     function launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-                                        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch,
-                                        $inputFile, $outputDataDirectory)
+                                        $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
+                                        $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory)
     {
         /** Test Airavata API Connection */
 //        $version = $this->airavataclient->getAPIVersion($this->authToken);
@@ -117,7 +120,7 @@ class AiravataWrapper implements AiravataWrapperInterface
         $projectId = fetch_projectid($this->airavataclient, $this->authToken, $this->gatewayId, $limsUser);
 
         $experimentModel = create_experiment_model($this->airavataclient, $this->authToken, $this->airavataconfig, $this->gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
-            $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch,
+            $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch, $clusterAllocationAccount,
             $inputFile, $outputDataDirectory);
 
         $experimentId = $this->airavataclient->createExperiment($this->authToken, $this->gatewayId, $experimentModel);
@@ -149,23 +152,24 @@ class AiravataWrapper implements AiravataWrapperInterface
             $experimentStatus = $this->airavataclient->getExperimentStatus($this->authToken, $experimentId);
             $experimentState = ExperimentState::$__names[$experimentStatus->state];
 
-            switch ($experimentState) {
+            switch ($experimentState)
+            {
                 case 'EXECUTING':
                     $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
-                    if (isset($jobStatuses) && count($jobStatuses) > 0) {
+                    if (isset($jobStatuses) && count($jobStatuses)>0) {
                         $jobNames = array_keys($jobStatuses);
                         $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
-                        if ($jobState == 'QUEUED' || $jobState == 'ACTIVE')
-                            $experimentState = $jobState;
+                        if ( $jobState == 'QUEUED'  ||  $jobState == 'ACTIVE' )
+                            $experimentState  = $jobState;
                     }
                     break;
                 case 'COMPLETED':
                     $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
-                    if (isset($jobStatuses) && count($jobStatuses) > 0) {
+                    if (isset($jobStatuses) && count($jobStatuses)>0) {
                         $jobNames = array_keys($jobStatuses);
                         $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
-                        if ($jobState == 'FAILED')
-                            $experimentState = $jobState;
+                        if ( $jobState == 'FAILED' )
+                            $experimentState    = $jobState;
                     }
                     break;
                 case '':
@@ -209,7 +213,7 @@ class AiravataWrapper implements AiravataWrapperInterface
                 foreach ($experimentErrors as $experimentError) {
                     $actualError = $experimentError->actualErrorMessage;
                 }
-            }  else {
+            } else {
                 $actualError = 'No Experiment Errors';
             }
         } catch (AiravataSystemException $ase) {
@@ -242,17 +246,4 @@ class AiravataWrapper implements AiravataWrapperInterface
         return $returnArray;
     }
 
-    /**
-     * This function executes post processing file stages.
-     *
-     * @param string $experimentId - Id of the Experiment to be terminated.
-     *
-     * @return array - The array will have two values: $cancelStatus, $message
-     *
-     */
-    function execute_post_processing($experimentId)
-    {
-        $this->airavataclient->executePostProcessing($this->authToken, $experimentId, $this->gatewayId);
-        // TODO: Implement execute_post_processing() method.
-    }
 }
