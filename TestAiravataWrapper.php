@@ -70,9 +70,14 @@ $clusterAllocationAccount = "paj1846";
 //$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
 
 //Finnish LIMS
-$limsHost = "vm1584.kaj.pouta.csc.fi";
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/e8565d44-cd90-2594-fd96-d026c2b05308/hpcinput-localhost-uslims3_Aalto-00378.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/e8565d44-cd90-2594-fd96-d026c2b05308";
+//$limsHost = "vm1584.kaj.pouta.csc.fi";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/e8565d44-cd90-2594-fd96-d026c2b05308/hpcinput-localhost-uslims3_Aalto-00378.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/e8565d44-cd90-2594-fd96-d026c2b05308";
+
+//ULeth LIMS
+$limsHost = "uslims.uleth.ca";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/a280d69b-12b7-81c4-bd50-1a80417b9ec8/hpcinput-localhost-uslims3_CCH-11495.tar";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/a280d69b-12b7-81c4-bd50-1a80417b9ec8";
 
 //PGA test
 //$limsHost = "gf4.ucs.indiana.edu";

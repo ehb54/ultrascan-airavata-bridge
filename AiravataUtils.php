@@ -52,7 +52,7 @@ function create_experiment_model($airavataclient, $authToken,
         case "uslims3.aucsolutions.com":
             $storageResourceId = $airavataconfig['USLIMS3_JS_STORAGE_ID'];
             break;
-        case "demeler6.uleth.ca":
+        case "uslims.uleth.ca":
             $storageResourceId = $airavataconfig['USLIMS3_ULETH_STORAGE_ID'];
             break;
         case "vm1584.kaj.pouta.csc.fi":
