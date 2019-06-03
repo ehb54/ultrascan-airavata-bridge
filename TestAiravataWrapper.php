@@ -7,7 +7,7 @@ use SCIGAP\AiravataWrapper;
 $airavataWrapper = new AiravataWrapper();
 
 $limsUser = "smarru";
-$experimentName = "US3-Staging-Test";
+$experimentName = "US3-production-migration-test";
 $requestId = "uslims3_cauma3d_989";
 
 //$computeCluster = "ls5.tacc.utexas.edu";
@@ -16,23 +16,15 @@ $requestId = "uslims3_cauma3d_989";
 //$computeCluster = "jureca.fz-juelich.de";
 //$queue = "batch";
 
-//$computeCluster = "alamo.uthscsa.edu";
-//$queue = "batch";
-
-$computeCluster = "comet.sdsc.xsede.org";
-$queue = "compute";
-//
-
-//
-//$computeCluster = "stampede.tacc.xsede.org";
-//$queue = "normal";
+//$computeCluster = "comet.sdsc.xsede.org";
+//$queue = "compute";
 
 //
 //$computeCluster = "stampede2.tacc.xsede.org";
 //$queue = "normal";
 
-//$computeCluster = "static-cluster.jetstream-cloud.org";
-//$queue = "batch";
+$computeCluster = "static-cluster.jetstream-cloud.org";
+$queue = "batch";
 
 //$computeCluster = "juwels.fz-juelich.de";
 //$queue = "batch";
@@ -42,16 +34,16 @@ $nodes = 1;
 $mGroupCount = 1;
 $wallTime = 120;
 //$clusterUserName = "CN=swus1, O=Ultrascan Gateway, C=DE";
-//$clusterUserName = "sureshmarru1";
-//$clusterScratch = "/p/scratch/cpaj1846/sureshmarru1";
-$clusterUserName = "schneider3";
-$clusterScratch = "/p/scratch/cpaj1846/schneider3";
-$clusterAllocationAccount = "hkn00";
+$clusterUserName = "sureshmarru1";
+$clusterScratch = "/p/scratch/cpaj1846/sureshmarru1";
+//$clusterUserName = "schneider3";
+//$clusterScratch = "/p/scratch/cpaj1846/schneider3";
+$clusterAllocationAccount = "paj1846";
 
 
-$limsHost = "alamo.uthscsa.edu";
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/4fe7ecae-4ed6-4054-658f-ce54780c3a0d/hpcinput-localhost-uslims3_SD-00289.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/4fe7ecae-4ed6-4054-658f-ce54780c3a0d";
+//$limsHost = "uslims3.aucsolutions.com";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/935290ca-c681-04e4-a910-7adf926b0b3b/hpcinput-localhost-uslims3_CU_Boulder-12544.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/935290ca-c681-04e4-a910-7adf926b0b3b/";
 
 //AU
 //$limsHost = "uslims3.latrobe.edu.au";
@@ -68,19 +60,19 @@ $outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/4fe7ecae-4ed6-4054-
 //$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/f3c40bdc-324f-b0f4-0d62-20da04862293/hpcinput-localhost-uslims3_Workshop-00619.tar";
 //$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/f3c40bdc-324f-b0f4-0d62-20da04862293";
 
-////JS Host
-//$limsHost = "uslims3.aucsolutions.com";
-//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/dbecb29c-a668-3914-e1d4-25865dcb9718/hpcinput-localhost-uslims3_cauma3d-01583.tar";
-//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/dbecb29c-a668-3914-e1d4-25865dcb9718";
+////JSC Host
+//$limsHost = "uslims3.fz-juelich.de";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/31961e72-bbd6-73b4-1d4a-a6a5f8f5c415/hpcinput-localhost-uslims3_Aalto-01757.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/31961e72-bbd6-73b4-1d4a-a6a5f8f5c415/";
 
-$limsHost = "demeler6.uleth.ca";
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/bbaa4f2c-83dc-df74-19ad-9bfbe9dac01e/hpcinput-localhost-uslims3_test1-00027.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
+//$limsHost = "uslims.uleth.ca";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/bbaa4f2c-83dc-df74-19ad-9bfbe9dac01e/hpcinput-localhost-uslims3_test1-00027.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/test";
 
-//gw143 - iu lims
-//$limsHost = "gw143.iu.xsede.org";
-//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/223c092a-b633-6b14-198e-43f6acb02c53/hpcinput-localhost-uslims3_cauma3d-00973.tar";
-//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/14dc85ff-320b-d284-299b-6f7cf245b7a5";
+//Finnish LIMS
+$limsHost = "vm1584.kaj.pouta.csc.fi";
+$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/e8565d44-cd90-2594-fd96-d026c2b05308/hpcinput-localhost-uslims3_Aalto-00378.tar";
+$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/e8565d44-cd90-2594-fd96-d026c2b05308";
 
 //PGA test
 //$limsHost = "gf4.ucs.indiana.edu";

@@ -55,9 +55,6 @@ function create_experiment_model($airavataclient, $authToken,
         case "demeler6.uleth.ca":
             $storageResourceId = $airavataconfig['USLIMS3_ULETH_STORAGE_ID'];
             break;
-        case "alamo.uthscsa.edu":
-            $storageResourceId = $airavataconfig['USLIMS3_ALAMO_STORAGE_ID'];
-            break;
         case "vm1584.kaj.pouta.csc.fi":
             $storageResourceId = $airavataconfig['USLIMS3_CSC_FINLAND_STORAGE_ID'];
             break;
@@ -117,17 +114,11 @@ function create_experiment_model($airavataclient, $authToken,
 
     $computeResourceId = null;
     switch ($computeCluster) {
-        case "alamo.uthscsa.edu":
-            $computeResourceId = $airavataconfig['ALAMO_COMPUTE_ID'];
-            break;
         case "comet.sdsc.xsede.org":
             $computeResourceId = $airavataconfig['COMET_COMPUTE_ID'];
             break;
         case "ls5.tacc.utexas.edu":
             $computeResourceId = $airavataconfig['LONESTAR5_COMPUTE_ID'];
-            break;
-        case "stampede.tacc.xsede.org":
-            $computeResourceId = $airavataconfig['STAMPEDE_COMPUTE_ID'];
             break;
         case "stampede2.tacc.xsede.org":
             $computeResourceId = $airavataconfig['STAMPEDE2_COMPUTE_ID'];
