@@ -74,7 +74,7 @@ class AiravataWrapper implements AiravataWrapperInterface
         $this->airavataclient = new AiravataClient($protocol);
 
         $this->authToken = new AuthzToken();
-        $this->authToken->accessToken = "";
+        $this->authToken->accessToken = $this->get_access_token();
         $this->authToken->claimsMap['gatewayID'] = $this->airavataconfig['GATEWAY_ID'];
 //        $this->authToken->claimsMap['userName'] = 'smarru';
         $this->gatewayId = $this->airavataconfig['GATEWAY_ID'];
@@ -246,4 +246,34 @@ class AiravataWrapper implements AiravataWrapperInterface
         return $returnArray;
     }
 
+    private function get_access_token()
+    {
+        // fetch access token for service account, equivalent of following:
+        // curl -u $OIDC_CLIENT_ID:$OIDC_CLIENT_SECRET -d grant_type=client_credentials $OIDC_TOKEN_URL
+        $r = curl_init($this->airavataconfig['OIDC_TOKEN_URL']);
+        curl_setopt($r, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($r, CURLOPT_ENCODING, 1);
+        curl_setopt($r, CURLOPT_SSL_VERIFYPEER, true);
+        if (array_key_exists("OIDC_CAFILE_PATH", $this->airavataconfig)) {
+            $filepath = realpath(dirname(__FILE__));
+            curl_setopt($r, CURLOPT_CAINFO, $filepath . "/" . $this->airavataconfig['OIDC_CAFILE_PATH']);
+        }
+        curl_setopt($r, CURLOPT_HTTPHEADER, array(
+            "Authorization: Basic " . base64_encode($this->airavataconfig['OIDC_CLIENT_ID'] . ":" . $this->airavataconfig['OIDC_CLIENT_SECRET']),
+        ));
+        // Assemble POST parameters for the request.
+        $post_fields = "grant_type=client_credentials";
+
+        // Obtain and return the access token from the response.
+        curl_setopt($r, CURLOPT_POST, true);
+        curl_setopt($r, CURLOPT_POSTFIELDS, $post_fields);
+
+        $response = curl_exec($r);
+        if ($response === FALSE) {
+            throw new Exception("Failed to retrieve API Access Token: curl_exec() failed. Error: " . curl_error($r));
+        }
+
+        $result = json_decode($response);
+        return $result->access_token;
+    }
 }
