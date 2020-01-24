@@ -37,6 +37,7 @@ USLIMS3_ULETH_STORAGE_ID = "uslims.uleth.ca_dbce021b-198b-4219-86cc-960a6a061190
 ; OIDC Authentication for service account authorization
 OIDC_CLIENT_ID = "..."
 OIDC_CLIENT_SECRET = "..."
+OIDC_USERNAME = "..."
 OIDC_TOKEN_URL = "https://iam.scigap.org/auth/realms/ultrascan/protocol/openid-connect/token"
 ; (Optional) Relative path to CA certificate to use to verify OIDC token endpoint
 OIDC_CAFILE_PATH = "./incommon_rsa_server_ca.pem"

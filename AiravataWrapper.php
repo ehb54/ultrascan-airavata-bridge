@@ -76,7 +76,7 @@ class AiravataWrapper implements AiravataWrapperInterface
         $this->authToken = new AuthzToken();
         $this->authToken->accessToken = $this->get_access_token();
         $this->authToken->claimsMap['gatewayID'] = $this->airavataconfig['GATEWAY_ID'];
-//        $this->authToken->claimsMap['userName'] = 'smarru';
+        $this->authToken->claimsMap['userName'] = $this->airavataconfig['OIDC_USERNAME'];
         $this->gatewayId = $this->airavataconfig['GATEWAY_ID'];
     }
 
