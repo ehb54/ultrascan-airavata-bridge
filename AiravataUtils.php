@@ -130,7 +130,7 @@ function create_experiment_model($airavataclient, $authToken,
             case "Input_Tar_File":
                 $dataProductModel = new DataProductModel();
                 $dataProductModel->gatewayId = $gatewayId;
-                $dataProductModel->ownerName = $limsUser;
+                $dataProductModel->ownerName = $authToken->claimsMap['userName'];
                 $dataProductModel->productName = basename($inputFile);
                 $dataProductModel->dataProductType = DataProductType::FILE;
 
@@ -200,7 +200,7 @@ function create_experiment_model($airavataclient, $authToken,
     $experimentModel = new ExperimentModel();
     $experimentModel->projectId = $projectId;
     $experimentModel->gatewayId = $gatewayId;
-    $experimentModel->userName = $limsUser;
+    $experimentModel->userName = $authToken->claimsMap['userName'];
     $experimentModel->experimentName = $experimentName;
     $experimentModel->executionId = $applicationInterfaceId;
     $experimentModel->gatewayExecutionId = $requestId;
