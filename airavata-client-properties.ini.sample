@@ -11,6 +11,12 @@ AIRAVATA_PORT = 9930
 ; Time out value to give enough breathing room for client to get synchronous responses back
 AIRAVATA_TIMEOUT = 20000
 
+; Host which runs the Airavata Profile Service Server
+AIRAVATA_PROFILE_SERVICE_SERVER = "api.scigap.org"
+
+; Airavata Profile Service Server thrift port
+AIRAVATA_PROFILE_SERVICE_PORT = 8962
+
 ; Gateway Identifier Registered within Airavata
 GATEWAY_ID = "ultrascan"
 

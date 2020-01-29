@@ -11,6 +11,8 @@ require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TSocket.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TSSLSocket.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TProtocol.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TBinaryProtocol.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TProtocolDecorator.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TMultiplexedProtocol.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TException.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TApplicationException.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TProtocolException.php';
@@ -23,6 +25,8 @@ require_once $GLOBALS['THRIFT_ROOT'] . 'StringFunc/TStringFunc.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'StringFunc/Core.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Type/TConstant.php';
 
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Base/API/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Base/API/BaseAPI.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Airavata.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Error/Types.php';
@@ -35,6 +39,7 @@ require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Commons/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/AppInterface/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Application/Io/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Data/Replica/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Service/Profile/User/CPI/UserProfileService.php';
 
 require_once "AiravataWrapperInterface.php";
 require_once "AiravataUtils.php";
@@ -74,7 +79,7 @@ class AiravataWrapper implements AiravataWrapperInterface
         $this->airavataclient = new AiravataClient($protocol);
 
         $this->authToken = new AuthzToken();
-        $this->authToken->accessToken = $this->get_access_token();
+        $this->authToken->accessToken = get_service_account_access_token($this->airavataconfig);
         $this->authToken->claimsMap['gatewayID'] = $this->airavataconfig['GATEWAY_ID'];
         $this->authToken->claimsMap['userName'] = $this->airavataconfig['OIDC_USERNAME'];
         $this->gatewayId = $this->airavataconfig['GATEWAY_ID'];
@@ -244,36 +249,5 @@ class AiravataWrapper implements AiravataWrapperInterface
         );
 
         return $returnArray;
-    }
-
-    private function get_access_token()
-    {
-        // fetch access token for service account, equivalent of following:
-        // curl -u $OIDC_CLIENT_ID:$OIDC_CLIENT_SECRET -d grant_type=client_credentials $OIDC_TOKEN_URL
-        $r = curl_init($this->airavataconfig['OIDC_TOKEN_URL']);
-        curl_setopt($r, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($r, CURLOPT_ENCODING, 1);
-        curl_setopt($r, CURLOPT_SSL_VERIFYPEER, true);
-        if (array_key_exists("OIDC_CAFILE_PATH", $this->airavataconfig)) {
-            $filepath = realpath(dirname(__FILE__));
-            curl_setopt($r, CURLOPT_CAINFO, $filepath . "/" . $this->airavataconfig['OIDC_CAFILE_PATH']);
-        }
-        curl_setopt($r, CURLOPT_HTTPHEADER, array(
-            "Authorization: Basic " . base64_encode($this->airavataconfig['OIDC_CLIENT_ID'] . ":" . $this->airavataconfig['OIDC_CLIENT_SECRET']),
-        ));
-        // Assemble POST parameters for the request.
-        $post_fields = "grant_type=client_credentials";
-
-        // Obtain and return the access token from the response.
-        curl_setopt($r, CURLOPT_POST, true);
-        curl_setopt($r, CURLOPT_POSTFIELDS, $post_fields);
-
-        $response = curl_exec($r);
-        if ($response === FALSE) {
-            throw new Exception("Failed to retrieve API Access Token: curl_exec() failed. Error: " . curl_error($r));
-        }
-
-        $result = json_decode($response);
-        return $result->access_token;
     }
 }
