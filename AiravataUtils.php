@@ -114,6 +114,9 @@ function create_experiment_model($airavataclient, $authToken,
 
     $computeResourceId = null;
     switch ($computeCluster) {
+        case "expanse.sdsc.edu":
+            $computeResourceId = $airavataconfig['EXPANSE_COMPUTE_ID'];
+            break;
         case "comet.sdsc.xsede.org":
             $computeResourceId = $airavataconfig['COMET_COMPUTE_ID'];
             break;
