@@ -24,13 +24,14 @@ interface AiravataWrapperInterface
      * @param string $clusterAllocationAccount - override cluster allocation project account number
      * @param string $inputFile - Path of the Input Tar File
      * @param string $outputDataDirectory - Directory path where Airavata should stage back the output tar file.
+     * @param integer $memoryreq - Optional memory requirement in megabytes. Pass 0 if needed to be skipped
      *
      * @return array - The array will have three values: $launchStatus, $experimentId, $message
      *
      */
     function launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
                                         $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
-                                        $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory);
+                                        $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory, $memoryreq);
 
     /**
      * This function calls fetches Airavata Experiment Status.

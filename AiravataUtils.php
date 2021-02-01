@@ -45,7 +45,8 @@ function create_project($airavataclient, $authToken, $gatewayid, $user)
 function create_experiment_model($airavataclient, $authToken,
                                  $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
                                  $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
-                                 $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory)
+                                 $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory,
+                                 $memoryreq )
 {
     $storageResourceId = null;
     switch ($limsHost) {
@@ -155,6 +156,9 @@ function create_experiment_model($airavataclient, $authToken,
         $scheduling->overrideScratchLocation = $clusterScratch;
         $scheduling->overrideAllocationProjectNumber = $clusterAllocationAccount;
 
+    }
+    if ( $memoryreq > 0 ) {
+        $scheduling->totalPhysicalMemory = $memoryreq;
     }
 
     $experimentModel = new ExperimentModel();
