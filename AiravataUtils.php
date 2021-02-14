@@ -50,6 +50,9 @@ function create_experiment_model($airavataclient, $authToken,
 {
     $storageResourceId = null;
     switch ($limsHost) {
+        case "demeler9.uleth.ca":
+            $storageResourceId = $airavataconfig['USLIMS3_DEMELER9_STORAGE_ID'];
+            break;
         case "uslims3.aucsolutions.com":
             $storageResourceId = $airavataconfig['USLIMS3_JS_STORAGE_ID'];
             break;
@@ -115,6 +118,9 @@ function create_experiment_model($airavataclient, $authToken,
 
     $computeResourceId = null;
     switch ($computeCluster) {
+        case "bridges2.psc.edu":
+            $computeResourceId = $airavataconfig['BRIDGES2_COMPUTE_ID'];
+            break;
         case "expanse.sdsc.edu":
             $computeResourceId = $airavataconfig['EXPANSE_COMPUTE_ID'];
             break;
