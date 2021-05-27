@@ -83,6 +83,18 @@ function create_experiment_model($airavataclient, $authToken,
         case "gf4.ucs.indiana.edu":
             $storageResourceId = $airavataconfig['USLIMS3_GF4_STORAGE_ID'];
             break;
+        case "uslims.aucsolutions.com":
+            $storageResourceId = $airavataconfig['USLIMS_AUCSOLUTIONS_STORAGE_ID'];
+            break;
+        case "uslims.uleth.ca":
+            $storageResourceId = $airavataconfig['USLIMS_ULETH_STORAGE_ID'];
+            break;
+        case "uslims.latrobe.edu.au":
+            $storageResourceId = $airavataconfig['USLIMS_LATROBE_STORAGE_ID'];
+            break;
+        case "uslims.fz-juelich.de":
+            $storageResourceId = $airavataconfig['USLIMS_JUELICH_STORAGE_ID'];
+            break;
     }
 
     $applicationInterfaceId = $airavataconfig['US3_APP'];
