@@ -50,6 +50,9 @@ function create_experiment_model($airavataclient, $authToken,
 {
     $storageResourceId = null;
     switch ($limsHost) {
+        case "demeler4.uleth.ca":
+            $storageResourceId = $airavataconfig['USLIMS3_DEMELER4_STORAGE_ID'];
+            break;
         case "uslims4.aucsolutions.com":
             $storageResourceId = $airavataconfig['USLIMS4_JS_STORAGE_ID'];
             break;
