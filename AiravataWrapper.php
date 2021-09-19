@@ -35,6 +35,7 @@ require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Commons/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/AppInterface/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Application/Io/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Data/Replica/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/job/Types.php';
 
 require_once "AiravataWrapperInterface.php";
 require_once "AiravataUtils.php";
@@ -47,6 +48,7 @@ use Airavata\API\AiravataClient;
 use Airavata\Model\Security\AuthzToken;
 use Airavata\Model\Status\ExperimentState;
 use Airavata\Model\Status\JobState;
+use Airavata\Model\Job\JobModel;
 use Airavata\API\Error\InvalidRequestException;
 use Airavata\API\Error\AiravataClientException;
 use Airavata\API\Error\AiravataSystemException;
@@ -248,4 +250,28 @@ class AiravataWrapper implements AiravataWrapperInterface
         return $returnArray;
     }
 
+    /**
+     * This function calls fetches job details from an Airavata Experiment.
+     *
+     * @param string $experimentId - Id of the Experiment.
+     *
+     * @return array - The array will the full getJobDetails() object
+     *
+     */
+    function get_job_details($experimentId)
+    {
+        try {
+            $jobList = $this->airavataclient->getJobDetails($this->authToken, $experimentId);
+            if ( count( $jobList ) ) {
+               return $jobList[0];
+            }
+        } catch (AiravataSystemException $ase) {
+            echo $ase->getMessage();
+            return ' No Job Details ';
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return ' No Job Details ';
+        }
+        return ' No Job Details ';
+    }
 }
