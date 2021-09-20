@@ -72,7 +72,14 @@ class AiravataWrapper implements AiravataWrapperInterface
         $this->transport->setSendTimeout($this->airavataconfig['AIRAVATA_TIMEOUT']);
 
         $protocol = new TBinaryProtocol($this->transport);
-        $this->transport->open();
+        try {
+            $this->transport->open();
+        } catch (TException $te) {
+            echo "Error trying to submit the job<br>";
+            echo $te->getMessage() . "<br>";
+            echo "Possibly the site is down or the certificate is expired.";
+        }
+            
         $this->airavataclient = new AiravataClient($protocol);
 
         $this->authToken = new AuthzToken();
