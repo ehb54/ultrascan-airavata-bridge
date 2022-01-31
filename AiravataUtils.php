@@ -6,19 +6,61 @@ use Airavata\Model\Data\Replica\DataReplicaLocationModel;
 use Airavata\Model\Data\Replica\ReplicaLocationCategory;
 use Airavata\Model\Data\Replica\ReplicaPersistentType;
 use Airavata\Model\Experiment\ExperimentModel;
+use Airavata\Model\Experiment\ProjectSearchFields;
 use Airavata\Model\Experiment\UserConfigurationDataModel;
 use Airavata\Model\Scheduling\ComputationalResourceSchedulingModel;
+use Airavata\Model\Security\AuthzToken;
 use Airavata\Model\Workspace\Project;
+use Airavata\Service\Profile\User\CPI\UserProfileServiceClient;
+use Thrift\Protocol\TBinaryProtocol;
+use Thrift\Protocol\TMultiplexedProtocol;
+use Thrift\Transport\TSocket;
+
+function initialize_service_account_user_profile()
+{
+
+    $airavataconfig = parse_ini_file("airavata-client-properties.ini");
+
+    $transport = new TSocket($airavataconfig['AIRAVATA_PROFILE_SERVICE_SERVER'], $airavataconfig['AIRAVATA_PROFILE_SERVICE_PORT']);
+    try {
+        $transport->setRecvTimeout($airavataconfig['AIRAVATA_TIMEOUT']);
+        $transport->setSendTimeout($airavataconfig['AIRAVATA_TIMEOUT']);
+
+        $protocol = new TBinaryProtocol($transport);
+        $protocol = new TMultiplexedProtocol($protocol, "UserProfileService");
+        $transport->open();
+
+        $client = new UserProfileServiceClient($protocol);
+
+        $authToken = new AuthzToken();
+        $authToken->accessToken = get_service_account_access_token($airavataconfig);
+        $authToken->claimsMap['gatewayID'] = $airavataconfig['GATEWAY_ID'];
+        $authToken->claimsMap['userName'] = $airavataconfig['OIDC_USERNAME'];
+
+        $client->initializeUserProfile($authToken);
+    } catch (\Exception $e) {
+        echo "Error trying to initialize service account user profile: " . $e->getMessage();
+    }
+    if ($transport->isOpen()) {
+        $transport->close();
+    }
+}
 
 function fetch_projectid($airavataclient, $authToken, $gatewayid, $user)
 {
-    if ($airavataclient->isUserExists($authToken, $gatewayid, $user)) {
-        $userProjects = $airavataclient->getUserProjects($authToken, $gatewayid, $user, -1, 0);
-        if ($userProjects == null || count($userProjects) == 0) {
-            $projectId = create_project();
-        } else {
-            $projectId = $userProjects[0]->projectID;
-        }
+    // Make sure that user account is initialized in Airavata
+    initialize_service_account_user_profile();
+
+    // Look for a project that has the same name as the $user, or create it
+    $filters = array(ProjectSearchFields::PROJECT_NAME => $user);
+    $userProjects = $airavataclient->searchProjects($authToken,
+        $gatewayid,
+        $authToken->claimsMap['userName'],
+        $filters,
+        -1,  // limit
+        0);  // offset
+    if (count($userProjects) >= 1) {
+        $projectId = $userProjects[0]->projectID;
     } else {
         $projectId = create_project($airavataclient, $authToken, $gatewayid, $user);
     }
@@ -29,9 +71,10 @@ function fetch_projectid($airavataclient, $authToken, $gatewayid, $user)
 function create_project($airavataclient, $authToken, $gatewayid, $user)
 {
     $project = new Project();
-    $project->owner = $user;
+    $project->owner = $authToken->claimsMap['userName'];
     $project->gatewayId = $gatewayid;
-    $project->name = "Default_Project";
+    // Name of project is the LIMS username
+    $project->name = $user;
     $project->description = "Default project";
 
     $projectId = $airavataclient->createProject($authToken, $gatewayid, $project);
@@ -46,7 +89,7 @@ function create_experiment_model($airavataclient, $authToken,
                                  $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
                                  $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
                                  $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory,
-                                 $memoryreq )
+                                 $memoryreq)
 {
     $storageResourceId = null;
     switch ($limsHost) {
@@ -112,7 +155,7 @@ function create_experiment_model($airavataclient, $authToken,
             case "Input_Tar_File":
                 $dataProductModel = new DataProductModel();
                 $dataProductModel->gatewayId = $gatewayId;
-                $dataProductModel->ownerName = $limsUser;
+                $dataProductModel->ownerName = $authToken->claimsMap['userName'];
                 $dataProductModel->productName = basename($inputFile);
                 $dataProductModel->dataProductType = DataProductType::FILE;
 
@@ -184,14 +227,14 @@ function create_experiment_model($airavataclient, $authToken,
         $scheduling->overrideAllocationProjectNumber = $clusterAllocationAccount;
 
     }
-    if ( $memoryreq > 0 ) {
+    if ($memoryreq > 0) {
         $scheduling->totalPhysicalMemory = $memoryreq;
     }
 
     $experimentModel = new ExperimentModel();
     $experimentModel->projectId = $projectId;
     $experimentModel->gatewayId = $gatewayId;
-    $experimentModel->userName = $limsUser;
+    $experimentModel->userName = $authToken->claimsMap['userName'];
     $experimentModel->experimentName = $experimentName;
     $experimentModel->executionId = $applicationInterfaceId;
     $experimentModel->gatewayExecutionId = $requestId;
@@ -201,6 +244,38 @@ function create_experiment_model($airavataclient, $authToken,
     $experimentModel->experimentOutputs = $airavataclient->getApplicationOutputs($authToken, $applicationInterfaceId);
 
     return $experimentModel;
+}
+
+
+function get_service_account_access_token($airavataconfig)
+{
+    // fetch access token for service account, equivalent of following:
+    // curl -u $OIDC_CLIENT_ID:$OIDC_CLIENT_SECRET -d grant_type=client_credentials $OIDC_TOKEN_URL
+    $r = curl_init($airavataconfig['OIDC_TOKEN_URL']);
+    curl_setopt($r, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($r, CURLOPT_ENCODING, 1);
+    curl_setopt($r, CURLOPT_SSL_VERIFYPEER, true);
+    if (array_key_exists("OIDC_CAFILE_PATH", $airavataconfig)) {
+        $filepath = realpath(dirname(__FILE__));
+        curl_setopt($r, CURLOPT_CAINFO, $filepath . "/" . $airavataconfig['OIDC_CAFILE_PATH']);
+    }
+    curl_setopt($r, CURLOPT_HTTPHEADER, array(
+        "Authorization: Basic " . base64_encode($airavataconfig['OIDC_CLIENT_ID'] . ":" . $airavataconfig['OIDC_CLIENT_SECRET']),
+    ));
+    // Assemble POST parameters for the request.
+    $post_fields = "grant_type=client_credentials";
+
+    // Obtain and return the access token from the response.
+    curl_setopt($r, CURLOPT_POST, true);
+    curl_setopt($r, CURLOPT_POSTFIELDS, $post_fields);
+
+    $response = curl_exec($r);
+    if ($response === FALSE) {
+        throw new Exception("Failed to retrieve API Access Token: curl_exec() failed. Error: " . curl_error($r));
+    }
+
+    $result = json_decode($response);
+    return $result->access_token;
 }
 
 ?>

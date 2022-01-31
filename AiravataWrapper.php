@@ -11,6 +11,8 @@ require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TSocket.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Transport/TSSLSocket.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TProtocol.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TBinaryProtocol.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TProtocolDecorator.php';
+require_once $GLOBALS['THRIFT_ROOT'] . 'Protocol/TMultiplexedProtocol.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TException.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TApplicationException.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Exception/TProtocolException.php';
@@ -23,6 +25,8 @@ require_once $GLOBALS['THRIFT_ROOT'] . 'StringFunc/TStringFunc.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'StringFunc/Core.php';
 require_once $GLOBALS['THRIFT_ROOT'] . 'Type/TConstant.php';
 
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Base/API/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Base/API/BaseAPI.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Airavata.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Error/Types.php';
@@ -35,7 +39,10 @@ require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Commons/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/AppInterface/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Application/Io/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Data/Replica/Types.php';
+
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/job/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Service/Profile/User/CPI/UserProfileService.php';
+
 
 require_once "AiravataWrapperInterface.php";
 require_once "AiravataUtils.php";
@@ -76,9 +83,10 @@ class AiravataWrapper implements AiravataWrapperInterface
         $this->airavataclient = new AiravataClient($protocol);
 
         $this->authToken = new AuthzToken();
-        $this->authToken->accessToken = "";
+        $this->authToken->accessToken = get_service_account_access_token($this->airavataconfig);
+        echo $this->authToken->accessToken;
         $this->authToken->claimsMap['gatewayID'] = $this->airavataconfig['GATEWAY_ID'];
-//        $this->authToken->claimsMap['userName'] = 'smarru';
+        $this->authToken->claimsMap['userName'] = $this->airavataconfig['OIDC_USERNAME'];
         $this->gatewayId = $this->airavataconfig['GATEWAY_ID'];
     }
 
@@ -250,6 +258,7 @@ class AiravataWrapper implements AiravataWrapperInterface
         return $returnArray;
     }
 
+
     /**
      * This function calls fetches job details from an Airavata Experiment.
      *
@@ -274,4 +283,5 @@ class AiravataWrapper implements AiravataWrapperInterface
         }
         return ' No Job Details ';
     }
+
 }
