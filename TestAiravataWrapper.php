@@ -23,16 +23,20 @@ $requestId = "uslims3_cauma3d_989";
 //$computeCluster = "stampede2.tacc.xsede.org";
 //$queue = "normal";
 
-$computeCluster = "static-cluster.jetstream-cloud.org";
-$queue = "batch";
+//$computeCluster = "static-cluster.jetstream-cloud.org";
+$computeCluster = "cluster-testing";
+//$queue = "batch";
+$queue = "cloud";
 
 //$computeCluster = "juwels.fz-juelich.de";
 //$queue = "batch";
 
-$cores = 24;
+//$cores = 24;
+$cores = 2;
 $nodes = 1;
 $mGroupCount = 1;
-$wallTime = 120;
+//$wallTime = 120;
+$wallTime = 30;
 //$clusterUserName = "CN=swus1, O=Ultrascan Gateway, C=DE";
 $clusterUserName = "sureshmarru1";
 $clusterScratch = "/p/scratch/cpaj1846/sureshmarru1";
@@ -75,7 +79,8 @@ $clusterAllocationAccount = "paj1846";
 //$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/e8565d44-cd90-2594-fd96-d026c2b05308";
 
 //ULeth LIMS
-$limsHost = "uslims.uleth.ca";
+//$limsHost = "uslims.uleth.ca";
+$limsHost = "uslims.testing";
 $inputFile = "/srv/www/htdocs/uslims3/uslims3_data/a280d69b-12b7-81c4-bd50-1a80417b9ec8/hpcinput-localhost-uslims3_CCH-11495.tar";
 $outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/a280d69b-12b7-81c4-bd50-1a80417b9ec8";
 
