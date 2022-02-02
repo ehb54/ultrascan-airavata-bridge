@@ -152,9 +152,6 @@ function create_experiment_model($airavataclient, $authToken,
         case "uslims.fz-juelich.de":
             $storageResourceId = $airavataconfig['USLIMS_JUELICH_STORAGE_ID'];
             break;
-        case "uslims.testing":
-            $storageResourceId = $airavataconfig['USLIMS_TESTING_STORAGE_ID'];
-            break;    
     }
 
     $applicationInterfaceId = $airavataconfig['US3_APP'];
@@ -217,9 +214,7 @@ function create_experiment_model($airavataclient, $authToken,
         case "static-cluster.jetstream-cloud.org":
             $computeResourceId = $airavataconfig['JETSTREAM_COMPUTE_ID'];
             break;
-        case "cluster-testing":
-            $computeResourceId = $airavataconfig['TESTING_COMPUTE_ID'];
-            break;    
+
     }
 
     $scheduling = new ComputationalResourceSchedulingModel();

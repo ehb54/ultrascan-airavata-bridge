@@ -6,7 +6,7 @@ use SCIGAP\AiravataWrapper;
 
 $airavataWrapper = new AiravataWrapper();
 
-$limsUser = "smarru";
+$limsUser = "isjarana@iu.edu";
 $experimentName = "US3-production-migration-test";
 $requestId = "uslims3_cauma3d_989";
 
@@ -24,12 +24,12 @@ $requestId = "uslims3_cauma3d_989";
 //$queue = "normal";
 
 //$computeCluster = "static-cluster.jetstream-cloud.org";
-$computeCluster = "cluster-testing";
+//$computeCluster = "cluster-testing";
 //$queue = "batch";
-$queue = "cloud";
 
-//$computeCluster = "juwels.fz-juelich.de";
-//$queue = "batch";
+
+$computeCluster = "juwels.fz-juelich.de";
+$queue = "batch";
 
 //$cores = 24;
 $cores = 2;
@@ -80,14 +80,13 @@ $clusterAllocationAccount = "paj1846";
 
 //ULeth LIMS
 //$limsHost = "uslims.uleth.ca";
-$limsHost = "uslims.testing";
-$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/a280d69b-12b7-81c4-bd50-1a80417b9ec8/hpcinput-localhost-uslims3_CCH-11495.tar";
-$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/a280d69b-12b7-81c4-bd50-1a80417b9ec8";
+//$inputFile = "/srv/www/htdocs/uslims3/uslims3_data/a280d69b-12b7-81c4-bd50-1a80417b9ec8/hpcinput-localhost-uslims3_CCH-11495.tar";
+//$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/a280d69b-12b7-81c4-bd50-1a80417b9ec8";
 
 //PGA test
-//$limsHost = "gf4.ucs.indiana.edu";
-//$inputFile = "/var/www/portals/gateway-user-data/ultrascan/test/hpcinput-localhost-uslims3_cauma3d-00950.tar";
-//$outputDataDirectory = "/var/www/portals/gateway-user-data/ultrascan/test";
+$limsHost = "gf4.ucs.indiana.edu";
+$inputFile = "/var/www/portals/gateway-user-data/ultrascan/test/hpcinput-localhost-uslims3_cauma3d-00950.tar";
+$outputDataDirectory = "/var/www/portals/gateway-user-data/ultrascan/test";
 
 for ($x = 1; $x <=1; $x++) {
 
