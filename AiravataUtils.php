@@ -148,8 +148,8 @@ function create_experiment_model($airavataclient, $authToken,
         case "comet.sdsc.xsede.org":
             $computeResourceId = $airavataconfig['COMET_COMPUTE_ID'];
             break;
-        case "ls5.tacc.utexas.edu":
-            $computeResourceId = $airavataconfig['LONESTAR5_COMPUTE_ID'];
+        case "ls6.tacc.utexas.edu":
+            $computeResourceId = $airavataconfig['LONESTAR6_COMPUTE_ID'];
             break;
         case "stampede2.tacc.xsede.org":
             $computeResourceId = $airavataconfig['STAMPEDE2_COMPUTE_ID'];
