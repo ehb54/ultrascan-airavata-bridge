@@ -61,6 +61,7 @@ use Airavata\API\Error\AiravataClientException;
 use Airavata\API\Error\AiravataSystemException;
 use Airavata\API\Error\ExperimentNotFoundException;
 use Thrift\Transport\TSSLSocket;
+use Thrift\Protocol\TMultiplexedProtocol;
 
 class AiravataWrapper implements AiravataWrapperInterface
 {
@@ -78,7 +79,9 @@ class AiravataWrapper implements AiravataWrapperInterface
         $this->transport->setRecvTimeout($this->airavataconfig['AIRAVATA_TIMEOUT']);
         $this->transport->setSendTimeout($this->airavataconfig['AIRAVATA_TIMEOUT']);
 
+
         $protocol = new TBinaryProtocol($this->transport);
+//        $protocol = new TMultiplexedProtocol($protocol, "Airavata");
         $this->transport->open();
         $this->airavataclient = new AiravataClient($protocol);
 
@@ -126,8 +129,8 @@ class AiravataWrapper implements AiravataWrapperInterface
                                         $memoryreq )
     {
         /** Test Airavata API Connection */
-//        $version = $this->airavataclient->getAPIVersion($this->authToken);
-//        echo $version .PHP_EOL;
+        $version = $this->airavataclient->getAPIVersion($this->authToken);
+        echo $version .PHP_EOL;
 
         $projectId = fetch_projectid($this->airavataclient, $this->authToken, $this->gatewayId, $limsUser);
 

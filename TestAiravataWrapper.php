@@ -6,8 +6,8 @@ use SCIGAP\AiravataWrapper;
 
 $airavataWrapper = new AiravataWrapper();
 
-$limsUser = "isjarana@iu.edu";
-$experimentName = "US3-production-migration-test";
+$limsUser = "metascheacc";
+$experimentName = "US3-dev-ultrascan-test";
 $requestId = "uslims3_cauma3d_989";
 
 //$computeCluster = "ls5.tacc.utexas.edu";
@@ -28,8 +28,8 @@ $requestId = "uslims3_cauma3d_989";
 //$queue = "batch";
 
 
-$computeCluster = "juwels.fz-juelich.de";
-$queue = "batch";
+$computeCluster = "Expanse";
+$queue = "compute";
 
 //$cores = 24;
 $cores = 2;
@@ -38,11 +38,11 @@ $mGroupCount = 1;
 //$wallTime = 120;
 $wallTime = 30;
 //$clusterUserName = "CN=swus1, O=Ultrascan Gateway, C=DE";
-$clusterUserName = "sureshmarru1";
-$clusterScratch = "/p/scratch/cpaj1846/sureshmarru1";
+$clusterUserName = "us3";
+$clusterScratch = "/expanse/lustre/scratch/us3/temp_project/airavata-workingdirs";
 //$clusterUserName = "schneider3";
 //$clusterScratch = "/p/scratch/cpaj1846/schneider3";
-$clusterAllocationAccount = "paj1846";
+$clusterAllocationAccount = "uot111";
 
 
 //$limsHost = "uslims3.aucsolutions.com";
@@ -84,24 +84,24 @@ $clusterAllocationAccount = "paj1846";
 //$outputDataDirectory = "/srv/www/htdocs/uslims3/uslims3_data/a280d69b-12b7-81c4-bd50-1a80417b9ec8";
 
 //PGA test
-$limsHost = "gf4.ucs.indiana.edu";
-$inputFile = "/var/www/portals/gateway-user-data/ultrascan/test/hpcinput-localhost-uslims3_cauma3d-00950.tar";
-$outputDataDirectory = "/var/www/portals/gateway-user-data/ultrascan/test";
+$limsHost = "pgadev.scigap.org";
+$inputFile = "/var/www/portals/gateway-user-data/django-dev-ultrascan/test/hpcinput-localhost-uslims3_cauma3d-00950.tar";
+$outputDataDirectory = "/var/www/portals/gateway-user-data/django-dev-ultrascan/test/";
 
 for ($x = 1; $x <=1; $x++) {
 
     $launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-                                                            $computeCluster, $queue, $cores, $nodes, $mGroupCount,
-                                                            $wallTime, $clusterUserName, $clusterScratch, $clusterAllocationAccount,
-                                                            $inputFile, $outputDataDirectory);
+        $computeCluster, $queue, $cores, $nodes, $mGroupCount,
+        $wallTime, $clusterUserName, $clusterScratch, $clusterAllocationAccount,
+        $inputFile, $outputDataDirectory,0);
 
-$expID = 0;
-if ( $launchResult[ 'launchStatus' ] ) {
-    $expID = $launchResult[ 'experimentId' ];
-    echo "Experiment created " . $expID . PHP_EOL;
-} else {
-    echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
-}
+    $expID = 0;
+    if ( $launchResult[ 'launchStatus' ] ) {
+        $expID = $launchResult[ 'experimentId' ];
+        echo "Experiment created " . $expID . PHP_EOL;
+    } else {
+        echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
+    }
 
 //var_dump($launchResult);
 

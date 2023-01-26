@@ -1,4 +1,5 @@
 <?php
+ini_set('memory_limit', '1024M');
 
 use Airavata\Model\Data\Replica\DataProductModel;
 use Airavata\Model\Data\Replica\DataProductType;
@@ -15,6 +16,7 @@ use Airavata\Service\Profile\User\CPI\UserProfileServiceClient;
 use Thrift\Protocol\TBinaryProtocol;
 use Thrift\Protocol\TMultiplexedProtocol;
 use Thrift\Transport\TSocket;
+
 
 function initialize_service_account_user_profile()
 {
@@ -49,23 +51,27 @@ function initialize_service_account_user_profile()
 function fetch_projectid($airavataclient, $authToken, $gatewayid, $user)
 {
     // Make sure that user account is initialized in Airavata
-    initialize_service_account_user_profile();
+    try {
+        initialize_service_account_user_profile();
 
-    // Look for a project that has the same name as the $user, or create it
-    $filters = array(ProjectSearchFields::PROJECT_NAME => $user);
-    $userProjects = $airavataclient->searchProjects($authToken,
-        $gatewayid,
-        $authToken->claimsMap['userName'],
-        $filters,
-        -1,  // limit
-        0);  // offset
-    if (count($userProjects) >= 1) {
-        $projectId = $userProjects[0]->projectID;
-    } else {
-        $projectId = create_project($airavataclient, $authToken, $gatewayid, $user);
-    }
+        // Look for a project that has the same name as the $user, or create it
+        $filters = array(ProjectSearchFields::PROJECT_NAME => $user);
+        $userProjects = $airavataclient->searchProjects($authToken,
+            $gatewayid,
+            $authToken->claimsMap['userName'],
+            $filters,
+            -1,  // limit
+            0);  // offset
+        if (count($userProjects) >= 1) {
+            $projectId = $userProjects[0]->projectID;
+        } else {
+            $projectId = create_project($airavataclient, $authToken, $gatewayid, $user);
+        }
 
-    return $projectId;
+        return $projectId;
+    }catch (\Exception $e){
+       var_dump($e->getTraceAsString());
+}
 }
 
 function create_project($airavataclient, $authToken, $gatewayid, $user)
