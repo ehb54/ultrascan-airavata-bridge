@@ -28,7 +28,7 @@ $requestId = "uslims3_cauma3d_989";
 //$queue = "batch";
 
 
-$computeCluster = "Expanse";
+$computeCluster = "expanse.sdsc.edu";
 $queue = "compute";
 
 //$cores = 24;
@@ -88,12 +88,32 @@ $limsHost = "pgadev.scigap.org";
 $inputFile = "/var/www/portals/gateway-user-data/django-dev-ultrascan/test/hpcinput-localhost-uslims3_cauma3d-00950.tar";
 $outputDataDirectory = "/var/www/portals/gateway-user-data/django-dev-ultrascan/test/";
 
+$computeClusters = "[{name:'expanse.sdsc.edu',
+'queue':'compute',
+'cores':2,
+'nodes':1,
+'mGroupCOunt':1,
+'wallTime':30,
+'extimatedMaxWallTime':100,
+'clusterUserName':'us3',
+'clusterScratch':'/expanse/lustre/scratch/us3/temp_project/airavata-workingdirs',
+'clusterAllocationAccount':'uot111'
+},{name:'bridges2.psc.edu',
+'queue':'compute',
+'cores':2,
+'nodes':1,
+'mGroupCOunt':1,
+'wallTime':30,
+'extimatedMaxWallTime':100,
+'clusterUserName':'us3',
+'clusterScratch':'/expanse/lustre/scratch/us3/temp_project/airavata-workingdirs',
+'clusterAllocationAccount':'uot111'
+}]";
+
 for ($x = 1; $x <=1; $x++) {
 
-    $launchResult = $airavataWrapper->launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-        $computeCluster, $queue, $cores, $nodes, $mGroupCount,
-        $wallTime, $clusterUserName, $clusterScratch, $clusterAllocationAccount,
-        $inputFile, $outputDataDirectory,0);
+    $launchResult = $airavataWrapper->launch_auto_scheduled_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
+        $computeClusters, $inputFile, $outputDataDirectory,0);
 
     $expID = 0;
     if ( $launchResult[ 'launchStatus' ] ) {

@@ -107,7 +107,7 @@ class AiravataWrapper implements AiravataWrapperInterface
      * @param string $limsUser - Unique user name of LIMS User
      * @param string $experimentName - Name of the Experiment - US3-AIRA, US3-ADEV ..
      * @param string $requestId - LIMS Instance concatenated with incremented request ID. Ex: uslims3_CU_Boulder_1974
-     * @param string $computeCluster - Host Name of the Compute Cluster. Ex: comet.sdsc.edu
+     * @param array $computeClusters - Host Name of the Compute Cluster. Ex: comet.sdsc.edu
      * @param string $queue - Queue Name on the cluster
      * @param integer $cores - Number of Cores to be requested.
      * @param integer $nodes - Number of Nodes to be requested.
@@ -125,12 +125,11 @@ class AiravataWrapper implements AiravataWrapperInterface
      */
     function launch_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
                                         $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
-                                        $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory,
-                                        $memoryreq )
+                                        $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory, $memoryreq)
     {
         /** Test Airavata API Connection */
-        $version = $this->airavataclient->getAPIVersion($this->authToken);
-        echo $version .PHP_EOL;
+//        $version = $this->airavataclient->getAPIVersion($this->authToken);
+//        echo $version .PHP_EOL;
 
         $projectId = fetch_projectid($this->airavataclient, $this->authToken, $this->gatewayId, $limsUser);
 
@@ -150,6 +149,34 @@ class AiravataWrapper implements AiravataWrapperInterface
 
         return $returnArray;
     }
+
+    function launch_auto_scheduled_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
+                                                       $computeClusters, $inputFile, $outputDataDirectory,
+                                                       $memoryreq)
+    {
+        /** Test Airavata API Connection */
+//        $version = $this->airavataclient->getAPIVersion($this->authToken);
+//        echo $version .PHP_EOL;
+
+        $projectId = fetch_projectid($this->airavataclient, $this->authToken, $this->gatewayId, $limsUser);
+
+        $experimentModel = create_experiment_model_with_auto_scheduling($this->airavataclient, $this->authToken,
+            $this->airavataconfig, $this->gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
+            $computeClusters, $inputFile, $outputDataDirectory, $memoryreq );
+
+        $experimentId = $this->airavataclient->createExperiment($this->authToken, $this->gatewayId, $experimentModel);
+
+        $this->airavataclient->launchExperiment($this->authToken, $experimentId, $this->gatewayId);
+
+        $returnArray = array(
+            "launchStatus" => true,
+            "experimentId" => $experimentId,
+            "message" => "Experiment Created and Launched as Expected. No errors"
+        );
+
+        return $returnArray;
+    }
+
 
     /**
      * This function calls fetches Airavata Experiment Status.

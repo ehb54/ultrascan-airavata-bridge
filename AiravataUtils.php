@@ -158,6 +158,9 @@ function create_experiment_model($airavataclient, $authToken,
         case "uslims.fz-juelich.de":
             $storageResourceId = $airavataconfig['USLIMS_JUELICH_STORAGE_ID'];
             break;
+        case "pgadev.scigap.org":
+            $storageResourceId = $airavataconfig['USLIMS_TESTING_STORAGE_ID'];
+            break;
     }
 
     $applicationInterfaceId = $airavataconfig['US3_APP'];
@@ -261,12 +264,20 @@ function create_experiment_model($airavataclient, $authToken,
     return $experimentModel;
 }
 
+function create_experiment_model_with_auto_scheduling($airavataclient, $authToken,
+                                 $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
+                                 $computeClusters, $inputFile, $outputDataDirectory,
+                                 $memoryreq)
+{
 
+}
 function get_service_account_access_token($airavataconfig)
 {
     // fetch access token for service account, equivalent of following:
     // curl -u $OIDC_CLIENT_ID:$OIDC_CLIENT_SECRET -d grant_type=client_credentials $OIDC_TOKEN_URL
     $r = curl_init($airavataconfig['OIDC_TOKEN_URL']);
+    curl_setopt ($r, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt ($r, CURLOPT_SSL_VERIFYPEER, 0);
     curl_setopt($r, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($r, CURLOPT_ENCODING, 1);
     curl_setopt($r, CURLOPT_SSL_VERIFYPEER, true);
