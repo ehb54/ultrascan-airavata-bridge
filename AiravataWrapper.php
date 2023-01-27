@@ -150,7 +150,7 @@ class AiravataWrapper implements AiravataWrapperInterface
         return $returnArray;
     }
 
-    function launch_auto_scheduled_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
+    function launch_metascheduled_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
                                                        $computeClusters, $inputFile, $outputDataDirectory,
                                                        $memoryreq)
     {
