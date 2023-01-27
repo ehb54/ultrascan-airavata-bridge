@@ -272,9 +272,10 @@ function create_experiment_model_with_auto_scheduling($airavataclient, $authToke
                                  $memoryreq)
 {
     echo $computeClusters;
-    $comCRs =  json_decode($computeClusters);
 
-    $first_val = $comCRs[0];
+    $comCRs =  json_decode($computeClusters);
+    var_dump($comCRs);
+    $first_val =   $comCRs[0];
     $clusterName = $first_val->name;
     $queue = $first_val->queue;
     $core = $first_val->cores;

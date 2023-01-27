@@ -88,27 +88,27 @@ $limsHost = "pgadev.scigap.org";
 $inputFile = "/var/www/portals/gateway-user-data/django-dev-ultrascan/test/hpcinput-localhost-uslims3_cauma3d-00950.tar";
 $outputDataDirectory = "/var/www/portals/gateway-user-data/django-dev-ultrascan/test/";
 
-$computeClusters = "[{name:'expanse.sdsc.edu',
-'queue':'compute',
-'cores':2,
-'nodes':1,
-'mGroupCOunt':1,
-'wallTime':30,
-'extimatedMaxWallTime':100,
-'clusterUserName':'us3',
-'clusterScratch':'/expanse/lustre/scratch/us3/temp_project/airavata-workingdirs',
-'clusterAllocationAccount':'uot111'
-},{name:'bridges2.psc.edu',
-'queue':'compute',
-'cores':2,
-'nodes':1,
-'mGroupCOunt':1,
-'wallTime':30,
-'extimatedMaxWallTime':100,
-'clusterUserName':'us3',
-'clusterScratch':'/expanse/lustre/scratch/us3/temp_project/airavata-workingdirs',
-'clusterAllocationAccount':'uot111'
-}]";
+$computeClusters = '[{"name":"expanse.sdsc.edu",
+"queue":"compute",
+"cores":2,
+"nodes":1,
+"mGroupCount":1,
+"wallTime":30,
+"extimatedMaxWallTime":100,
+"clusterUserName":"us3",
+"clusterScratch":"/expanse/lustre/scratch/us3/temp_project/airavata-workingdirs",
+"clusterAllocationAccount":"uot111"
+},{"name":"bridges2.psc.edu",
+"queue":"compute",
+"cores":2,
+"nodes":1,
+"mGroupCOunt":1,
+"wallTime":30,
+"extimatedMaxWallTime":100,
+"clusterUserName":"us3",
+"clusterScratch":"/expanse/lustre/scratch/us3/temp_project/airavata-workingdirs",
+"clusterAllocationAccount":"uot111"
+}]';
 
 for ($x = 1; $x <=1; $x++) {
 
