@@ -112,7 +112,7 @@ $computeClusters = '[{"name":"expanse.sdsc.edu",
 
 for ($x = 1; $x <=1; $x++) {
 
-    $launchResult = $airavataWrapper->launch_auto_scheduled_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
+    $launchResult = $airavataWrapper->launch_metascheduled_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
         $computeClusters, $inputFile, $outputDataDirectory,0);
 
     $expID = 0;
