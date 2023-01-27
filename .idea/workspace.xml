@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6ab540e1-7b1b-4eef-8de4-b47db3b44849" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AiravataWrapper.php" beforeDir="false" afterPath="$PROJECT_DIR$/AiravataWrapper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AiravataWrapperInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/AiravataWrapperInterface.php" afterDir="false" />
-    </list>
+    <list default="true" id="6ab540e1-7b1b-4eef-8de4-b47db3b44849" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,7 +67,7 @@
       <updated>1643639777586</updated>
       <workItem from="1643639779189" duration="13612000" />
       <workItem from="1674054264465" duration="1607000" />
-      <workItem from="1674590285802" duration="32241000" />
+      <workItem from="1674590285802" duration="32540000" />
     </task>
     <servers />
   </component>
