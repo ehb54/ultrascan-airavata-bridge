@@ -70,6 +70,9 @@ final class ProcessState {
   const FAILED = 11;
   const CANCELLING = 12;
   const CANCELED = 13;
+  const QUEUED = 14;
+  const DEQUEUING = 15;
+  const REQUEUED = 16;
   static public $__names = array(
     0 => 'CREATED',
     1 => 'VALIDATED',
@@ -85,6 +88,9 @@ final class ProcessState {
     11 => 'FAILED',
     12 => 'CANCELLING',
     13 => 'CANCELED',
+    14 => 'QUEUED',
+    15 => 'DEQUEUING',
+    16 => 'REQUEUED',
   );
 }
 
@@ -139,6 +145,10 @@ class ExperimentStatus {
    * @var string
    */
   public $reason = null;
+  /**
+   * @var string
+   */
+  public $statusId = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -155,6 +165,10 @@ class ExperimentStatus {
           'var' => 'reason',
           'type' => TType::STRING,
           ),
+        4 => array(
+          'var' => 'statusId',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -166,6 +180,9 @@ class ExperimentStatus {
       }
       if (isset($vals['reason'])) {
         $this->reason = $vals['reason'];
+      }
+      if (isset($vals['statusId'])) {
+        $this->statusId = $vals['statusId'];
       }
     }
   }
@@ -210,6 +227,13 @@ class ExperimentStatus {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->statusId);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -238,6 +262,11 @@ class ExperimentStatus {
       $xfer += $output->writeString($this->reason);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->statusId !== null) {
+      $xfer += $output->writeFieldBegin('statusId', TType::STRING, 4);
+      $xfer += $output->writeString($this->statusId);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -260,6 +289,14 @@ class ProcessStatus {
    * @var string
    */
   public $reason = null;
+  /**
+   * @var string
+   */
+  public $statusId = null;
+  /**
+   * @var string
+   */
+  public $processId = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -276,6 +313,14 @@ class ProcessStatus {
           'var' => 'reason',
           'type' => TType::STRING,
           ),
+        4 => array(
+          'var' => 'statusId',
+          'type' => TType::STRING,
+          ),
+        5 => array(
+          'var' => 'processId',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -287,6 +332,12 @@ class ProcessStatus {
       }
       if (isset($vals['reason'])) {
         $this->reason = $vals['reason'];
+      }
+      if (isset($vals['statusId'])) {
+        $this->statusId = $vals['statusId'];
+      }
+      if (isset($vals['processId'])) {
+        $this->processId = $vals['processId'];
       }
     }
   }
@@ -331,6 +382,20 @@ class ProcessStatus {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->statusId);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 5:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->processId);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -359,6 +424,16 @@ class ProcessStatus {
       $xfer += $output->writeString($this->reason);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->statusId !== null) {
+      $xfer += $output->writeFieldBegin('statusId', TType::STRING, 4);
+      $xfer += $output->writeString($this->statusId);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->processId !== null) {
+      $xfer += $output->writeFieldBegin('processId', TType::STRING, 5);
+      $xfer += $output->writeString($this->processId);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -381,6 +456,10 @@ class TaskStatus {
    * @var string
    */
   public $reason = null;
+  /**
+   * @var string
+   */
+  public $statusId = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -397,6 +476,10 @@ class TaskStatus {
           'var' => 'reason',
           'type' => TType::STRING,
           ),
+        4 => array(
+          'var' => 'statusId',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -408,6 +491,9 @@ class TaskStatus {
       }
       if (isset($vals['reason'])) {
         $this->reason = $vals['reason'];
+      }
+      if (isset($vals['statusId'])) {
+        $this->statusId = $vals['statusId'];
       }
     }
   }
@@ -452,6 +538,13 @@ class TaskStatus {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->statusId);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -480,6 +573,11 @@ class TaskStatus {
       $xfer += $output->writeString($this->reason);
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->statusId !== null) {
+      $xfer += $output->writeFieldBegin('statusId', TType::STRING, 4);
+      $xfer += $output->writeString($this->statusId);
+      $xfer += $output->writeFieldEnd();
+    }
     $xfer += $output->writeFieldStop();
     $xfer += $output->writeStructEnd();
     return $xfer;
@@ -502,6 +600,10 @@ class JobStatus {
    * @var string
    */
   public $reason = null;
+  /**
+   * @var string
+   */
+  public $statusId = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -518,6 +620,10 @@ class JobStatus {
           'var' => 'reason',
           'type' => TType::STRING,
           ),
+        4 => array(
+          'var' => 'statusId',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -529,6 +635,9 @@ class JobStatus {
       }
       if (isset($vals['reason'])) {
         $this->reason = $vals['reason'];
+      }
+      if (isset($vals['statusId'])) {
+        $this->statusId = $vals['statusId'];
       }
     }
   }
@@ -573,6 +682,13 @@ class JobStatus {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->statusId);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -599,6 +715,11 @@ class JobStatus {
     if ($this->reason !== null) {
       $xfer += $output->writeFieldBegin('reason', TType::STRING, 3);
       $xfer += $output->writeString($this->reason);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->statusId !== null) {
+      $xfer += $output->writeFieldBegin('statusId', TType::STRING, 4);
+      $xfer += $output->writeString($this->statusId);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

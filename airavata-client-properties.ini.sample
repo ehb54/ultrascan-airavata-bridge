@@ -1,0 +1,85 @@
+; The is the configuration file with properties needed by Airavata Clients.
+;   Key properties specify location of Airavata Services, Ports and Such.
+
+; Host which runs the Airavata Server
+AIRAVATA_SERVER = "tls://api.scigap.org"
+;AIRAVATA_SERVER = "tls://api.staging.scigap.org"
+
+; Airavata Server thrift port
+AIRAVATA_PORT = 9930
+
+; Time out value to give enough breathing room for client to get synchronous responses back
+AIRAVATA_TIMEOUT = 20000
+
+; Host which runs the Airavata Profile Service Server
+AIRAVATA_PROFILE_SERVICE_SERVER = "api.scigap.org"
+
+; Airavata Profile Service Server thrift port
+AIRAVATA_PROFILE_SERVICE_PORT = 8962
+
+; Gateway Identifier Registered within Airavata
+GATEWAY_ID = "ultrascan"
+
+; Application Identifiers
+US3_APP = "Ultrascan_2966ef44-7608-4010-b015-31dc528a1fe6"
+
+; Compute Resource Host ID's
+COMET_COMPUTE_ID = "comet.sdsc.edu_91b900df-0ee0-4909-89b3-98e8f64e1969"
+LONESTAR5_COMPUTE_ID = "ls5.tacc.utexas.edu_2f3afca2-cdaa-46f1-8ddf-bf69cde7ead4"
+STAMPEDE2_COMPUTE_ID = "stampede2.tacc.xsede.org_bd283b3b-da11-4e88-9034-5f4c701b1e54"
+JURECA_COMPUTE_ID = "jureca.fz-juelich.de_16fb573f-31e3-4daf-8efa-146d621d1282"
+JUWELS_COMPUTE_ID = "juwels.fz-juelich.de_c4bbf179-2baa-4ebc-b4a9-df107a8f8865"
+JETSTREAM_COMPUTE_ID = "js-169-137.jetstream-cloud.org_cf150d9a-2467-4b30-8b81-4236c11e2984"
+
+; Storage Resource Host ID's
+USLIMS3_JUELICH_STORAGE_ID = "uslims3.fz-juelich.de_283650c2-8815-43b2-8150-907feb6935bb"
+USLIMS3_LATROBE_STORAGE_ID = "uslims3.latrobe.edu.au_dea05b5c-5596-49b9-bd10-b0c593713be1"
+USLIMS3_IISC_STORAGE_ID = "uslims3.iisc.ernet.in_ad610bfb-ca83-4bc5-a712-99f795fc476b"
+USLIMS3_GF4_STORAGE_ID = "gf4.ucs.indiana.edu_61552681-96f0-462a-a36c-a62a010bffc6"
+USLIMS3_JS_STORAGE_ID = "uslims3.aucsolutions.com_91754ea7-e3be-4895-b501-05f0ca2c0ccd"
+USLIMS3_CSC_FINLAND_STORAGE_ID = "vm1584.kaj.pouta.csc.fi_35eab34c-7e76-4b3f-a943-c145fde85f36"
+USLIMS3_ULETH_STORAGE_ID = "uslims.uleth.ca_dbce021b-198b-4219-86cc-960a6a061190"
+
+; OIDC Authentication for service account authorization
+; HOWTO Create a Keycloak Service Account
+; 1. Download and unzip Keycloak binary distribution.
+; 2. Add bin directory to PATH.
+;
+;      export PATH=/path/to/keycloak-x.y.z/bin:$PATH
+;
+; 3. Log into Keycloak user that can create service account.
+;
+;      kcadm.sh config credentials --server https://iam.scigap.org/auth --realm master --user AiravataAdmin
+;
+; 4. Create a service account client. The clientId you specify here will go
+;    into OIDC_CLIENT_ID below.
+;
+;      kcadm.sh create clients -r ultrascan -s clientId=lims -s enabled=true -s serviceAccountsEnabled=true
+;
+; 5. Get the id of the client just created.
+;
+;      CID=$( kcadm.sh get clients -r ultrascan -q clientId=lims --fields id --format=csv --noquotes )
+;
+; 6. Get the client secret for this client. This will go into
+;    OIDC_CLIENT_SECRET below.
+;
+;      kcadm.sh get clients/$CID/client-secret -r ultrascan
+;
+; 7. Get the id of the service account user so we can update its attribues. To
+;    get the id we'll query by the username. The username will be the clientId
+;    prepended with "service-account-". The username should go into OIDC_USERNAME
+;    below.
+;
+;      USER_ID=$( kcadm.sh get users -r ultrascan -q username=service-account-lims --fields id --format=csv --noquotes )
+;
+; 8. Using the id of the service account user, set the firstName, lastName and
+;    email of the service account user.
+;
+;      kcadm.sh update users/$USER_ID -r ultrascan -s 'firstName="Ultrascan"' -s 'lastName="Service Account"' -s 'email="usgrid@scigap.org"'
+;
+OIDC_CLIENT_ID = "lims"
+OIDC_CLIENT_SECRET = "..."
+OIDC_USERNAME = "service-account-lims"
+OIDC_TOKEN_URL = "https://iam.scigap.org/auth/realms/ultrascan/protocol/openid-connect/token"
+; (Optional) Relative path to CA certificate to use to verify OIDC token endpoint
+OIDC_CAFILE_PATH = "./incommon_rsa_server_ca.pem"

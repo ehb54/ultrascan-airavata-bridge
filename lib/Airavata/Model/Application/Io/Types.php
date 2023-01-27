@@ -65,6 +65,8 @@ final class DataType {
  * metaData:
  *   Any metadat. This is typically ignore by Airavata and is used by gateways for application configuration.
  * 
+ * overrideFilename:
+ *   Rename input file to given value when staging to compute resource.
  */
 class InputDataObjectType {
   static $_TSPEC;
@@ -121,6 +123,10 @@ class InputDataObjectType {
    * @var bool
    */
   public $isReadOnly = null;
+  /**
+   * @var string
+   */
+  public $overrideFilename = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -177,6 +183,10 @@ class InputDataObjectType {
           'var' => 'isReadOnly',
           'type' => TType::BOOL,
           ),
+        14 => array(
+          'var' => 'overrideFilename',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -218,6 +228,9 @@ class InputDataObjectType {
       }
       if (isset($vals['isReadOnly'])) {
         $this->isReadOnly = $vals['isReadOnly'];
+      }
+      if (isset($vals['overrideFilename'])) {
+        $this->overrideFilename = $vals['overrideFilename'];
       }
     }
   }
@@ -332,6 +345,13 @@ class InputDataObjectType {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 14:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->overrideFilename);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -408,6 +428,11 @@ class InputDataObjectType {
     if ($this->isReadOnly !== null) {
       $xfer += $output->writeFieldBegin('isReadOnly', TType::BOOL, 13);
       $xfer += $output->writeBool($this->isReadOnly);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->overrideFilename !== null) {
+      $xfer += $output->writeFieldBegin('overrideFilename', TType::STRING, 14);
+      $xfer += $output->writeString($this->overrideFilename);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -490,6 +515,10 @@ class OutputDataObjectType {
    * @var string
    */
   public $storageResourceId = null;
+  /**
+   * @var string
+   */
+  public $metaData = null;
 
   public function __construct($vals=null) {
     if (!isset(self::$_TSPEC)) {
@@ -538,6 +567,10 @@ class OutputDataObjectType {
           'var' => 'storageResourceId',
           'type' => TType::STRING,
           ),
+        12 => array(
+          'var' => 'metaData',
+          'type' => TType::STRING,
+          ),
         );
     }
     if (is_array($vals)) {
@@ -573,6 +606,9 @@ class OutputDataObjectType {
       }
       if (isset($vals['storageResourceId'])) {
         $this->storageResourceId = $vals['storageResourceId'];
+      }
+      if (isset($vals['metaData'])) {
+        $this->metaData = $vals['metaData'];
       }
     }
   }
@@ -673,6 +709,13 @@ class OutputDataObjectType {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 12:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->metaData);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -739,6 +782,11 @@ class OutputDataObjectType {
     if ($this->storageResourceId !== null) {
       $xfer += $output->writeFieldBegin('storageResourceId', TType::STRING, 11);
       $xfer += $output->writeString($this->storageResourceId);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->metaData !== null) {
+      $xfer += $output->writeFieldBegin('metaData', TType::STRING, 12);
+      $xfer += $output->writeString($this->metaData);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
