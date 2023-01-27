@@ -264,13 +264,34 @@ function create_experiment_model($airavataclient, $authToken,
     return $experimentModel;
 }
 
+
+
 function create_experiment_model_with_auto_scheduling($airavataclient, $authToken,
                                  $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
                                  $computeClusters, $inputFile, $outputDataDirectory,
                                  $memoryreq)
 {
+    $comCRs =  json_decode($computeClusters);
+
+    $first_val = $comCRs[0];
+    $clusterName = $first_val->name;
+    $queue = $first_val->queue;
+    $core = $first_val->cores;
+    $nodes = $first_val->nodes;
+    $mGroupCount = $first_val->mGroupCount;
+    $wallTime = $first_val->wallTime;
+    $clusterUserName = $first_val->clusterUserName;
+    $clusterScratch = $first_val->clusterScratch;
+    $clusterAllocationAccount = $first_val->clusterAllocationAccount;
+
+   return create_experiment_model($airavataclient,$authToken,$airavataconfig,$gatewayId,
+        $projectId,$limsHost,$limsUser,$experimentName,
+        $requestId,$clusterName,$queue,$core,$nodes,$mGroupCount,$wallTime,$clusterUserName,$clusterScratch,$clusterAllocationAccount,$inputFile,$outputDataDirectory,$memoryreq);
 
 }
+
+
+
 function get_service_account_access_token($airavataconfig)
 {
     // fetch access token for service account, equivalent of following:
