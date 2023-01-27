@@ -271,6 +271,7 @@ function create_experiment_model_with_auto_scheduling($airavataclient, $authToke
                                  $computeClusters, $inputFile, $outputDataDirectory,
                                  $memoryreq)
 {
+    echo $computeClusters;
     $comCRs =  json_decode($computeClusters);
 
     $first_val = $comCRs[0];
@@ -301,7 +302,7 @@ function get_service_account_access_token($airavataconfig)
     curl_setopt ($r, CURLOPT_SSL_VERIFYPEER, 0);
     curl_setopt($r, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($r, CURLOPT_ENCODING, 1);
-    curl_setopt($r, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($r, CURLOPT_SSL_VERIFYPEER, 0);
     if (array_key_exists("OIDC_CAFILE_PATH", $airavataconfig)) {
         $filepath = realpath(dirname(__FILE__));
         curl_setopt($r, CURLOPT_CAINFO, $filepath . "/" . $airavataconfig['OIDC_CAFILE_PATH']);
