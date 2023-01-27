@@ -135,7 +135,7 @@ class AiravataWrapper implements AiravataWrapperInterface
 
         $experimentModel = create_experiment_model($this->airavataclient, $this->authToken, $this->airavataconfig, $this->gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
             $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName, $clusterScratch, $clusterAllocationAccount,
-            $inputFile, $outputDataDirectory, $memoryreq );
+            $inputFile, $outputDataDirectory, $memoryreq, false);
 
         $experimentId = $this->airavataclient->createExperiment($this->authToken, $this->gatewayId, $experimentModel);
 
@@ -162,7 +162,7 @@ class AiravataWrapper implements AiravataWrapperInterface
 
         $experimentModel = create_experiment_model_with_auto_scheduling($this->airavataclient, $this->authToken,
             $this->airavataconfig, $this->gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
-            $computeClusters, $inputFile, $outputDataDirectory, $memoryreq );
+            $computeClusters, $inputFile, $outputDataDirectory, $memoryreq);
 
         $experimentId = $this->airavataclient->createExperiment($this->authToken, $this->gatewayId, $experimentModel);
 

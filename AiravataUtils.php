@@ -95,7 +95,7 @@ function create_experiment_model($airavataclient, $authToken,
                                  $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
                                  $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
                                  $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory,
-                                 $memoryreq)
+                                 $memoryreq, $autoScheduled)
 {
     $storageResourceId = null;
     switch ($limsHost) {
@@ -237,6 +237,7 @@ function create_experiment_model($airavataclient, $authToken,
     $userConfigs->computationalResourceScheduling = $scheduling;
     $userConfigs->storageId = $storageResourceId;
     $userConfigs->experimentDataDir = $outputDataDirectory;
+    $userConfigs->airavataAutoSchedule = $autoScheduled;
 
     if (($computeCluster == "jureca") || ($computeCluster == "jureca.fz-juelich.de") || ($computeCluster == "juwels") || ($computeCluster == "juwels.fz-juelich.de")) {
 
@@ -271,8 +272,7 @@ function create_experiment_model_with_auto_scheduling($airavataclient, $authToke
                                  $computeClusters, $inputFile, $outputDataDirectory,
                                  $memoryreq)
 {
-    echo $computeClusters;
-
+    //TODO : replace once backend is done
     $comCRs =  json_decode($computeClusters);
     $first_val =   $comCRs[0];
     $clusterName = $first_val->name;
@@ -287,7 +287,8 @@ function create_experiment_model_with_auto_scheduling($airavataclient, $authToke
 
    return create_experiment_model($airavataclient,$authToken,$airavataconfig,$gatewayId,
         $projectId,$limsHost,$limsUser,$experimentName,
-        $requestId,$clusterName,$queue,$core,$nodes,$mGroupCount,$wallTime,$clusterUserName,$clusterScratch,$clusterAllocationAccount,$inputFile,$outputDataDirectory,$memoryreq);
+        $requestId,$clusterName,$queue,$core,$nodes,$mGroupCount,$wallTime,$clusterUserName,$clusterScratch,
+       $clusterAllocationAccount,$inputFile,$outputDataDirectory,$memoryreq, true);
 
 }
 
