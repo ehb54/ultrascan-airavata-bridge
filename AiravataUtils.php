@@ -214,6 +214,9 @@ function create_experiment_model($airavataclient, $authToken,
         case "ls5.tacc.utexas.edu":
             $computeResourceId = $airavataconfig['LONESTAR5_COMPUTE_ID'];
             break;
+        case "ls6.tacc.utexas.edu":
+            $computeResourceId = $airavataconfig['LONESTAR6_COMPUTE_ID'];
+            break;
         case "stampede2.tacc.xsede.org":
             $computeResourceId = $airavataconfig['STAMPEDE2_COMPUTE_ID'];
             break;
@@ -225,6 +228,9 @@ function create_experiment_model($airavataclient, $authToken,
             break;
         case "static-cluster.jetstream-cloud.org":
             $computeResourceId = $airavataconfig['JETSTREAM_COMPUTE_ID'];
+            break;
+        case "anvil.rcac.purdue.edu":
+            $computeResourceId = $airavataconfig['ANVIL_COMPUTE_ID'];
             break;
 
     }
