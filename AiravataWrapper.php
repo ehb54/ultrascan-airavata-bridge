@@ -150,8 +150,7 @@ class AiravataWrapper implements AiravataWrapperInterface
     }
 
     function launch_autoscheduled_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-                                                       $computeClusters, $inputFile, $outputDataDirectory,
-                                                       $memoryreq)
+                                                       $computeClusters, $inputFile, $outputDataDirectory)
     {
         /** Test Airavata API Connection */
 //        $version = $this->airavataclient->getAPIVersion($this->authToken);
@@ -161,7 +160,7 @@ class AiravataWrapper implements AiravataWrapperInterface
 
         $experimentModel = create_experiment_model_with_auto_scheduling($this->airavataclient, $this->authToken,
             $this->airavataconfig, $this->gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
-            $computeClusters, $inputFile, $outputDataDirectory, $memoryreq);
+            $computeClusters, $inputFile, $outputDataDirectory);
 
         $experimentId = $this->airavataclient->createExperiment($this->authToken, $this->gatewayId, $experimentModel);
 
