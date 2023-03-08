@@ -51,7 +51,7 @@ interface AiravataWrapperInterface
      */
 
     function launch_autoscheduled_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-                                                       $computeClusters, $inputFile, $outputDataDirectory, $memoryreq);
+                                                       $computeClusters, $inputFile, $outputDataDirectory);
 
     /**
      * This function calls fetches Airavata Experiment Status.

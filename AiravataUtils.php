@@ -91,12 +91,8 @@ function create_project($airavataclient, $authToken, $gatewayid, $user)
     }
 }
 
-function create_experiment_model($airavataclient, $authToken,
-                                 $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
-                                 $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
-                                 $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory,
-                                 $memoryreq, $autoScheduled)
-{
+
+function select_storage_resource_id($airavataconfig,$limsHost) {
     $storageResourceId = null;
     switch ($limsHost) {
         case "demeler4.uleth.ca":
@@ -165,6 +161,55 @@ function create_experiment_model($airavataclient, $authToken,
             $storageResourceId = $airavataconfig['USLIMS_TESTING_STORAGE_ID'];
             break;
     }
+    return $storageResourceId;
+}
+
+
+function select_compute_resource_id($airavataconfig,$computeCluster){
+    $computeResourceId = null;
+    switch ($computeCluster) {
+        case "bridges2.psc.edu":
+            $computeResourceId = $airavataconfig['BRIDGES2_COMPUTE_ID'];
+            break;
+        case "expanse.sdsc.edu":
+            $computeResourceId = $airavataconfig['EXPANSE_COMPUTE_ID'];
+            break;
+        case "comet.sdsc.xsede.org":
+            $computeResourceId = $airavataconfig['COMET_COMPUTE_ID'];
+            break;
+        case "ls5.tacc.utexas.edu":
+            $computeResourceId = $airavataconfig['LONESTAR5_COMPUTE_ID'];
+            break;
+        case "ls6.tacc.utexas.edu":
+            $computeResourceId = $airavataconfig['LONESTAR6_COMPUTE_ID'];
+            break;
+        case "stampede2.tacc.xsede.org":
+            $computeResourceId = $airavataconfig['STAMPEDE2_COMPUTE_ID'];
+            break;
+        case "jureca.fz-juelich.de":
+            $computeResourceId = $airavataconfig['JURECA_COMPUTE_ID'];
+            break;
+        case "juwels.fz-juelich.de":
+            $computeResourceId = $airavataconfig['JUWELS_COMPUTE_ID'];
+            break;
+        case "static-cluster.jetstream-cloud.org":
+            $computeResourceId = $airavataconfig['JETSTREAM_COMPUTE_ID'];
+            break;
+        case "anvil.rcac.purdue.edu":
+            $computeResourceId = $airavataconfig['ANVIL_COMPUTE_ID'];
+            break;
+    }
+    return $computeResourceId;
+}
+
+function create_experiment_model($airavataclient, $authToken,
+                                 $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
+                                 $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
+                                 $clusterScratch, $clusterAllocationAccount, $inputFile, $outputDataDirectory,
+                                 $memoryreq, $autoScheduled)
+{
+    $storageResourceId = select_storage_resource_id($airavataconfig,$limsHost);
+
 
     $applicationInterfaceId = $airavataconfig['US3_APP'];
 
@@ -200,40 +245,7 @@ function create_experiment_model($airavataclient, $authToken,
         }
     }
 
-    $computeResourceId = null;
-    switch ($computeCluster) {
-        case "bridges2.psc.edu":
-            $computeResourceId = $airavataconfig['BRIDGES2_COMPUTE_ID'];
-            break;
-        case "expanse.sdsc.edu":
-            $computeResourceId = $airavataconfig['EXPANSE_COMPUTE_ID'];
-            break;
-        case "comet.sdsc.xsede.org":
-            $computeResourceId = $airavataconfig['COMET_COMPUTE_ID'];
-            break;
-        case "ls5.tacc.utexas.edu":
-            $computeResourceId = $airavataconfig['LONESTAR5_COMPUTE_ID'];
-            break;
-        case "ls6.tacc.utexas.edu":
-            $computeResourceId = $airavataconfig['LONESTAR6_COMPUTE_ID'];
-            break;
-        case "stampede2.tacc.xsede.org":
-            $computeResourceId = $airavataconfig['STAMPEDE2_COMPUTE_ID'];
-            break;
-        case "jureca.fz-juelich.de":
-            $computeResourceId = $airavataconfig['JURECA_COMPUTE_ID'];
-            break;
-        case "juwels.fz-juelich.de":
-            $computeResourceId = $airavataconfig['JUWELS_COMPUTE_ID'];
-            break;
-        case "static-cluster.jetstream-cloud.org":
-            $computeResourceId = $airavataconfig['JETSTREAM_COMPUTE_ID'];
-            break;
-        case "anvil.rcac.purdue.edu":
-            $computeResourceId = $airavataconfig['ANVIL_COMPUTE_ID'];
-            break;
-
-    }
+    $computeResourceId = select_compute_resource_id($airavataconfig,$computeCluster);
 
     $scheduling = new ComputationalResourceSchedulingModel();
     $scheduling->resourceHostId = $computeResourceId;
@@ -276,28 +288,96 @@ function create_experiment_model($airavataclient, $authToken,
 
 
 
+
 function create_experiment_model_with_auto_scheduling($airavataclient, $authToken,
                                  $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
-                                 $computeClusters, $inputFile, $outputDataDirectory,
-                                 $memoryreq)
+                                 $computeClusters, $inputFile, $outputDataDirectory)
 {
     //TODO : replace once backend is done
     $comCRs =  json_decode($computeClusters);
-    $first_val =   $comCRs[0];
-    $clusterName = $first_val->name;
-    $queue = $first_val->queue;
-    $core = $first_val->cores;
-    $nodes = $first_val->nodes;
-    $mGroupCount = $first_val->mGroupCount;
-    $wallTime = $first_val->wallTime;
-    $clusterUserName = $first_val->clusterUserName;
-    $clusterScratch = $first_val->clusterScratch;
-    $clusterAllocationAccount = $first_val->clusterAllocationAccount;
+    $storageResourceId = select_storage_resource_id($airavataconfig,$limsHost);
 
-   return create_experiment_model($airavataclient,$authToken,$airavataconfig,$gatewayId,
-        $projectId,$limsHost,$limsUser,$experimentName,
-        $requestId,$clusterName,$queue,$core,$nodes,$mGroupCount,$wallTime,$clusterUserName,$clusterScratch,
-       $clusterAllocationAccount,$inputFile,$outputDataDirectory,$memoryreq, true);
+    $applicationInterfaceId = $airavataconfig['US3_APP'];
+
+    $applicationInputs = $airavataclient->getApplicationInputs($authToken, $applicationInterfaceId);
+    foreach ($applicationInputs as $applicationInput) {
+        $applicationInputName = $applicationInput->name;
+        switch ($applicationInputName) {
+            case "Input_Tar_File":
+                $dataProductModel = new DataProductModel();
+                $dataProductModel->gatewayId = $gatewayId;
+                $dataProductModel->ownerName = $authToken->claimsMap['userName'];
+                $dataProductModel->productName = basename($inputFile);
+                $dataProductModel->dataProductType = DataProductType::FILE;
+
+                $dataReplicationModel = new DataReplicaLocationModel();
+                $dataReplicationModel->storageResourceId = $storageResourceId;
+                $dataReplicationModel->replicaName = basename($inputFile) . " gateway data store copy";
+                $dataReplicationModel->replicaLocationCategory = ReplicaLocationCategory::GATEWAY_DATA_STORE;
+                $dataReplicationModel->replicaPersistentType = ReplicaPersistentType::TRANSIENT;
+                $dataReplicationModel->filePath = "file://" . $limsHost . ":" . $inputFile;
+
+                $dataProductModel->replicaLocations[] = $dataReplicationModel;
+                $replicaURI = $airavataclient->registerDataProduct($authToken, $dataProductModel);
+
+                $applicationInput->value = $replicaURI;
+                break;
+            case "Wall_Time":
+                $applicationInput->value = "-walltime=0";
+                break;
+            case "Parallel_Group_Count":
+                $applicationInput->value = "-mgroupcount=0";
+                break;
+        }
+    }
+
+    $schedulingObjects = array();
+
+
+   foreach ($comCRs as $comCR) {
+       $computeResourceId = select_compute_resource_id($airavataconfig,$comCR->name);
+       $scheduling = new ComputationalResourceSchedulingModel();
+       $scheduling->resourceHostId = $computeResourceId;
+       $scheduling->totalCPUCount = $comCR->cores;
+       $scheduling->nodeCount = $comCR->nodes;
+       $scheduling->queueName = $comCR->queue;
+       $scheduling->wallTimeLimit = $comCR->wallTime;
+       $scheduling->totalPhysicalMemory = $comCR->memreq;
+       $scheduling->mGroupCount = $comCR->mGroupCount;
+
+       if (($comCR->name == "jureca") || ($comCR->name == "jureca.fz-juelich.de") || ($comCR->name == "juwels") || ($comCR->name == "juwels.fz-juelich.de")) {
+
+           $scheduling->overrideLoginUserName = $comCR->clusterUserName;
+           $scheduling->overrideScratchLocation = $comCR->clusterScratch;
+           $scheduling->overrideAllocationProjectNumber = $comCR->clusterAllocationAccount;;
+       }
+
+
+       array_push($schedulingObjects,$scheduling);
+   }
+
+
+
+    $userConfigs = new UserConfigurationDataModel();
+    $userConfigs->storageId = $storageResourceId;
+    $userConfigs->experimentDataDir = $outputDataDirectory;
+    $userConfigs->airavataAutoSchedule = true;
+    $userConfigs->autoScheduledCompResourceSchedulingList=$schedulingObjects;
+
+
+    $experimentModel = new ExperimentModel();
+    $experimentModel->projectId = $projectId;
+    $experimentModel->gatewayId = $gatewayId;
+    $experimentModel->userName = $authToken->claimsMap['userName'];
+    $experimentModel->experimentName = $experimentName;
+    $experimentModel->executionId = $applicationInterfaceId;
+    $experimentModel->gatewayExecutionId = $requestId;
+    $experimentModel->gatewayInstanceId = $limsHost;
+    $experimentModel->userConfigurationData = $userConfigs;
+    $experimentModel->experimentInputs = $applicationInputs;
+    $experimentModel->experimentOutputs = $airavataclient->getApplicationOutputs($authToken, $applicationInterfaceId);
+
+    return $experimentModel;
 
 }
 
