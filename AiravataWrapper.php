@@ -33,6 +33,10 @@ require_once $GLOBALS['AIRAVATA_ROOT'] . 'API/Error/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Security/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Workspace/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Experiment/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Process/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Task/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/AppCatalog/ComputeResource/Types.php';
+require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Data/Movement/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Scheduling/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Status/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Commons/Types.php';
@@ -42,6 +46,7 @@ require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/Data/Replica/Types.php';
 
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Model/job/Types.php';
 require_once $GLOBALS['AIRAVATA_ROOT'] . 'Service/Profile/User/CPI/UserProfileService.php';
+
 
 
 require_once "AiravataWrapperInterface.php";
