@@ -47,21 +47,18 @@ require_once $GLOBALS['AIRAVATA_ROOT'] . 'Service/Profile/User/CPI/UserProfileSe
 require_once "AiravataWrapperInterface.php";
 require_once "AiravataUtils.php";
 
-use Thrift\Transport\TSocket;
-use Thrift\Protocol\TBinaryProtocol;
-use Thrift\Exception\TException;
-use Thrift\Exception\TTransportException;
 use Airavata\API\AiravataClient;
-use Airavata\Model\Security\AuthzToken;
-use Airavata\Model\Status\ExperimentState;
-use Airavata\Model\Status\JobState;
-use Airavata\Model\Job\JobModel;
-use Airavata\API\Error\InvalidRequestException;
 use Airavata\API\Error\AiravataClientException;
 use Airavata\API\Error\AiravataSystemException;
 use Airavata\API\Error\ExperimentNotFoundException;
-use Thrift\Transport\TSSLSocket;
-use Thrift\Protocol\TMultiplexedProtocol;
+use Airavata\API\Error\InvalidRequestException;
+use Airavata\Model\Experiment\ExperimentModel;
+use Airavata\Model\Security\AuthzToken;
+use Airavata\Model\Status\ExperimentState;
+use Airavata\Model\Status\JobState;
+use Thrift\Exception\TTransportException;
+use Thrift\Protocol\TBinaryProtocol;
+use Thrift\Transport\TSocket;
 
 class AiravataWrapper implements AiravataWrapperInterface
 {
@@ -150,7 +147,7 @@ class AiravataWrapper implements AiravataWrapperInterface
     }
 
     function launch_autoscheduled_airavata_experiment($limsHost, $limsUser, $experimentName, $requestId,
-                                                       $computeClusters, $inputFile, $outputDataDirectory)
+                                                      $computeClusters, $inputFile, $outputDataDirectory)
     {
         /** Test Airavata API Connection */
 //        $version = $this->airavataclient->getAPIVersion($this->authToken);
@@ -192,24 +189,23 @@ class AiravataWrapper implements AiravataWrapperInterface
             $experimentStatus = $this->airavataclient->getExperimentStatus($this->authToken, $experimentId);
             $experimentState = ExperimentState::$__names[$experimentStatus->state];
 
-            switch ($experimentState)
-            {
+            switch ($experimentState) {
                 case 'EXECUTING':
                     $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
-                    if (isset($jobStatuses) && count($jobStatuses)>0) {
+                    if (isset($jobStatuses) && count($jobStatuses) > 0) {
                         $jobNames = array_keys($jobStatuses);
                         $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
-                        if ( $jobState == 'QUEUED'  ||  $jobState == 'ACTIVE' )
-                            $experimentState  = $jobState;
+                        if ($jobState == 'QUEUED' || $jobState == 'ACTIVE')
+                            $experimentState = $jobState;
                     }
                     break;
                 case 'COMPLETED':
                     $jobStatuses = $this->airavataclient->getJobStatuses($this->authToken, $experimentId);
-                    if (isset($jobStatuses) && count($jobStatuses)>0) {
+                    if (isset($jobStatuses) && count($jobStatuses) > 0) {
                         $jobNames = array_keys($jobStatuses);
                         $jobState = JobState::$__names[$jobStatuses[$jobNames[0]]->jobState];
-                        if ( $jobState == 'FAILED' )
-                            $experimentState    = $jobState;
+                        if ($jobState == 'FAILED')
+                            $experimentState = $jobState;
                     }
                     break;
                 case '':
@@ -299,8 +295,8 @@ class AiravataWrapper implements AiravataWrapperInterface
     {
         try {
             $jobList = $this->airavataclient->getJobDetails($this->authToken, $experimentId);
-            if ( count( $jobList ) ) {
-               return $jobList[0];
+            if (count($jobList)) {
+                return $jobList[0];
             }
         } catch (AiravataSystemException $ase) {
             echo $ase->getMessage();
@@ -312,4 +308,24 @@ class AiravataWrapper implements AiravataWrapperInterface
         return ' No Job Details ';
     }
 
+
+    function get_compute_resource($experimentId)
+    {
+        try {
+          $experimentModel =   $this->airavataclient->getExperiment($this->authToken,$experimentId);
+          $comRescheduling = $experimentModel->userConfigurationData->computationalResourceScheduling;
+          if ($comRescheduling != null) {
+
+             $comRes =  $this->airavataclient->getComputeResource($this->authToken,$comRescheduling->resourceHostId);
+             return $comRes->hostName;
+          }
+        } catch (AiravataSystemException $ase) {
+            echo $ase->getMessage();
+            return ' No Job Details ';
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return ' No Job Details ';
+        }
+        return ' No Job Details ';
+    }
 }
