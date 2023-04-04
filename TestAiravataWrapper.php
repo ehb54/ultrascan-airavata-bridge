@@ -22,7 +22,6 @@ $computeClusters = '[{"name":"expanse.sdsc.edu",
 "nodes":1,
 "mGroupCount":1,
 "wallTime":30,
-"extimatedMaxWallTime":100,
 "clusterUserName":"us3",
 "memreq":"30",
 "clusterScratch":"/expanse/lustre/scratch/us3/temp_project/airavata-workingdirs",
@@ -33,7 +32,6 @@ $computeClusters = '[{"name":"expanse.sdsc.edu",
 "nodes":1,
 "mGroupCount":1,
 "wallTime":30,
-"extimatedMaxWallTime":100,
 "clusterUserName":"us3",
 "memreq":"30",
 "clusterScratch":"/expanse/lustre/scratch/us3/temp_project/airavata-workingdirs",
@@ -49,11 +47,23 @@ for ($x = 1; $x <=1; $x++) {
     if ( $launchResult[ 'launchStatus' ] ) {
         $expID = $launchResult[ 'experimentId' ];
         echo "Experiment created " . $expID . PHP_EOL;
+        $x = 1;
+        while($x <= 10 ){
+            sleep(3);
+           $status =  $airavataWrapper->get_experiment_status();
+           if (strcmp($status,'UNKOWN') != 0) {
+             $comResHost =  $airavataWrapper->get_compute_resource($expID);
+               echo "Experiment  " . $expID . " Launched on  ". $comResHost.  PHP_EOL;
+           }
+        }
+
     } else {
         echo "Experiment creation failed: " . $launchResult[ 'message' ]. PHP_EOL;
     }
 
 }
+
+
 
 //$cancelResult = $airavataWrapper->terminate_airavata_experiment("US3-Test_c0f79811-a55b-4fd4-a2d5-f5db268ff871");
 //
