@@ -202,6 +202,45 @@ function select_compute_resource_id($airavataconfig,$computeCluster){
     return $computeResourceId;
 }
 
+
+function select_compute_resource_name($airavataconfig,$resourceHostId){
+    $computeResourceName = null;
+    switch ($resourceHostId) {
+        case $airavataconfig['BRIDGES2_COMPUTE_ID']:
+            $computeResourceName = "bridges2.psc.edu";
+            break;
+        case $airavataconfig['EXPANSE_COMPUTE_ID']:
+            $computeResourceName = "expanse.sdsc.edu";
+            break;
+        case $airavataconfig['COMET_COMPUTE_ID']:
+            $computeResourceName = "comet.sdsc.xsede.org";
+            break;
+        case $airavataconfig['LONESTAR5_COMPUTE_ID']:
+            $computeResourceName = "ls5.tacc.utexas.edu";
+            break;
+        case $airavataconfig['LONESTAR6_COMPUTE_ID']:
+            $computeResourceName = "ls6.tacc.utexas.edu";
+            break;
+        case $airavataconfig['STAMPEDE2_COMPUTE_ID']:
+            $computeResourceName = "stampede2.tacc.xsede.org";
+            break;
+        case $airavataconfig['JURECA_COMPUTE_ID']:
+            $computeResourceName = "jureca.fz-juelich.de";
+            break;
+        case $airavataconfig['JUWELS_COMPUTE_ID']:
+            $computeResourceName = "juwels.fz-juelich.de";
+            break;
+        case $airavataconfig['JETSTREAM_COMPUTE_ID']:
+            $computeResourceName = "static-cluster.jetstream-cloud.org";
+            break;
+        case $airavataconfig['ANVIL_COMPUTE_ID']:
+            $computeResourceName = "anvil.rcac.purdue.edu";
+            break;
+    }
+    return $computeResourceName;
+}
+
+
 function create_experiment_model($airavataclient, $authToken,
                                  $airavataconfig, $gatewayId, $projectId, $limsHost, $limsUser, $experimentName, $requestId,
                                  $computeCluster, $queue, $cores, $nodes, $mGroupCount, $wallTime, $clusterUserName,
