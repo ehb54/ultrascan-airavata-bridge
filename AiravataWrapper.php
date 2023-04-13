@@ -320,9 +320,7 @@ class AiravataWrapper implements AiravataWrapperInterface
           $experimentModel =   $this->airavataclient->getExperiment($this->authToken,$experimentId);
           $comRescheduling = $experimentModel->userConfigurationData->computationalResourceScheduling;
           if ($comRescheduling != null) {
-
-             $comRes =  $this->airavataclient->getComputeResource($this->authToken,$comRescheduling->resourceHostId);
-              return select_compute_resource_name($this->airavataconfig,$comRes->hostName);
+              return select_compute_resource_name($comRescheduling->resourceHostId);
           }
         } catch (AiravataSystemException $ase) {
             echo $ase->getMessage();
