@@ -62,6 +62,9 @@ function create_experiment_model($airavataclient, $authToken,
         case "uslimstest.genapp.rocks":
             $storageResourceId = $airavataconfig['USLIMS3_TESTGENAPP_STORAGE_ID'];
             break;
+        case "uslimstest2.genapp.rocks":
+            $storageResourceId = $airavataconfig['USLIMS3_TESTGENAPP2_STORAGE_ID'];
+            break;
         case "uslims3.aucsolutions.com":
             $storageResourceId = $airavataconfig['USLIMS3_JS_STORAGE_ID'];
             break;
@@ -148,9 +151,12 @@ function create_experiment_model($airavataclient, $authToken,
         case "comet.sdsc.xsede.org":
             $computeResourceId = $airavataconfig['COMET_COMPUTE_ID'];
             break;
-        case "ls5.tacc.utexas.edu":
-            $computeResourceId = $airavataconfig['LONESTAR5_COMPUTE_ID'];
+        case "ls6.tacc.utexas.edu":
+            $computeResourceId = $airavataconfig['LONESTAR6_COMPUTE_ID'];
             break;
+        case "anvil.rcac.purdue.edu":
+                $computeResourceId = $airavataconfig['ANVIL_COMPUTE_ID'];
+                break;
         case "stampede2.tacc.xsede.org":
             $computeResourceId = $airavataconfig['STAMPEDE2_COMPUTE_ID'];
             break;
