@@ -32,6 +32,7 @@ JUWELS_COMPUTE_ID = "juwels.fz-juelich.de_c4bbf179-2baa-4ebc-b4a9-df107a8f8865"
 JETSTREAM_COMPUTE_ID = "js-169-137.jetstream-cloud.org_cf150d9a-2467-4b30-8b81-4236c11e2984"
 
 ; Storage Resource Host ID's
+USLIMS_CA_ULETH_STORAGE_ID = "uslims-ca.uleth.ca_9d354abb-380b-4cad-96df-631fe0daa55c"
 USLIMS3_JUELICH_STORAGE_ID = "uslims3.fz-juelich.de_283650c2-8815-43b2-8150-907feb6935bb"
 USLIMS3_LATROBE_STORAGE_ID = "uslims3.latrobe.edu.au_dea05b5c-5596-49b9-bd10-b0c593713be1"
 USLIMS3_IISC_STORAGE_ID = "uslims3.iisc.ernet.in_ad610bfb-ca83-4bc5-a712-99f795fc476b"
