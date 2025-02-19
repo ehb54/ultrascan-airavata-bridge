@@ -163,6 +163,9 @@ function select_storage_resource_id($airavataconfig,$limsHost) {
         case "pgadev.scigap.org":
             $storageResourceId = $airavataconfig['USLIMS_TESTING_STORAGE_ID'];
             break;
+        case "h7-380489.huck.psu.edu":
+            $storageResourceId = $airavataconfig['USLIMS_PENN_STORAGE_ID'];
+            break;
     }
     return $storageResourceId;
 }

@@ -60,6 +60,7 @@ USLIMS3_TESTGENAPP_STORAGE_ID = "uslimstest.genapp.rocks_95f7f1c0-6308-4b5c-a20d
 USLIMS_TESTING_STORAGE_ID = "web.dev.scigap.org_ba01452f-44e5-4e03-b35f-756630539198"
 USLIMS3_TESTGENAPP2_STORAGE_ID =  "uslimstest2.genapp.rocks_c7bff2c3-2b23-4bf9-bbbf-f30872859164"
 USLIMS3_UTHSCSA_STORAGE_ID = "uslims3.uthscsa.edu_e47e8a2d-9cb7-4489-a84d-38636fb3ed01"
+USLIMS_PENN_STORAGE_ID = "h7-380489.huck.psu.edu_477d2678-58f6-4f8c-9802-ed52d1eb1dbb"
 
 
 OIDC_CLIENT_ID = "lims"
