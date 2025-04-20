@@ -180,9 +180,6 @@ function select_compute_resource_id($airavataconfig,$computeCluster){
         case "expanse.sdsc.edu":
             $computeResourceId = $airavataconfig['EXPANSE_COMPUTE_ID'];
             break;
-        case "comet.sdsc.xsede.org":
-            $computeResourceId = $airavataconfig['COMET_COMPUTE_ID'];
-            break;
         case "ls5.tacc.utexas.edu":
             $computeResourceId = $airavataconfig['LONESTAR5_COMPUTE_ID'];
             break;
@@ -210,16 +207,13 @@ function select_compute_resource_id($airavataconfig,$computeCluster){
 
 
 function select_compute_resource_name($airavataconfig,$resourceHostId){
-    $computeResourceName = null;
+    $computeResourceName = $resourceHostId;
     switch ($resourceHostId) {
         case $airavataconfig['BRIDGES2_COMPUTE_ID']:
             $computeResourceName = "bridges2.psc.edu";
             break;
         case $airavataconfig['EXPANSE_COMPUTE_ID']:
             $computeResourceName = "expanse.sdsc.edu";
-            break;
-        case $airavataconfig['COMET_COMPUTE_ID']:
-            $computeResourceName = "comet.sdsc.xsede.org";
             break;
         case $airavataconfig['LONESTAR5_COMPUTE_ID']:
             $computeResourceName = "ls5.tacc.utexas.edu";
