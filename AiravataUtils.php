@@ -95,6 +95,9 @@ function create_project($airavataclient, $authToken, $gatewayid, $user)
 function select_storage_resource_id($airavataconfig,$limsHost) {
     $storageResourceId = null;
     switch ($limsHost) {
+        case "uslims-ca.uleth.ca":
+            $storageResourceId = $airavataconfig['USLIMS_CA_ULETH_STORAGE_ID'];
+            break;
         case "demeler4.uleth.ca":
             $storageResourceId = $airavataconfig['USLIMS3_DEMELER4_STORAGE_ID'];
             break;
@@ -159,6 +162,9 @@ function select_storage_resource_id($airavataconfig,$limsHost) {
             break;
         case "pgadev.scigap.org":
             $storageResourceId = $airavataconfig['USLIMS_TESTING_STORAGE_ID'];
+            break;
+        case "h7-380489.huck.psu.edu":
+            $storageResourceId = $airavataconfig['USLIMS_PENN_STORAGE_ID'];
             break;
     }
     return $storageResourceId;

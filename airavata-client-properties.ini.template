@@ -40,6 +40,7 @@ ANVIL_COMPUTE_ID= "Anvil_8e39b285-a018-40f3-8692-1c529a292906"
 
 
 ; Storage Resource Host ID's
+USLIMS_CA_ULETH_STORAGE_ID = "uslims-ca.uleth.ca_9d354abb-380b-4cad-96df-631fe0daa55c"
 USLIMS3_MBU_IISC_STORAGE_ID = "uslims3.mbu.iisc.ernet.in_0ef689dc-5b41-438a-b06d-e2c19b74a920"
 USLIMS3_JUELICH_STORAGE_ID = "uslims3.fz-juelich.de_283650c2-8815-43b2-8150-907feb6935bb"
 USLIMS3_LATROBE_STORAGE_ID = "uslims3.latrobe.edu.au_dea05b5c-5596-49b9-bd10-b0c593713be1"
@@ -59,6 +60,7 @@ USLIMS3_TESTGENAPP_STORAGE_ID = "uslimstest.genapp.rocks_95f7f1c0-6308-4b5c-a20d
 USLIMS_TESTING_STORAGE_ID = "web.dev.scigap.org_ba01452f-44e5-4e03-b35f-756630539198"
 USLIMS3_TESTGENAPP2_STORAGE_ID =  "uslimstest2.genapp.rocks_c7bff2c3-2b23-4bf9-bbbf-f30872859164"
 USLIMS3_UTHSCSA_STORAGE_ID = "uslims3.uthscsa.edu_e47e8a2d-9cb7-4489-a84d-38636fb3ed01"
+USLIMS_PENN_STORAGE_ID = "h7-380489.huck.psu.edu_477d2678-58f6-4f8c-9802-ed52d1eb1dbb"
 
 
 OIDC_CLIENT_ID = "lims"
